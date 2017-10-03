@@ -8,6 +8,4 @@ const Sum = x => ({
 Sum.empty = Sum(0)
 Sum.of = x => Sum(x)
 
-const square = x => x * x
-
 module.exports = Sum
