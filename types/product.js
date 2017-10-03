@@ -7,6 +7,6 @@ const Product = x => ({
 })
 
 Product.of = x => Product(x)
-Product.empty = Product(1)
+Product.empty = () => Product(1)
 
 module.exports = Product
