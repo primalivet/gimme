@@ -1,3 +1,5 @@
+const Either = {}
+
 const Left = x => ({
   chain: f => f(x),
   map: f => Left(x),
@@ -10,6 +12,10 @@ const Right = x => ({
   fold: (f, g) => g(x)
 });
 
-const fromNullable = x => (x == null || x == undefined ? Left(x) : Right(x))
+Either.Left = Left
+Either.Right = Right
 
-module.exports = { Left, Right, fromNullable }
+Eiter.fromNullable = x => (x == null || x == undefined ? Left(x) : Right(x))
+Either.of = x => Right(x)
+
+module.exports = Either
