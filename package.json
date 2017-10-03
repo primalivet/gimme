@@ -1,0 +1,9 @@
+{
+  "name": "js-functional-examples",
+  "version": "0.0.1",
+  "description": "A collection of examples on functional code such as composition, currying, monads, functors etc.",
+  "main": "index.js",
+  "repository": "git@github.com:primalivet/js-functional-examples",
+  "author": "Gustaf Holm <gustafholm1@gmail.com>",
+  "license": "MIT"
+}
