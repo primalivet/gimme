@@ -2,7 +2,8 @@ const Product = x => ({
   x,
   chain: f => f(x),
   concat: ({ x: y }) => Product(x * y),
-  map: f => Product(f(x))
+  map: f => Product(f(x)),
+  fold: f => f(x)
 })
 
 Product.of = x => Product(x)
