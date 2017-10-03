@@ -1,6 +1,6 @@
-const compose = require('./compose')
-const curry = require('./curry')
-const pipe = require('./pipe')
+const compose = require('./utilities/compose')
+const curry = require('./utilities/curry')
+const pipe = require('./utilities/pipe')
 
 const All = require('./types/all')
 const Any = require('./types/any')
