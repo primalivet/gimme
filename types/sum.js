@@ -2,7 +2,8 @@ const Sum = x => ({
   x,
   chain: f => f(x),
   concat: ({ x: y }) => Sum(x + y),
-  map: f => Sum(f(x)),
+  fold: f => f(x),
+  map: f => Sum(f(x))
 })
 
 Sum.empty = Sum(0)
