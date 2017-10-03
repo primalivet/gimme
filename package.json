@@ -6,6 +6,9 @@
   "repository": "git@github.com:primalivet/js-functional-examples",
   "author": "Gustaf Holm <gustafholm1@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
   "devDependencies": {
     "eslint": "^4.8.0",
     "eslint-config-standard": "^10.2.1",
