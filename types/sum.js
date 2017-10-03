@@ -6,7 +6,7 @@ const Sum = x => ({
   map: f => Sum(f(x))
 })
 
-Sum.empty = Sum(0)
+Sum.empty = () => Sum(0)
 Sum.of = x => Sum(x)
 
 module.exports = Sum
