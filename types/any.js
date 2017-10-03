@@ -1,6 +1,8 @@
 const Any = x => ({
+  x,
   chain: f => f(x),
   concat: ({ x: y }) => Any(x || y),
+  fold: f => f(x),
   map: f => Any(f(x))
 })
 
