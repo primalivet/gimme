@@ -22,3 +22,23 @@ tap.test('associativity law', t => {
   t.equal(a, b)
   t.end()
 })
+
+tap.test('map takes a function and wrapps the retun value in same type', t => {
+  const found = All.of(true)
+    .map(x => !x)
+    .fold(x => x)
+  const wanted = false
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('chain takes a function and unwrapps a nested type', t => {
+  const found = All.of(true)
+    .chain(x => All.of(!x))
+    .fold(x => x)
+  const wanted = false
+
+  t.equal(found, wanted)
+  t.end()
+})
