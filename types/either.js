@@ -1,7 +1,7 @@
 const Either = {}
 
 const Left = x => ({
-  chain: f => f(x),
+  chain: f => Left(x),
   fold: (f, g) => f(x),
   map: f => Left(x)
 })
