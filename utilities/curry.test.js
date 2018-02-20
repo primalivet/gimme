@@ -1,5 +1,5 @@
 const tap = require('tap')
-const { curry } = require('../')
+const curry = require('./curry')
 
 const add = (x, y) => x + y
 const add2 = curry(add)(2)

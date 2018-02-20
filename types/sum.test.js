@@ -1,9 +1,9 @@
 const tap = require('tap')
-const { Any } = require('../')
+const Sum = require('./sum')
 
 tap.test('identity', t => {
-  const found = Any.empty().fold(x => x)
-  const wanted = true
+  const found = Sum.empty(0).fold(x => x)
+  const wanted = 0
 
   t.equal(found, wanted)
   t.end()
@@ -11,12 +11,12 @@ tap.test('identity', t => {
 
 tap.test('associativity law', t => {
   // law: a.concat(b).concat(c) is equivalent to a.concat(b.concat(c))
-  const a = Any.of(false)
-    .concat(Any.of(true).concat(Any.of(false)))
+  const a = Sum.of(10)
+    .concat(Sum.of(5).concat(Sum.of(10)))
     .fold(x => x)
-  const b = Any.of(false)
-    .concat(Any.of(true))
-    .concat(Any.of(false))
+  const b = Sum.of(10)
+    .concat(Sum.of(5))
+    .concat(Sum.of(10))
     .fold(x => x)
 
   t.equal(a, b)
@@ -24,22 +24,22 @@ tap.test('associativity law', t => {
 })
 
 tap.test('map takes a function and wrapps the retun value in same type', t => {
-  const found = Any.of(true)
-    .concat(Any.of(false))
+  const found = Sum.of(10)
+    .concat(Sum.of(90))
     .map(x => x)
     .fold(x => x)
-  const wanted = true
+  const wanted = 100
 
   t.equal(found, wanted)
   t.end()
 })
 
 tap.test('chain takes a function and unwrapps a nested type', t => {
-  const found = Any.of(true)
-    .concat(Any.of(false))
-    .chain(x => Any.of(x))
+  const found = Sum.of(10)
+    .concat(Sum.of(80))
+    .chain(x => Sum.of(x).concat(Sum(10)))
     .fold(x => x)
-  const wanted = true
+  const wanted = 100
 
   t.equal(found, wanted)
   t.end()

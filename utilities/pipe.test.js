@@ -1,9 +1,9 @@
 const tap = require('tap')
-const { compose } = require('../')
+const pipe = require('./pipe')
 
 const double = x => x * 2
 const square = x => x * x
-const found = compose(square, double)(2)
-const wanted = 16
+const found = pipe(square, double)(2)
+const wanted = 8
 
 tap.equal(found, wanted)

@@ -7,8 +7,8 @@
   "author": "Gustaf Holm <gustafholm1@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "tap test/*.js",
-    "testCoverage": "tap test/*.js --cov"
+    "test": "tap **/*.test.js",
+    "testCoverage": "tap **/*.js --cov"
   },
   "devDependencies": {
     "eslint": "^4.8.0",
@@ -17,6 +17,14 @@
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "eslint-config-prettier": "^2.9.0",
+    "prettier": "^1.10.2",
     "tap": "^10.7.2"
+  },
+  "dependencies": {
+    "data.task": "^3.1.1",
+    "immutable": "^3.8.2",
+    "immutable-ext": "^1.1.2",
+    "request": "^2.83.0"
   }
 }

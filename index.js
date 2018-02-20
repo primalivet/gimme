@@ -1,20 +1,23 @@
-const compose = require('./utilities/compose')
-const curry = require('./utilities/curry')
-const pipe = require('./utilities/pipe')
-
-const All = require('./types/all')
-const Any = require('./types/any')
-const Either = require('./types/either')
-const Product = require('./types/product')
-const Sum = require('./types/sum')
-
 module.exports = {
-  compose,
-  curry,
-  pipe,
-  All,
-  Any,
-  Either,
-  Product,
-  Sum
+  compose: require('./utilities/compose'),
+  curry: require('./utilities/curry'),
+  pipe: require('./utilities/pipe'),
+  trace: require('./utilities/trace'),
+  isFunction: require('./utilities/isFunction'),
+  equal: require('./utilities/equal'),
+
+  All: require('./types/all'),
+  Any: require('./types/any'),
+  Either: require('./types/either'),
+  Product: require('./types/product'),
+  Sum: require('./types/sum'),
+  Maybe: require('./types/maybe'),
+  IO: require('./types/io'),
+
+  map: require('./pointfree/map'),
+  chain: require('./pointfree/chain'),
+  fold: require('./pointfree/fold'),
+  concat: require('./pointfree/concat'),
+  liftA2: require('./pointfree/liftA2'),
+  liftA3: require('./pointfree/liftA3')
 }
