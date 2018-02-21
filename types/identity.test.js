@@ -1,6 +1,41 @@
 const tap = require('tap')
 const Identity = require('./identity')
 
+tap.test('left identity', t => {
+  const f = x => Identity.of(x * 2)
+  const left = Identity.of(10).chain(f)
+  const right = f(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('right identity', t => {
+  const left = Identity.of(10).chain(Identity.of)
+  const right = Identity.of(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('associativity', t => {
+  const f = x => Identity.of(x * 2)
+  const g = x => Identity.of(x + 1)
+  const left = Identity.of(10)
+    .chain(f)
+    .chain(g)
+  const right = Identity.of(10).chain(x => f(x).chain(g))
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
 tap.test(
   'Identity map takes a function which works on the wrapped value',
   t => {

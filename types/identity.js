@@ -3,7 +3,7 @@ const equal = require('../utilities/equal')
 
 const Identity = x => {
   if (!arguments.length) {
-    throw new TypeError('Identity: must wrap a value')
+    throw new TypeError('Identity: must be called with a value')
   }
 
   const type = 'Identity'
@@ -11,36 +11,47 @@ const Identity = x => {
 
   const map = f => {
     if (!isFunction(f)) {
-      throw new TypeError(`Identity.map: only takes a function`)
+      throw new TypeError('Identity.map: must be called with a function')
     }
+
     return Identity(f(x))
   }
 
   const chain = f => {
-    const m = f(x)
     if (!isFunction(f)) {
-      throw new TypeError(`Identity.chain: only takes a function`)
+      throw new TypeError('Identity.chain: must be called with a function')
     }
+
+    const m = f(x)
+
     if (!isSameType(m.type)) {
-      throw new TypeError(`Identity.chain: must return type Identity`)
+      throw new TypeError(
+        'Identity.chain: must be called with a function that returns an Identity'
+      )
     }
+
     return m
   }
 
   const ap = m => {
     if (!isFunction(x)) {
-      throw new TypeError(`Identity.ap: must wrap a function`)
+      throw new TypeError(
+        'Identity.ap: can only be called on Identity that wraps a function'
+      )
     }
+
     if (!isSameType(m.type)) {
-      throw new TypeError(`Identity.ap: only takes another Identity`)
+      throw new TypeError('Identity.ap: must be called with another Identity')
     }
+
     return Identity(x(m.x))
   }
 
   const fold = f => {
     if (!isFunction(f)) {
-      throw new TypeError(`Identity.fold: only takes a function`)
+      throw new TypeError('Identity.fold: must be called with a function')
     }
+
     return f(x)
   }
 

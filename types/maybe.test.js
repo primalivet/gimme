@@ -1,6 +1,41 @@
 const tap = require('tap')
 const Maybe = require('./maybe')
 
+tap.test('left identity', t => {
+  const f = x => Maybe.of(x * 2)
+  const left = Maybe.of(10).chain(f)
+  const right = f(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('right identity', t => {
+  const left = Maybe.of(10).chain(Maybe.of)
+  const right = Maybe.of(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('associativity', t => {
+  const f = x => Maybe.of(x * 2)
+  const g = x => Maybe.of(x + 1)
+  const left = Maybe.of(10)
+    .chain(f)
+    .chain(g)
+  const right = Maybe.of(10).chain(x => f(x).chain(g))
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
 tap.test('Maybe.of creates a Just()', t => {
   const found = Maybe.of('hello').inspect()
   const wanted = 'Just(hello)'

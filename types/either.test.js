@@ -1,6 +1,41 @@
 const tap = require('tap')
 const Either = require('./either')
 
+tap.test('left identity', t => {
+  const f = x => Either.of(x * 2)
+  const left = Either.of(10).chain(f)
+  const right = f(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('right identity', t => {
+  const left = Either.of(10).chain(Either.of)
+  const right = Either.of(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('associativity', t => {
+  const f = x => Either.of(x * 2)
+  const g = x => Either.of(x + 1)
+  const left = Either.of(10)
+    .chain(f)
+    .chain(g)
+  const right = Either.of(10).chain(x => f(x).chain(g))
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
 tap.test('Either fromNullable fold Left on null', t => {
   const found = Either.fromNullable(null).inspect()
   const wanted = 'Left(null)'

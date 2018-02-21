@@ -13,6 +13,7 @@ module.exports = {
   Sum: require('./types/sum'),
   Maybe: require('./types/maybe'),
   IO: require('./types/io'),
+  Identity: require('./types/identity'),
 
   map: require('./pointfree/map'),
   chain: require('./pointfree/chain'),

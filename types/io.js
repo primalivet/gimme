@@ -2,8 +2,8 @@ const isFunction = require('../utilities/isFunction')
 const equal = require('../utilities/equal')
 
 const IO = run => {
-  if (!arguments.length) {
-    throw new TypeError('Identity: must wrap a value')
+  if (!isFunction(run)) {
+    throw new TypeError('IO: must be called with a function')
   }
 
   const type = 'IO'
@@ -11,31 +11,38 @@ const IO = run => {
 
   const map = f => {
     if (!isFunction(f)) {
-      throw new TypeError(`IO.map: only takes a function`)
+      throw new TypeError('IO.map: must be called with a function')
     }
     return IO(() => f(run()))
   }
 
   const chain = f => {
-    const m = f(run())
     if (!isFunction(f)) {
-      throw new TypeError(`IO.chain: only takes a function`)
-    } else if (!isSameType(m.type)) {
-      throw new TypeError(`IO.chain: must return type IO`)
+      throw new TypeError('IO.chain: must be called with a function')
+    }
+
+    const m = f(run())
+
+    if (!isSameType(m.type)) {
+      throw new TypeError(
+        'IO.chain: must be called with a function that returns an IO'
+      )
     }
 
     return IO(() => m.run())
-
-    // WORKS
-    // return IO(() => f(run()).run())
   }
 
   const ap = m => {
     if (!isFunction(run())) {
-      throw new TypeError(`IO.ap: must wrap a function`)
-    } else if (!isSameType(m.type)) {
-      throw new TypeError(`IO.ap: only takes another IO`)
+      throw new TypeError(
+        'IO.ap: can only be called on IO that wraps a function'
+      )
     }
+
+    if (!isSameType(m.type)) {
+      throw new TypeError('IO.ap: must be called with another IO')
+    }
+
     return IO(() => run()(m.run()))
   }
 

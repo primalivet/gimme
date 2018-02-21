@@ -1,6 +1,5 @@
 const request = require('request')
 const Task = require('data.task')
-const { List } = require('immutable-ext')
 const { IO, Either, map, chain, compose, trace } = require('./')
 
 // httpGet :: String -> Task Error String
@@ -31,10 +30,10 @@ const head = xs => xs[0]
  * callers
  */
 
-// get('https://jsonplaceholder.typicode.com/posts').fork(
-//   e => console.log('error', e),
-//   s => console.log('success', s)
-// )
+get('https://jsonplaceholder.typicode.com/posts').fork(
+  e => console.log('error', e),
+  s => console.log('success', s)
+)
 
 const r = IO.of(process.argv)
   .map(head)
