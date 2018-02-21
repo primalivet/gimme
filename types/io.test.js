@@ -1,6 +1,41 @@
 const tap = require('tap')
 const IO = require('./io')
 
+tap.test('left identity', t => {
+  const f = x => IO.of(x * 2)
+  const left = IO.of(10).chain(f)
+  const right = f(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('right identity', t => {
+  const left = IO.of(10).chain(IO.of)
+  const right = IO.of(10)
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
+tap.test('associativity', t => {
+  const f = x => IO.of(x * 2)
+  const g = x => IO.of(x + 1)
+  const left = IO.of(10)
+    .chain(f)
+    .chain(g)
+  const right = IO.of(10).chain(x => f(x).chain(g))
+  const found = left.inspect() === right.inspect()
+  const wanted = true
+
+  t.equal(found, wanted)
+  t.end()
+})
+
 tap.test(
   'IO map takes a function which lazily works on the return value of the wrapped function',
   t => {

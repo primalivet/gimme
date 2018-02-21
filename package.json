@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "tap **/*.test.js",
-    "testCoverage": "tap **/*.js --cov"
+    "testCoverage": "tap **/*.test.js --cov"
   },
   "devDependencies": {
     "eslint": "^4.8.0",
