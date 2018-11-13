@@ -4,6 +4,7 @@ A collection of examples on functional code such as composition, currying, monad
 
 ## Tables of which specifications each type implement
 
+```
 Name      Setoid  Semigroup  Monoid  Functor  Apply  Applicative  Foldable  Traversable  Chain  Monad
 Identity  -       -          -       X        X      X            -         -            X      X
 Either    -       -          -       X        X      X            -         -            -      X
@@ -12,9 +13,11 @@ Sum       -       X          X       X        -      -            -         -   
 Product   -       X          X       X        -      -            -         -            -      -
 All       -       X          X       X        -      -            -         -            -      -
 Any       -       X          X       X        -      -            -         -            -      -
+```
 
 ## Table of methods required for each specification
 
+```
 Method    Setoid  Semigroup  Monoid  Functor  Apply  Applicative  Foldable  Traversable  Chain  Monad
 equals    X       -          -       -        -      -            -         -            -      -
 concat    -       X          X       -        -      -            -         -            -      -
@@ -25,3 +28,4 @@ of        -       -          -       -        -      X            -         -   
 reduce    -       -          -       -        -      -            X         X            -      -
 traverse  -       -          -       -        -      -            -         X            -      -
 chain     -       -          -       -        -      -            -         -            X      X
+```
