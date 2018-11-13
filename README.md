@@ -1,8 +1,8 @@
-# JS Functional Examples
+# README
 
-A collection of examples on functional code such as composition, currying, monads, functors etc.
+A collection of functional concepts like monads and functors implemented in JavaScript.
 
-## Tables of which specifications each type implement
+## Implemented specifications
 
 ```
 Name      Setoid  Semigroup  Monoid  Functor  Apply  Applicative  Foldable  Traversable  Chain  Monad
@@ -15,7 +15,7 @@ All       -       X          X       X        -      -            -         -   
 Any       -       X          X       X        -      -            -         -            -      -
 ```
 
-## Table of methods required for each specification
+## Required methods per specification
 
 ```
 Method    Setoid  Semigroup  Monoid  Functor  Apply  Applicative  Foldable  Traversable  Chain  Monad
