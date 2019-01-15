@@ -1,10 +1,7 @@
 let g:ale_linters = { 
-    \ 'javascript': ['eslint'], 
+    \ 'javascript': ['standard'], 
     \ }
 
 let g:ale_fixers = { 
-    \ 'javascript': ['prettier'], 
+    \ 'javascript': ['prettier_standard'], 
     \ }
-
-let g:ale_javascript_eslint_use_global = 0
-let g:ale_javascript_prettier_use_local_config = 1
