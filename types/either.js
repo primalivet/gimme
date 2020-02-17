@@ -92,5 +92,12 @@ Either.Right = Right
 
 Either.of = x => Right(x)
 Either.fromNullable = x => (x === null || x === undefined ? Left(x) : Right(x))
+Either.tryCatch = f => {
+  try {
+    return Right(f())
+  } catch (e) {
+    return Left(e)
+  }
+}
 
 module.exports = Either

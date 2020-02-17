@@ -60,6 +60,12 @@ tap.test('Either fromNullable fold Right on not null', t => {
   t.end()
 })
 
+tap.skip('Either tryCatch fold Left on error', t => {
+})
+
+tap.skip('Either tryCatch fold Right on success', t => {
+})
+
 tap.test('Either of fold Right', t => {
   const found = Either.of('success').inspect()
   const wanted = 'Right(success)'
