@@ -34,9 +34,7 @@ const IO = run => {
 
   const ap = m => {
     if (!isFunction(run())) {
-      throw new TypeError(
-        'IO.ap: can only be called on IO that wraps a function'
-      )
+      throw new TypeError('IO.ap: can only be called on IO that wraps a function')
     }
 
     if (!isSameType(m.type)) {
@@ -46,9 +44,17 @@ const IO = run => {
     return IO(() => run()(m.run()))
   }
 
+  const fold = f => {
+    if (!isFunction(f)) {
+      throw new TypeError('IO.fold: must be called with a function')
+    }
+
+    return f(run())
+  }
+
   const inspect = () => `IO(${run()})`
 
-  return { run, type, map, chain, ap, inspect }
+  return { run, type, map, chain, ap, fold, inspect }
 }
 
 IO.of = x => IO(() => x)

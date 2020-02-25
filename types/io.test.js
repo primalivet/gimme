@@ -72,3 +72,11 @@ tap.test('IO ap applies the value of a IO type to the wrapped function', t => {
   t.equal(found, wanted)
   t.end()
 })
+
+tap.test('IO fold takes a function and unwraps the value', t => {
+  const found = IO.of(10).fold(x => x)
+  const wanted = 10
+
+  t.equal(found, wanted)
+  t.end()
+})
