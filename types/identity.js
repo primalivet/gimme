@@ -25,9 +25,7 @@ const Identity = x => {
     const m = f(x)
 
     if (!isSameType(m.type)) {
-      throw new TypeError(
-        'Identity.chain: must be called with a function that returns an Identity'
-      )
+      throw new TypeError('Identity.chain: must be called with a function that returns an Identity')
     }
 
     return m
