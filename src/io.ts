@@ -1,5 +1,5 @@
-const isFunction = require('../utilities/isFunction')
-const equal = require('../utilities/equal')
+import isFunction from '../utilities/isFunction'
+import equal from '../utilities/equal'
 
 const IO = run => {
   if (!isFunction(run)) {
@@ -59,4 +59,4 @@ const IO = run => {
 
 IO.of = x => IO(() => x)
 
-module.exports = IO
+export default IO

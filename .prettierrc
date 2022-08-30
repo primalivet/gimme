@@ -4,5 +4,5 @@
   "trailingComma": "all",
   "tabWidth": 2,
   "semi": false,
-  "arrowParens": "avoid"
+  "arrowParens": "always"
 }
