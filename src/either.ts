@@ -81,12 +81,10 @@ export const bind =
  * Short circuted on any Left value
  */
 export const apply =
-  <E, A>(fa: Either<E, A>) =>
+  <E, A>(fa: Right<A>) =>
   <F, B>(fab: Either<F, (a: A) => B>): Either<E | F, A | B> =>
     fab._tag === 'Left'
       ? fab
-      : fa._tag === 'Left'
-      ? fa
       : right(fab.value(fa.value))
 
 /*

@@ -174,17 +174,10 @@ describe('Applicative', () => {
     expect(E.show(found)).toBe(E.show(wanted))
   })
 
-  test('apply: dont do anything on a left value', () => {
+  test('apply: dont do anything on a left function', () => {
     const double = (x: number) => x * 2
     const found = E.apply(E.right(2))(E.left(double))
     const wanted = E.left(double)
-    expect(E.show(found)).toBe(E.show(wanted))
-  })
-
-  test('apply: dont do anything on a left function', () => {
-    const double = (x: number) => x * 2
-    const found = E.apply(E.left(2))(E.right(double))
-    const wanted = E.left(2)
     expect(E.show(found)).toBe(E.show(wanted))
   })
 })
