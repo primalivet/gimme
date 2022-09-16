@@ -34,7 +34,7 @@ export const right = <A>(a: A): Right<A> => ({ _tag: 'Right', value: a })
  * with another value of the same type.
  *
  * For example
- * 2 + 0 = 0 (in addition, 0 is the identity value)
+ * 2 + 0 = 2 (in addition, 0 is the identity value)
  * 2 * 1 = 2 (in multiplication, 1 is the identity value)
  *
  * For an either, right is the identity value as a Left combined with an Right
