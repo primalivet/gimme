@@ -33,7 +33,7 @@ export const just = <A>(a: A): Just<A> => ({ _tag: 'Just', value: a })
  * with another value of the same type.
  *
  * For example
- * 2 + 0 = 0 (in addition, 0 is the identity value)
+ * 2 + 0 = 2 (in addition, 0 is the identity value)
  * 2 * 1 = 2 (in multiplication, 1 is the identity value)
  *
  * For an maybe, just is the identity value as a Nothing combined with an Just
