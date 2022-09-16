@@ -1,115 +1,173 @@
-// import Maybe from './maybe'
+import * as M from './maybe'
+import { pipe } from './function'
 
-describe('Maybe', () => {
-  test.todo('Rewite tests')
+describe('Laws', () => {
+  test('left identity', () => {
+    const f = (x: number) => M.pure(x * 2)
+    const leftside = M.bind(f)(M.pure(10))
+    const rightside = f(10)
+    const found = M.show(leftside) === M.show(rightside)
+    const wanted = true
+
+    expect(found).toBe(wanted)
+  })
+
+  test('right identity', () => {
+    const leftside = M.bind(M.pure)(M.pure(10))
+    const rightside = M.pure(10)
+    const found = M.show(leftside) === M.show(rightside)
+    const wanted = true
+
+    expect(found).toBe(wanted)
+  })
+
+  test('associativity', () => {
+    const f = (x: number) => M.pure(x * 2)
+    const g = (x: number) => M.pure(x + 1)
+    const leftside = M.bind(g)(M.bind(f)(M.pure(10)))
+    const rightside = M.bind((x: number) => M.bind(g)(f(x)))(M.pure(10))
+    const found = M.show(leftside) === M.show(rightside)
+    const wanted = true
+
+    expect(found).toBe(wanted)
+  })
 })
-// tap.test('left identity', t => {
-//   const f = x => Maybe.of(x * 2)
-//   const left = Maybe.of(10).chain(f)
-//   const right = f(10)
-//   const found = left.inspect() === right.inspect()
-//   const wanted = true
 
-//   t.equal(found, wanted)
-//   t.end()
-// })
+describe('Constructors', () => {
+  test('nothing', () => {
+    const found = pipe(M.nothing(), M.show)
+    const wanted = 'Nothing'
 
-// tap.test('right identity', t => {
-//   const left = Maybe.of(10).chain(Maybe.of)
-//   const right = Maybe.of(10)
-//   const found = left.inspect() === right.inspect()
-//   const wanted = true
+    expect(found).toBe(wanted)
+  })
 
-//   t.equal(found, wanted)
-//   t.end()
-// })
+  test('nothing', () => {
+    const found = pipe(M.just('success'), M.show)
+    const wanted = 'Just("success")'
 
-// tap.test('associativity', t => {
-//   const f = x => Maybe.of(x * 2)
-//   const g = x => Maybe.of(x + 1)
-//   const left = Maybe.of(10)
-//     .chain(f)
-//     .chain(g)
-//   const right = Maybe.of(10).chain(x => f(x).chain(g))
-//   const found = left.inspect() === right.inspect()
-//   const wanted = true
+    expect(found).toBe(wanted)
+  })
 
-//   t.equal(found, wanted)
-//   t.end()
-// })
+  test('fromNullable: Nothing when value is null', () => {
+    const found = pipe(
+      null,
+      M.fromNullable,
+    )
+    const wanted = M.nothing()
 
-// tap.test('Maybe.of creates a Just()', t => {
-//   const found = Maybe.of('hello').inspect()
-//   const wanted = 'Just(hello)'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
 
-// tap.test('Maybe.fromNullable creates a Nothing() on a null value', t => {
-//   const found = Maybe.fromNullable(null).inspect()
-//   const wanted = 'Nothing()'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+  test('fromNullable: Nothing when value is undefined', () => {
+    const found = pipe(
+      undefined,
+      M.fromNullable,
+    )
+    const wanted = M.nothing()
 
-// tap.test('Maybe.fromNullable creates a Nothing() on a undefined value', t => {
-//   const found = Maybe.fromNullable(undefined).inspect()
-//   const wanted = 'Nothing()'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
 
-// tap.test('Maybe.fromNullable creates a Just() on a not null value', t => {
-//   const found = Maybe.fromNullable([1, 2, 3]).inspect()
-//   const wanted = 'Just(1,2,3)'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+  test('fromNullable: Just when value is not null or undefined', () => {
+    const found = pipe(
+      'hello world',
+      M.fromNullable,
+    )
+    const wanted = M.just('hello world')
 
-// tap.test("Maybe.fromFalsy creates a Nothing() on a falsy value: ''", t => {
-//   const found = Maybe.fromFalsy('').inspect()
-//   const wanted = 'Nothing()'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
 
-// tap.test('Maybe.fromFalsy creates a Nothing() on a falsy value: []', t => {
-//   const found = Maybe.fromFalsy([]).inspect()
-//   const wanted = 'Nothing()'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+  test('fromPredicate: Just when predicate is true', () => {
+    const found = pipe(
+      ['hello', 'world'],
+      M.fromPredicate(Array.isArray),
+    )
+    const wanted = M.just(['hello', 'world'])
 
-// tap.test('Maybe.fromFalsy creates a Nothing() on a falsy value: NaN', t => {
-//   const found = Maybe.fromFalsy(NaN).inspect()
-//   const wanted = 'Nothing()'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
 
-// tap.test('Maybe.fromFalsy creates a Nothing() on a falsy value: null', t => {
-//   const found = Maybe.fromFalsy(null).inspect()
-//   const wanted = 'Nothing()'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+  test('fromPredicate: Nothing when predicate is false', () => {
+    const found = pipe(
+      'hello world',
+      M.fromPredicate(Array.isArray),
+    )
+    const wanted = M.nothing()
 
-// tap.test(
-//   'Maybe.fromFalsy creates a Nothing() on a falsy value: undefined',
-//   t => {
-//     const found = Maybe.fromFalsy(undefined).inspect()
-//     const wanted = 'Nothing()'
-//     t.equal(found, wanted)
-//     t.end()
-//   }
-// )
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+})
 
-// tap.test('Maybe is applicative', t => {
-//   const found = Maybe.of(x => y => x + y)
-//     .ap(Maybe.of(3))
-//     .ap(Maybe.of(4))
-//     .inspect()
-//   const wanted = 'Just(7)'
-//   t.equal(found, wanted)
-//   t.end()
-// })
+describe('Destructors', () => {
+  test('fold: calls onNothing on nothing value', () => {
+    const found = M.fold(
+      () => 'none',
+      () => 'some',
+    )(M.nothing())
+    const wanted = 'none'
+    expect(found).toBe(wanted)
+  })
+
+  test('fold: calls onJust on right value', () => {
+    const found = M.fold(
+      () => 'none',
+      () => 'some',
+    )(M.just('hello world'))
+    const wanted = 'some'
+    expect(found).toBe(wanted)
+  })
+})
+
+describe('Functor', () => {
+  test('fmap: maps the function over a just value', () => {
+    const double = (x: number) => x * 2
+    const found = M.fmap(double)(M.just(2))
+    const wanted = M.just(4)
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+
+  test('fmap: dont do anything on a nothing value', () => {
+    const double = (x: number) => x * 2
+    const found = M.fmap(double)(M.nothing())
+    const wanted = M.nothing()
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+})
+
+describe('Applicative', () => {
+  test('pure: wrapps a value in the context', () => {
+    const found = M.pure(2)
+    const wanted = M.just(2)
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+
+  test('apply: apply the just value to the function', () => {
+    const double = (x: number) => x * 2
+    const found = M.apply(M.just(2))(M.just(double))
+    const wanted = M.just(4)
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+
+  test('apply: dont do anything on a nothing function', () => {
+    const found = M.apply(M.just(2))(M.nothing())
+    const wanted = M.nothing()
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+})
+
+describe('Monad', () => {
+  test('bind: apply the just value to a function returning an maybe, then flatten the result', () => {
+    const mDouble = (x: number) => M.pure(x * 2)
+    const found = M.bind(mDouble)(M.pure(2))
+    const wanted = M.just(4)
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+
+  test('bind: dont do anything to a nothing value', () => {
+    const mDouble = (x: number) => M.pure(x * 2)
+    const found = M.bind(mDouble)(M.nothing())
+    const wanted = M.nothing()
+    expect(M.show(found)).toBe(M.show(wanted))
+  })
+})
