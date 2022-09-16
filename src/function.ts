@@ -128,6 +128,7 @@ export function flow<A, B, C, D, E, F, G, H, I, J, K, L>(
   }
 }
 
+export function pipe<A, B >(a: A, ab: (a: A) => B): B
 export function pipe<A, B, C>(a: A, ab: (a: A) => B, bc: (b: B) => C): C
 export function pipe<A, B, C, D>(
   a: A,
@@ -263,6 +264,10 @@ export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
   if (bc) {
     return bc(ab(a))
   }
-  return ab(a)
+  if (ab) {
+    return ab(a)
+  }
+
+  return a
 }
 
