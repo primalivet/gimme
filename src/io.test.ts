@@ -1,7 +1,8 @@
-import test from 'ava'
 // import IO from './io'
 
-test.todo('Rewite tests')
+describe('IO', () => {
+  test.todo('Rewite tests')
+})
 
 // tap.test('left identity', t => {
 //   const f = x => IO.of(x * 2)

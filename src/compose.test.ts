@@ -1,7 +1,8 @@
-import test from 'ava'
 // import compose from './compose'
 
-test.todo('Rewite tests')
+describe('compose', () => {
+  test.todo('Rewite tests')
+})
 // const double = x => x * 2
 // const square = x => x * x
 // const found = compose(square, double)(2)

@@ -1,7 +1,8 @@
-import test from 'ava'
 // import Pair from './Pair'
 
-test.todo('Rewite tests')
+describe('Pair', () => {
+  test.todo('Rewite tests')
+})
 // // this might be incorrect way to test left identity on pair, see sancuary
 // tap.skip('left identity', t => {
 //   const f = x => y => Pair(x)(y.toUpperCase())

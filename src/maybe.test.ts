@@ -1,7 +1,8 @@
-import test from 'ava'
 // import Maybe from './maybe'
 
-test.todo('Rewite tests')
+describe('Maybe', () => {
+  test.todo('Rewite tests')
+})
 // tap.test('left identity', t => {
 //   const f = x => Maybe.of(x * 2)
 //   const left = Maybe.of(10).chain(f)

@@ -13,17 +13,17 @@ export const isJust = <A>(ma: Maybe<A>): boolean => ma._tag === 'Just'
 
 export const isNothing = <A>(ma: Maybe<A>): boolean => ma._tag === 'Nothing'
 
-export const map =
+export const fmap =
   <A, B>(f: (a: A) => B) =>
   (ma: Maybe<A>): Maybe<B> =>
     ma._tag === 'Just' ? just(f(ma.value)) : nothing()
 
-export const chain =
+export const bind =
   <A, B>(f: (a: A) => Maybe<B>) =>
   (ma: Maybe<A>): Maybe<B> =>
     ma._tag === 'Just' ? f(ma.value) : nothing()
 
-export const ap =
+export const apply =
   <A, B>(mf: Just<(a: A) => B>) =>
   (ma: Maybe<A>): Maybe<B> =>
     ma._tag === 'Just' ? just(mf.value(ma.value)) : nothing()
@@ -32,6 +32,11 @@ export const orElse =
   <A>(onNothing: () => A) =>
   (ma: Maybe<A>): A =>
     ma._tag === 'Just' ? ma.value : onNothing()
+
+export const fold =
+  <A, B>(onNothing: () => B, onJust: (a: A) => B) =>
+  (ma: Maybe<A>): B =>
+    ma._tag === 'Just' ? onJust(ma.value) : onNothing()
 
 export const fromNullable = <A>(a: A) =>
   a === null || a === undefined ? nothing() : just(a)
