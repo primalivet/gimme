@@ -33,6 +33,22 @@ describe('Laws', () => {
   })
 })
 
+describe('Predicates', () => {
+  test('isRight', () => {
+    const found = [E.isRight(E.right('')), E.isRight(E.left(''))]
+    const wanted = [true, false]
+
+    expect(found).toStrictEqual(wanted)
+  })
+
+  test('isLeft', () => {
+    const found = [E.isLeft(E.right('')), E.isLeft(E.left(''))]
+    const wanted = [false, true]
+
+    expect(found).toStrictEqual(wanted)
+  })
+})
+
 describe('Constructors', () => {
   test('left', () => {
     const found = pipe(E.left('reason'), E.show)
