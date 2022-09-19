@@ -33,6 +33,22 @@ describe('Laws', () => {
   })
 })
 
+describe('Predicates', () => {
+  test('isJust', () => {
+    const found = [M.isJust(M.just('')), M.isJust(M.nothing())]
+    const wanted = [true, false]
+
+    expect(found).toStrictEqual(wanted)
+  })
+
+  test('isNothing', () => {
+    const found = [M.isNothing(M.just('')), M.isNothing(M.nothing())]
+    const wanted = [false, true]
+
+    expect(found).toStrictEqual(wanted)
+  })
+})
+
 describe('Constructors', () => {
   test('nothing', () => {
     const found = pipe(M.nothing(), M.show)
