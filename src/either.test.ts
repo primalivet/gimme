@@ -1,4 +1,3 @@
-// import test from 'jest'
 import { pipe } from './function'
 import * as E from './either'
 
