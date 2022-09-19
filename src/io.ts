@@ -1,62 +1,23 @@
-import isFunction from '../utilities/isFunction'
-import equal from '../utilities/equal'
+export type Trunk<T> = () => T
 
-const IO = run => {
-  if (!isFunction(run)) {
-    throw new TypeError('IO: must be called with a function')
-  }
+export type IO<T> = Trunk<T>
 
-  const type = 'IO'
-  const isSameType = equal('IO')
+export const pure = <A>(a: A): IO<A> => () => a
 
-  const map = f => {
-    if (!isFunction(f)) {
-      throw new TypeError('IO.map: must be called with a function')
-    }
-    return IO(() => f(run()))
-  }
+export const fmap =
+  <A, B>(f: (a: A) => B) =>
+  (ma: IO<A>): IO<B> =>
+    pure(f(ma()))
 
-  const chain = f => {
-    if (!isFunction(f)) {
-      throw new TypeError('IO.chain: must be called with a function')
-    }
+export const bind =
+  <A, B>(f: (a: A) => IO<B>) =>
+  (ma: IO<A>): IO<B> =>
+    f(ma())
 
-    const m = f(run())
+export const apply =
+  <A, B>(fa: IO<A>) =>
+  (fab: IO<(a: A) => B>): IO<B> =>
+    pure(fab()(fa()))
 
-    if (!isSameType(m.type)) {
-      throw new TypeError(
-        'IO.chain: must be called with a function that returns an IO'
-      )
-    }
-
-    return IO(() => m.run())
-  }
-
-  const ap = m => {
-    if (!isFunction(run())) {
-      throw new TypeError('IO.ap: can only be called on IO that wraps a function')
-    }
-
-    if (!isSameType(m.type)) {
-      throw new TypeError('IO.ap: must be called with another IO')
-    }
-
-    return IO(() => run()(m.run()))
-  }
-
-  const fold = f => {
-    if (!isFunction(f)) {
-      throw new TypeError('IO.fold: must be called with a function')
-    }
-
-    return f(run())
-  }
-
-  const inspect = () => `IO(${run()})`
-
-  return { run, type, map, chain, ap, fold, inspect }
-}
-
-IO.of = x => IO(() => x)
-
-export default IO
+export const show = <T>(io: IO<T>): string =>
+  `IO(${JSON.stringify(io, null, 2)})`
