@@ -1,3 +1,4 @@
+export function flow<A, B>(ab: (a: A) => B): (a: A) => B
 export function flow<A, B, C>(ab: (a: A) => B, bc: (b: B) => C): (a: A) => C
 export function flow<A, B, C, D>(
   ab: (a: A) => B,
@@ -94,41 +95,41 @@ export function flow<A, B, C, D, E, F, G, H, I, J, K, L>(
   kl?: (K: K) => L,
 ): (a: A) => unknown {
   return (a: A) => {
-    if (bc && cd && de && ef && fg && gh && hi && ij && jk && kl) {
+    if (ab && bc && cd && de && ef && fg && gh && hi && ij && jk && kl) {
       return kl(jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))))
     }
-    if (bc && cd && de && ef && fg && gh && hi && ij && jk) {
+    if (ab && bc && cd && de && ef && fg && gh && hi && ij && jk) {
       return jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a))))))))))
     }
-    if (bc && cd && de && ef && fg && gh && hi && ij) {
+    if (ab && bc && cd && de && ef && fg && gh && hi && ij) {
       return ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))
     }
-    if (bc && cd && de && ef && fg && gh && hi) {
+    if (ab && bc && cd && de && ef && fg && gh && hi) {
       return hi(gh(fg(ef(de(cd(bc(ab(a))))))))
     }
-    if (bc && cd && de && ef && fg && gh) {
+    if (ab && bc && cd && de && ef && fg && gh) {
       return gh(fg(ef(de(cd(bc(ab(a)))))))
     }
-    if (bc && cd && de && ef && fg) {
+    if (ab && bc && cd && de && ef && fg) {
       return fg(ef(de(cd(bc(ab(a))))))
     }
-    if (bc && cd && de && ef) {
+    if (ab && bc && cd && de && ef) {
       return ef(de(cd(bc(ab(a)))))
     }
-    if (bc && cd && de) {
+    if (ab && bc && cd && de) {
       return de(cd(bc(ab(a))))
     }
-    if (bc && cd) {
-      return bc(ab(a))
+    if (ab && bc && cd) {
+      return cd(bc(ab(a)))
     }
-    if (bc) {
+    if (ab && bc) {
       return bc(ab(a))
     }
     return ab(a)
   }
 }
 
-export function pipe<A, B >(a: A, ab: (a: A) => B): B
+export function pipe<A, B>(a: A, ab: (a: A) => B): B
 export function pipe<A, B, C>(a: A, ab: (a: A) => B, bc: (b: B) => C): C
 export function pipe<A, B, C, D>(
   a: A,
@@ -234,40 +235,154 @@ export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
   jk?: (j: J) => K,
   kl?: (K: K) => L,
 ): unknown {
-  if (bc && cd && de && ef && fg && gh && hi && ij && jk && kl) {
+  if (ab && bc && cd && de && ef && fg && gh && hi && ij && jk && kl) {
     return kl(jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))))
   }
-  if (bc && cd && de && ef && fg && gh && hi && ij && jk) {
+  if (ab && bc && cd && de && ef && fg && gh && hi && ij && jk) {
     return jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a))))))))))
   }
-  if (bc && cd && de && ef && fg && gh && hi && ij) {
+  if (ab && bc && cd && de && ef && fg && gh && hi && ij) {
     return ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))
   }
-  if (bc && cd && de && ef && fg && gh && hi) {
+  if (ab && bc && cd && de && ef && fg && gh && hi) {
     return hi(gh(fg(ef(de(cd(bc(ab(a))))))))
   }
-  if (bc && cd && de && ef && fg && gh) {
+  if (ab && bc && cd && de && ef && fg && gh) {
     return gh(fg(ef(de(cd(bc(ab(a)))))))
   }
-  if (bc && cd && de && ef && fg) {
+  if (ab && bc && cd && de && ef && fg) {
     return fg(ef(de(cd(bc(ab(a))))))
   }
-  if (bc && cd && de && ef) {
+  if (ab && bc && cd && de && ef) {
     return ef(de(cd(bc(ab(a)))))
   }
-  if (bc && cd && de) {
+  if (ab && bc && cd && de) {
     return de(cd(bc(ab(a))))
   }
-  if (bc && cd) {
-    return bc(ab(a))
+  if (ab && bc && cd) {
+    return cd(bc(ab(a)))
   }
-  if (bc) {
+  if (ab && bc) {
     return bc(ab(a))
-  }
-  if (ab) {
-    return ab(a)
   }
 
-  return a
+  return ab(a)
 }
 
+export const compose =
+  <A, B, C>(bc: (b: B) => C, ab: (a: A) => B) =>
+  (a: A): C =>
+    bc(ab(a))
+
+export const compose3 =
+  <A, B, C, D>(cd: (c: C) => D, bc: (b: B) => C, ab: (a: A) => B) =>
+  (a: A): D =>
+    cd(bc(ab(a)))
+
+export const compose4 =
+  <A, B, C, D, E>(
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): E =>
+    de(cd(bc(ab(a))))
+
+export const compose5 =
+  <A, B, C, D, E, F>(
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): F =>
+    ef(de(cd(bc(ab(a)))))
+
+export const compose6 =
+  <A, B, C, D, E, F, G>(
+    fg: (f: F) => G,
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): G =>
+    fg(ef(de(cd(bc(ab(a))))))
+
+export const compose7 =
+  <A, B, C, D, E, F, G, H>(
+    gh: (g: G) => H,
+    fg: (f: F) => G,
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): H =>
+    gh(fg(ef(de(cd(bc(ab(a)))))))
+
+export const compose8 =
+  <A, B, C, D, E, F, G, H, I>(
+    hi: (h: H) => I,
+    gh: (g: G) => H,
+    fg: (f: F) => G,
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): I =>
+    hi(gh(fg(ef(de(cd(bc(ab(a))))))))
+
+export const compose9 =
+  <A, B, C, D, E, F, G, H, I, J>(
+    ij: (i: I) => J,
+    hi: (g: H) => I,
+    gh: (g: G) => H,
+    fg: (f: F) => G,
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): J =>
+    ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))
+
+export const compose10 =
+  <A, B, C, D, E, F, G, H, I, J, K>(
+    jk: (j: J) => K,
+    ij: (i: I) => J,
+    hi: (g: H) => I,
+    gh: (g: G) => H,
+    fg: (f: F) => G,
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): K =>
+    jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a))))))))))
+
+export const compose11 =
+  <A, B, C, D, E, F, G, H, I, J, K, L>(
+    kl: (k: K) => L,
+    jk: (j: J) => K,
+    ij: (i: I) => J,
+    hi: (g: H) => I,
+    gh: (g: G) => H,
+    fg: (f: F) => G,
+    ef: (e: E) => F,
+    de: (d: D) => E,
+    cd: (c: C) => D,
+    bc: (b: B) => C,
+    ab: (a: A) => B,
+  ) =>
+  (a: A): L =>
+    kl(jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))))
