@@ -64,6 +64,26 @@ export const fmap =
     ma._tag === 'Right' ? right(f(ma.value)) : ma
 
 /*
+ * The fmapLeft operation of an Either.
+ * On a Left value, map will apply it's value to the given function.
+ * On a Righr value, map will ignore the function and keep it's Left value.
+ */
+export const fmapLeft =
+  <E, F, A>(f: (b: E) => F) =>
+  (ma: Either<E, A>): Either<F, A> =>
+    ma._tag === 'Left' ? left(f(ma.value)) : ma
+
+/**
+ * The bimap operation of an Either.
+ * On a Left value, map will apply the Left value to the first function passed as arguments.
+ * On a Right value, map will apply the Right value to the second function passed as arguments.
+*/
+export const bimap =
+  <E, F, A, B>(f: (e: E) => F, g: (a: A) => B) =>
+  (ma: Either<E, A>): Either<F, A> | Either<E, B> =>
+    ma._tag === 'Left' ? left(f(ma.value)) : right(g(ma.value))
+
+/*
  * The bind operation of an Either.
  * On a Right value, bind will apply it's value to the given function, and
  * flatten the result as the function has to return another Either.
@@ -83,9 +103,7 @@ export const bind =
 export const apply =
   <E, A>(fa: Right<A>) =>
   <F, B>(fab: Either<F, (a: A) => B>): Either<E | F, A | B> =>
-    fab._tag === 'Left'
-      ? fab
-      : right(fab.value(fa.value))
+    fab._tag === 'Left' ? fab : right(fab.value(fa.value))
 
 /*
  * Constuct a Either from a possible null value

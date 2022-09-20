@@ -13,7 +13,7 @@ the sole reason to understand more of how and why they work like they do.
 ```
 Name      Setoid  Semigroup  Monoid  Functor  Bifunctor  Apply  Applicative  Foldable  Traversable  Chain  Monad
 Task      -       -          -       X        -         X      X            -         -            X      X
-Either    -       -          -       X        -         X      X            -         -            X      X
+Either    -       -          -       X        X         X      X            -         -            X      X
 IO        -       -          -       X        -         X      X            -         -            X      X
 Maybe     -       -          -       X        -         X      X            -         -            X      X
 Tuple     -       -          -       X        X         X      X            -         -            X      X

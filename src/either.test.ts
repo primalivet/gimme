@@ -175,6 +175,38 @@ describe('Functor', () => {
   })
 })
 
+describe('Bifunctor', () => {
+  test('bimap: apply a Left value to the first given function', () => {
+    const inc = (x: number) => x + 1
+    const double = (x: number) => x * 2
+    const found = E.bimap(inc, double)(E.left(2))
+    const wanted = E.left(3)
+    expect(E.show(found)).toBe(E.show(wanted))
+  })
+
+  test('bimap: apply a Right value to the second given function', () => {
+    const inc = (x: number) => x + 1
+    const double = (x: number) => x * 2
+    const found = E.bimap(inc, double)(E.right(2))
+    const wanted = E.right(4)
+    expect(E.show(found)).toBe(E.show(wanted))
+  })
+
+  test('fmapLeft: apply a Left value to a function', () => {
+    const double = (x: number) => x * 2
+    const found = E.fmapLeft(double)(E.left(2))
+    const wanted = E.left(4)
+    expect(E.show(found)).toBe(E.show(wanted))
+  })
+
+  test('fmapLeft: leave a Right value untouched', () => {
+    const double = (x: number) => x * 2
+    const found = E.fmapLeft(double)(E.right(2))
+    const wanted = E.right(2)
+    expect(E.show(found)).toBe(E.show(wanted))
+  })
+})
+
 describe('Applicative', () => {
   test('pure: wrapps a value in the context', () => {
     const found = E.pure(2)
