@@ -11,28 +11,26 @@ the sole reason to understand more of how and why they work like they do.
 ## Implemented data types
 
 ```
-Name      Setoid  Semigroup  Monoid  Functor  Apply  Applicative  Foldable  Traversable  Chain  Monad
-All       -       X          X       X        -      -            -         -            -      -
-Any       -       X          X       X        -      -            -         -            -      -
-Either    -       -          -       X        X      X            -         -            -      X
-Identity  -       -          -       X        X      X            -         -            X      X
-IO        -       -          -       X        X      X            -         -            X      X
-Maybe     -       X          -       X        X      X            -         -            -      X
-Product   -       X          X       X        -      -            -         -            -      -
-Sum       -       X          X       X        -      -            -         -            -      X
+Name      Setoid  Semigroup  Monoid  Functor  Bifunctor  Apply  Applicative  Foldable  Traversable  Chain  Monad
+Task      -       -          -       X        -         X      X            -         -            X      X
+Either    -       -          -       X        -         X      X            -         -            X      X
+IO        -       -          -       X        -         X      X            -         -            X      X
+Maybe     -       -          -       X        -         X      X            -         -            X      X
+Tuple     -       -          -       X        X         X      X            -         -            X      X
 ```
 
 ## Required methods per specification
 
 ```
-Method    Setoid  Semigroup  Monoid  Functor  Apply  Applicative  Foldable  Traversable  Chain  Monad
-ap        -       -          -       -        X      X            -         -            X      X
-chain     -       -          -       -        -      -            -         -            X      X
-concat    -       X          X       -        -      -            -         -            -      -
-empty     -       -          X       -        -      -            -         -            -      -
-equals    X       -          -       -        -      -            -         -            -      -
-map       -       -          -       X        X      X            -         X            X      X
-of        -       -          -       -        -      X            -         -            -      X
-reduce    -       -          -       -        -      -            X         X            -      -
-traverse  -       -          -       -        -      -            -         X            -      -
+Method    Setoid  Semigroup  Monoid  Functor  Bifunctor  Apply  Applicative  Foldable  Traversable  Chain  Monad
+apply     -       -          -       -        -          X      X            -         -            X      X
+bind      -       -          -       -        -          -      -            -         -            X      X
+concat    -       X          X       -        -          -      -            -         -            -      -
+empty     -       -          X       -        -          -      -            -         -            -      -
+equals    X       -          -       -        -          -      -            -         -            -      -
+fmap      -       -          -       X        X          X      X            -         X            X      X
+pure      -       -          -       -        -          -      X            -         -            -      X
+reduce    -       -          -       -        -          -      -            X         X            -      -
+traverse  -       -          -       -        -          -      -            -         X            -      -
+bimap     -       -          -       -        X          -      -            -         X            -      -
 ```
