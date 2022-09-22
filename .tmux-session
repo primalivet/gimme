@@ -19,14 +19,8 @@ fi
 tmux new-session -d -s data-types
 tmux new-window -t '=data-types'
 
-tmux rename-window -t '=data-types:1' 'editor'
-tmux rename-window -t '=data-types:2' 'test & compile'
-
 tmux split-window -d -h -t '=data-types:2'
-
-tmux send-keys -t '=data-types:1' 'git log --oneline | head' Enter
-tmux send-keys -t '=data-types:2.left' 'npm run test:watch' Enter
-tmux send-keys -t '=data-types:2.right' 'npm run compile:watch' Enter
+tmux send-keys -t '=data-types:2.right' 'npm run test:watch' Enter
 
 
 #------------------------------------------------------------------------------
