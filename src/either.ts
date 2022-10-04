@@ -46,12 +46,12 @@ export const pure = right
 /*
  * Predicate for checking if the Either is a Left
  */
-export const isLeft = <A, B>(ma: Either<A, B>): boolean => ma._tag === 'Left'
+export const isLeft = <A, B>(ma: Either<A, B>): ma is Left<A> => ma._tag === 'Left'
 
 /*
  * Predicate for checking if the Either is a Right
  */
-export const isRight = <A, B>(ma: Either<A, B>): boolean => ma._tag === 'Right'
+export const isRight = <A, B>(ma: Either<A, B>): ma is Right<B> => ma._tag === 'Right'
 
 /*
  * The fmap operation of an Either.
