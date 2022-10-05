@@ -1,17 +1,30 @@
-import { pipe } from './function'
 import * as P from './parser'
-import * as E from './either'
 
 describe('', () => {
-  test('', () => {
-    const found = pipe("A", P.pchar, P.pure, P.run)("ABC")
-    const wanted = E.right(['A', 'BC'])
+  test('pchar success', () => {
+    const found = P.run(P.pchar("A"))("ABC")
+    const wanted = P.success(['A', 'BC'])
     expect(found).toStrictEqual(wanted)
   })
 
-  test('', () => {
-    const found = pipe("A", P.pchar, P.pure, P.run)("BAC")
-    const wanted = E.left(['Expected: A. Got: B'])
+  test('pchar failure', () => {
+    const found = P.run(P.pchar("A"))("BAC")
+    const wanted = P.failure('Expected: A. Got: B')
     expect(found).toStrictEqual(wanted)
   })
+
+  test('fmap success', () => {
+    const lower = (x: string) => x.toLowerCase()
+    const found = P.run(P.fmap(lower)(P.pchar("A")))("ABC")
+    const wanted = P.success(['a', 'BC'])
+    expect(found).toStrictEqual(wanted)
+  })
+
+  test('fmap failure', () => {
+    const lower = (x: string) => x.toLowerCase()
+    const found = P.run(P.fmap(lower)(P.pchar("A")))("BAC")
+    const wanted = P.failure('Expected: A. Got: B')
+    expect(found).toStrictEqual(wanted)
+  })
+
 })
