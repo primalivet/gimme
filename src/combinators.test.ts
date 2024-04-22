@@ -1,4 +1,4 @@
-import { I, K, A, T, W, C, B, S } from './combinators'
+import { I, K, A, T, W, C, B, S, S2, P, Y } from './combinators'
 
 describe('Combinators', () => {
   test('I', () => {
@@ -69,5 +69,39 @@ describe('Combinators', () => {
     const wanted = 200 
     expect(found).toBe(wanted)
   })
-  test.todo('S2')
+
+  test('S2', () => {
+    const double = (x:number): number => x * 2
+    const inc = (x:number): number => x + 1
+    const add = (x:number) => (y:number):number => x + y
+    const found = S2<number, number, number, number>(add)(double)(inc)(2) 
+    const wanted = 7
+    expect(found).toBe(wanted)
+  })
+
+  test('P', () => {
+    const double = (x:number): number => x * 2
+    const add = (x:number) => (y:number):number => x + y
+    const found = P<number, number, number>(add)(double)(2)(4) 
+    const wanted = 12
+    expect(found).toBe(wanted)
+  })
+
+  describe('Y Combinator', () => {
+    test('Factorial function', () => {
+      const factorial = Y<number>((recur) => (n) => n <= 1 ? 1 : n * recur(n - 1));
+      expect(factorial(0)).toBe(1);
+      expect(factorial(1)).toBe(1);
+      expect(factorial(5)).toBe(120);
+      expect(factorial(7)).toBe(5040);
+    });
+
+    test('Fibonacci function', () => {
+      const fibonacci = Y<number>((recur) => (n) => n <= 1 ? n : recur(n - 1) + recur(n - 2));
+      expect(fibonacci(0)).toBe(0);
+      expect(fibonacci(1)).toBe(1);
+      expect(fibonacci(5)).toBe(5);
+      expect(fibonacci(10)).toBe(55);
+    });
+  });
 })
