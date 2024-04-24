@@ -49,59 +49,82 @@ describe('Combinators', () => {
   })
 
   test('S', () => {
-    const double = (x: number) :number =>  x * 2
+    const double = (x: number): number => x * 2
     const mult =
       (x: number) =>
       (y: number): number =>
         x * y
     const found = S(mult)(double)(10)
-    const wanted = 200 
+    const wanted = 200
     expect(found).toBe(wanted)
   })
 
   test('S_', () => {
-    const double = (x: number) :number =>  x * 2
+    const double = (x: number): number => x * 2
     const mult =
       (x: number) =>
       (y: number): number =>
         x * y
     const found = S(mult)(double)(10)
-    const wanted = 200 
+    const wanted = 200
     expect(found).toBe(wanted)
   })
 
   test('S2', () => {
-    const double = (x:number): number => x * 2
-    const inc = (x:number): number => x + 1
-    const add = (x:number) => (y:number):number => x + y
-    const found = S2<number, number, number, number>(add)(double)(inc)(2) 
+    const double = (x: number): number => x * 2
+    const inc = (x: number): number => x + 1
+    const add =
+      (x: number) =>
+      (y: number): number =>
+        x + y
+    const found = S2<number, number, number, number>(add)(double)(inc)(2)
     const wanted = 7
     expect(found).toBe(wanted)
   })
 
   test('P', () => {
-    const double = (x:number): number => x * 2
-    const add = (x:number) => (y:number):number => x + y
-    const found = P<number, number, number>(add)(double)(2)(4) 
+    const double = (x: number): number => x * 2
+    const add =
+      (x: number) =>
+      (y: number): number =>
+        x + y
+    const found = P<number, number, number>(add)(double)(2)(4)
     const wanted = 12
     expect(found).toBe(wanted)
   })
 
   describe('Y Combinator', () => {
     test('Factorial function', () => {
-      const factorial = Y<number>((recur) => (n) => n <= 1 ? 1 : n * recur(n - 1));
-      expect(factorial(0)).toBe(1);
-      expect(factorial(1)).toBe(1);
-      expect(factorial(5)).toBe(120);
-      expect(factorial(7)).toBe(5040);
-    });
+      const factorial = Y<number>(
+        (recur) => (n) => n <= 1 ? 1 : n * recur(n - 1),
+      )
+      expect(factorial(0)).toBe(1)
+      expect(factorial(1)).toBe(1)
+      expect(factorial(5)).toBe(120)
+      expect(factorial(7)).toBe(5040)
+    })
 
     test('Fibonacci function', () => {
-      const fibonacci = Y<number>((recur) => (n) => n <= 1 ? n : recur(n - 1) + recur(n - 2));
-      expect(fibonacci(0)).toBe(0);
-      expect(fibonacci(1)).toBe(1);
-      expect(fibonacci(5)).toBe(5);
-      expect(fibonacci(10)).toBe(55);
-    });
-  });
+      const fibonacci = Y<number>(
+        (recur) => (n) => n <= 1 ? n : recur(n - 1) + recur(n - 2),
+      )
+      expect(fibonacci(0)).toBe(0)
+      expect(fibonacci(1)).toBe(1)
+      expect(fibonacci(5)).toBe(5)
+      expect(fibonacci(10)).toBe(55)
+    })
+
+    test('Alphabet function', () => {
+      const alphabet = Y<string>(
+        (recur) => (s) =>
+          s.length === 0 || s.charCodeAt(s.length - 1) === 'z'.charCodeAt(0)
+            ? s
+            : recur(s + String.fromCharCode(s.charCodeAt(s.length - 1) + 1)),
+      )
+      expect(alphabet('a')).toBe('abcdefghijklmnopqrstuvwxyz')
+      expect(alphabet('m')).toBe('mnopqrstuvwxyz')
+      expect(alphabet('w')).toBe('wxyz')
+      expect(alphabet('')).toBe('')
+    })
+  })
 })
