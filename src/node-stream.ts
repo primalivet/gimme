@@ -139,10 +139,22 @@ export class WritablePromise<T> extends Writable {
   ) {
     super(options)
     this.passthrough = passthrough
-    this.passthrough.on('error', (err) => this.destroy(err))
     // Pass the passthrough stream to our connector function so that we can
     // stream "into" the connector via the passthrough stream.
     this.promise = connectorFn(this.passthrough)
+
+    this.promise.catch((err) => {
+      if (!this.passthrough.destroyed) {
+        // The passthrough stream is not destroy, so since the promise failed 
+        // destroy it and emit the error on the stream
+        this.passthrough.destroy(err)
+      }
+      if (!this.destroyed) {
+        // The parent stream is not destroy, so since the promise failed 
+        // destroy it and emit the error on the stream
+        this.destroy(err)
+      }
+    })
   }
 
   _write(
@@ -150,26 +162,17 @@ export class WritablePromise<T> extends Writable {
     encoding: BufferEncoding,
     callback: (error?: Error | null) => void,
   ): void {
-    try {
-      if (!this.passthrough.write(chunk, encoding)) {
-        // As we wrote to the passthrough stream we get a return value saying if
-        // the passthrough stream is above highWaterMark or not.
-        // If it is, the return value if false and we have to wait for the drain
-        // event before writing to it again.
-        this.passthrough.once('drain', callback)
-      } else {
-        // Wait until the next tick in the event loop and before handling this
-        // task/callback. This allows the event loop to proceed with other tasks
-        // until the stream has been drained.
-        process.nextTick(callback)
-      }
-    } catch (err) {
-      // if the passthrough stream throws an error we can catch it and pass the
-      // error to our main/parent stream which will propagate our to the
-      // consumer of the parent stream
-      callback(
-        err instanceof Error ? err : new Error('Unexpected error in stream'),
-      )
+    if (!this.passthrough.write(chunk, encoding)) {
+      // As we wrote to the passthrough stream we get a return value saying if
+      // the passthrough stream is above highWaterMark or not.
+      // If it is, the return value if false and we have to wait for the drain
+      // event before writing to it again.
+      this.passthrough.once('drain', callback)
+    } else {
+      // Wait until the next tick in the event loop and before handling this
+      // task/callback. This allows the event loop to proceed with other tasks
+      // until the stream has been drained.
+      process.nextTick(callback)
     }
   }
 
@@ -177,7 +180,7 @@ export class WritablePromise<T> extends Writable {
     this.passthrough.end(() => {
       // Make sure we've ended the passthrough stream fully and that the promise
       // have settled before we close the parent stream
-      this.promise.then(() => callback()).catch(callback)
+      this.promise.then(() => callback())
     })
   }
 }
