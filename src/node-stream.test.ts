@@ -10,6 +10,14 @@ import {
   WritablePromise,
 } from './node-stream'
 
+describe('range', () => {
+  test.todo('range happy path')
+  test.todo('range inclusive start')
+  test.todo('range non inclusive start')
+  test.todo('range inclusive end')
+  test.todo('range non inclusive end')
+})
+
 describe('sequence', () => {
   test('should yield one item at the time in sequence', () => {
     const generator = sequence([1, 2])
@@ -226,6 +234,17 @@ describe('MapAsync', () => {
       done()
     })
   })
+})
+
+describe('Queue', () => {
+  test.todo('Happy path, even numbers of readables')
+  test.todo('Happy path, odd numbers of readables')
+})
+
+describe('QueueMap', () => {
+  test.todo('Happy path, even numbers of readables')
+  test.todo('Happy path, odd numbers of readables')
+  test.todo('Sad path, transform function throws')
 })
 
 describe('WritablePromise', () => {

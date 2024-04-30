@@ -8,6 +8,21 @@ import {
 } from 'node:stream'
 
 /**
+ * TODO: write description and example
+ */
+export function* range(
+  start: number,
+  end: number,
+  inclusiveStart = true,
+  inclusiveEnd = false,
+) {
+  let count = inclusiveStart ? start : start + 1
+  while (count < (inclusiveEnd ? end + 1 : end)) {
+    yield count++
+  }
+}
+
+/**
  * @description sequencially yield an item from an array.
  * Usefull as a source to create a Readable stream.
  *
@@ -128,6 +143,99 @@ export class MapAsync<A, B> extends Transform {
   }
 }
 
+/**
+ * @description Queue chunks up until a limit. When the queue size/length is
+ * reached, the chunks are pushed along the stream again
+ *
+ * @example
+ * ```ts
+ * pipeline(
+ *   Readable.from(['a', 'b', 'c', 'd']),
+ *   new Queue(2),
+ *   createWriteStream('file.txt')
+ * )
+ */
+export class Queue<A> extends Transform {
+  private readonly queue: A[]
+  private readonly queueMaxLength: number
+
+  constructor(queueMaxLength: number, options: TransformOptions) {
+    super(options)
+    this.queue = []
+    this.queueMaxLength = queueMaxLength
+  }
+
+  writeQueued(callback: TransformCallback) {
+    while (this.queue.length > 0) {
+      this.push(this.queue.shift())
+    }
+    callback()
+  }
+
+  _transform(chunk: A, _: BufferEncoding, callback: TransformCallback) {
+    this.queue.push(chunk)
+    if (this.queue.length < this.queueMaxLength) {
+      callback()
+    } else {
+      this.writeQueued(callback)
+    }
+  }
+
+  _flush(callback: TransformCallback) {
+    this.writeQueued(callback)
+  }
+}
+
+/**
+ * @description Queue chunks up until a limit while applying the chunk to a
+ * function. When the queue size/length is reached, the function is applied to
+ * the chunks and the result is pushed along the stream again
+ *
+ * @example
+ * ```ts
+ * pipeline(
+ *   Readable.from(['a', 'b', 'c', 'd']),
+ *   new Queue((str) => str.toUpperCase(), 2),
+ *   createWriteStream('file.txt')
+ * )
+ */
+export class QueueMap<A, B> extends Transform {
+  private readonly fn: (a: A) => B
+  private readonly queue: A[]
+  private readonly queueMaxLength: number
+
+  constructor(
+    fn: (a: A) => B,
+    queueMaxLength: number,
+    options: TransformOptions,
+  ) {
+    super(options)
+    this.fn = fn
+    this.queue = []
+    this.queueMaxLength = queueMaxLength
+  }
+
+  writeQueued(callback: TransformCallback) {
+    while (this.queue.length > 0) {
+      this.push(this.fn(this.queue.shift() as A))
+    }
+    callback()
+  }
+
+  _transform(chunk: A, _: BufferEncoding, callback: TransformCallback) {
+    this.queue.push(chunk)
+    if (this.queue.length < this.queueMaxLength) {
+      callback()
+    } else {
+      this.writeQueued(callback)
+    }
+  }
+
+  _flush(callback: TransformCallback) {
+    this.writeQueued(callback)
+  }
+}
+
 export class WritablePromise<T> extends Writable {
   private readonly passthrough: PassThrough
   public readonly promise: Promise<T>
@@ -150,7 +258,7 @@ export class WritablePromise<T> extends Writable {
         this.passthrough.destroy(err)
       }
       if (!this.destroyed) {
-        // The parent stream is not destroy, so since the promise failed 
+        // The parent stream is not destroy, so since the promise failed
         // destroy it and emit the error on the stream
         this.destroy(err)
       }
