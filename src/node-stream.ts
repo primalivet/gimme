@@ -8,7 +8,16 @@ import {
 } from 'node:stream'
 
 /**
- * TODO: write description and example
+ * @description sequencially yield a range of numbers, controlling start and end
+ * inclusion.
+ *
+ * @example
+ * ```ts
+ * const generator = range(0,3)
+ * console.log(generator.next().value) // 0
+ * console.log(generator.next().value) // 1
+ * console.log(generator.next().value) //  2
+ * ```
  */
 export function* range(
   start: number,
@@ -253,7 +262,7 @@ export class WritablePromise<T> extends Writable {
 
     this.promise.catch((err) => {
       if (!this.passthrough.destroyed) {
-        // The passthrough stream is not destroy, so since the promise failed 
+        // The passthrough stream is not destroy, so since the promise failed
         // destroy it and emit the error on the stream
         this.passthrough.destroy(err)
       }
