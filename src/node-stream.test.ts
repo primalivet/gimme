@@ -8,14 +8,41 @@ import {
   sequenceLazy,
   sequenceLazyAsync,
   WritablePromise,
+  range,
 } from './node-stream'
 
 describe('range', () => {
-  test.todo('range happy path')
-  test.todo('range inclusive start')
-  test.todo('range non inclusive start')
-  test.todo('range inclusive end')
-  test.todo('range non inclusive end')
+  test('should return a range generator with inclusive start and non inclusive end', () => {
+    const generator = range(0, 3)
+    expect(generator.next()).toEqual({ done: false, value: 0 })
+    expect(generator.next()).toEqual({ done: false, value: 1 })
+    expect(generator.next()).toEqual({ done: false, value: 2 })
+    expect(generator.next()).toEqual({ done: true, value: undefined })
+  })
+
+  test('should return a range generator with inclusive start and end', () => {
+    const generator = range(0, 3, true, true)
+    expect(generator.next()).toEqual({ done: false, value: 0 })
+    expect(generator.next()).toEqual({ done: false, value: 1 })
+    expect(generator.next()).toEqual({ done: false, value: 2 })
+    expect(generator.next()).toEqual({ done: false, value: 3 })
+    expect(generator.next()).toEqual({ done: true, value: undefined })
+  })
+
+  test('should return a range generator with non inclusive start and inclusive end', () => {
+    const generator = range(0, 3, false, true)
+    expect(generator.next()).toEqual({ done: false, value: 1 })
+    expect(generator.next()).toEqual({ done: false, value: 2 })
+    expect(generator.next()).toEqual({ done: false, value: 3 })
+    expect(generator.next()).toEqual({ done: true, value: undefined })
+  })
+
+  test('should return a range generator with non inclusive start and end', () => {
+    const generator = range(0, 3, false, false)
+    expect(generator.next()).toEqual({ done: false, value: 1 })
+    expect(generator.next()).toEqual({ done: false, value: 2 })
+    expect(generator.next()).toEqual({ done: true, value: undefined })
+  })
 })
 
 describe('sequence', () => {
