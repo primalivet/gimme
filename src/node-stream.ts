@@ -168,10 +168,14 @@ export class Queue<A> extends Transform {
   private readonly queue: A[]
   private readonly queueMaxLength: number
 
-  constructor(queueMaxLength: number, options: TransformOptions) {
+  constructor(queueMaxLength: number, options: TransformOptions = {}) {
     super(options)
     this.queue = []
     this.queueMaxLength = queueMaxLength
+  }
+
+  public get length(): number {
+    return this.queue.length
   }
 
   writeQueued(callback: TransformCallback) {
@@ -216,7 +220,7 @@ export class QueueMap<A, B> extends Transform {
   constructor(
     fn: (a: A) => B,
     queueMaxLength: number,
-    options: TransformOptions,
+    options: TransformOptions = {},
   ) {
     super(options)
     this.fn = fn
@@ -225,10 +229,14 @@ export class QueueMap<A, B> extends Transform {
   }
 
   writeQueued(callback: TransformCallback) {
+    try {
     while (this.queue.length > 0) {
       this.push(this.fn(this.queue.shift() as A))
     }
     callback()
+    } catch(err) {
+      this.destroy(err instanceof Error ? err : new Error('Unexpected error'))
+    }
   }
 
   _transform(chunk: A, _: BufferEncoding, callback: TransformCallback) {

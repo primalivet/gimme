@@ -9,6 +9,8 @@ import {
   sequenceLazyAsync,
   WritablePromise,
   range,
+  Queue,
+  QueueMap,
 } from './node-stream'
 
 describe('range', () => {
@@ -264,14 +266,88 @@ describe('MapAsync', () => {
 })
 
 describe('Queue', () => {
-  test.todo('Happy path, even numbers of readables')
-  test.todo('Happy path, odd numbers of readables')
+  test('should hold chunks in the queue and release when max queue length is reached', () => {
+    const queue = new Queue(3)
+    queue.write('1')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('2')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('3')
+    expect(queue.read(1).toString()).toEqual('1')
+    expect(queue.read(1).toString()).toEqual('2')
+    expect(queue.read(1).toString()).toEqual('3')
+    expect(queue.read(1)).toEqual(null)
+  })
+
+  test('should release orphan chunks when stream ends', () => {
+    const queue = new Queue(3)
+    queue.write('1')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('2')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.end()
+    expect(queue.read(1).toString()).toEqual('1')
+    expect(queue.read(1).toString()).toEqual('2')
+    expect(queue.read(1)).toEqual(null)
+  })
 })
 
-describe('QueueMap', () => {
-  test.todo('Happy path, even numbers of readables')
-  test.todo('Happy path, odd numbers of readables')
-  test.todo('Sad path, transform function throws')
+describe.only('QueueMap', () => {
+  test('should hold chunks in the queue and apply transform function and release when max queue length is reached', () => {
+    const incStrNum = (x: string) => String(Number(x) + 1)
+    const queue = new QueueMap(incStrNum, 3)
+    queue.write('1')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('2')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('3')
+    expect(queue.read(1).toString()).toEqual('2')
+    expect(queue.read(1).toString()).toEqual('3')
+    expect(queue.read(1).toString()).toEqual('4')
+    expect(queue.read(1)).toEqual(null)
+  })
+
+  test('should apply transform function and release orphan chunks when stream ends', () => {
+    const incStrNum = (x: string) => String(Number(x) + 1)
+    const queue = new QueueMap(incStrNum, 3)
+    queue.write('1')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('2')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.end()
+    expect(queue.read(1).toString()).toEqual('2')
+    expect(queue.read(1).toString()).toEqual('3')
+    expect(queue.read(1)).toEqual(null)
+  })
+
+  test('should emit ettor when transform function throws', () => {
+    const error = new Error('Error inside QueueMap transform function')
+    const throws = () => {
+      throw error
+    }
+    const queue = new QueueMap(throws, 3)
+    queue.write('1')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.write('2')
+    expect(queue.read(1)).toEqual(null)
+
+    queue.on('error', (err) => {
+      expect(err.message).toEqual(error.message)
+      expect(queue.destroyed).toEqual(true)
+    })
+
+    queue.end('3')
+
+  })
 })
 
 describe('WritablePromise', () => {
