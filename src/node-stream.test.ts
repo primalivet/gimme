@@ -1,3 +1,5 @@
+import assert from 'node:assert/strict'
+import { suite, test, mock } from 'node:test'
 import { PassThrough, Readable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import {
@@ -13,55 +15,55 @@ import {
   QueueMap,
 } from './node-stream'
 
-describe('range', () => {
+suite('range', () => {
   test('should return a range generator with inclusive start and non inclusive end', () => {
     const generator = range(0, 3)
-    expect(generator.next()).toEqual({ done: false, value: 0 })
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(generator.next()).toEqual({ done: false, value: 2 })
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 0 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 
   test('should return a range generator with inclusive start and end', () => {
     const generator = range(0, 3, true, true)
-    expect(generator.next()).toEqual({ done: false, value: 0 })
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(generator.next()).toEqual({ done: false, value: 2 })
-    expect(generator.next()).toEqual({ done: false, value: 3 })
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 0 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 3 })
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 
   test('should return a range generator with non inclusive start and inclusive end', () => {
     const generator = range(0, 3, false, true)
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(generator.next()).toEqual({ done: false, value: 2 })
-    expect(generator.next()).toEqual({ done: false, value: 3 })
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 3 })
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 
   test('should return a range generator with non inclusive start and end', () => {
     const generator = range(0, 3, false, false)
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(generator.next()).toEqual({ done: false, value: 2 })
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 })
 
-describe('sequence', () => {
+suite('sequence', () => {
   test('should yield one item at the time in sequence', () => {
     const generator = sequence([1, 2])
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(generator.next()).toEqual({ done: false, value: 2 })
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 })
 
-describe('sequenceLazy', () => {
+suite('sequenceLazy', () => {
   test('should yield one item at the time in sequence', () => {
     const generator = sequenceLazy([() => 1, () => 2])
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(generator.next()).toEqual({ done: false, value: 2 })
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 
   test('should handle error in thunk (stops generator)', () => {
@@ -72,12 +74,12 @@ describe('sequenceLazy', () => {
       },
       () => 2,
     ])
-    expect(generator.next()).toEqual({ done: false, value: 1 })
-    expect(() => generator.next()).toThrow(new Error('Error in thunk'))
-    expect(generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(generator.next(), { done: false, value: 1 })
+    assert.throws(() => generator.next(), new Error('Error in thunk'))
+    assert.deepStrictEqual(generator.next(), { done: true, value: undefined })
   })
 
-  test('should handle rejections in Readable stream (stops generator and emits stream error)', (done) => {
+  test('should handle rejections in Readable stream (stops generator and emits stream error)', (_, done) => {
     const generator = sequenceLazy([
       () => 1,
       () => {
@@ -90,14 +92,14 @@ describe('sequenceLazy', () => {
     const result: number[] = []
     source.on('data', (chunk) => result.push(chunk))
     source.on('error', (err) => {
-      expect(result).toEqual([1])
-      expect(err).toEqual(new Error('Error in thunk'))
+      assert.deepStrictEqual(result, [1])
+      assert.deepStrictEqual(err, new Error('Error in thunk'))
       done()
     })
   })
 })
 
-describe('sequenceLazyAsync', () => {
+suite('sequenceLazyAsync', () => {
   test('should yield one item at the time in sequence', async () => {
     const generator = sequenceLazyAsync([
       () => Promise.resolve(1),
@@ -105,13 +107,16 @@ describe('sequenceLazyAsync', () => {
       () => Promise.resolve(3),
     ])
 
-    expect(await generator.next()).toEqual({ done: false, value: 1 })
-    expect(await generator.next()).toEqual({ done: false, value: 2 })
-    expect(await generator.next()).toEqual({ done: false, value: 3 })
-    expect(await generator.next()).toEqual({ done: true, value: undefined })
+    assert.deepStrictEqual(await generator.next(), { done: false, value: 1 })
+    assert.deepStrictEqual(await generator.next(), { done: false, value: 2 })
+    assert.deepStrictEqual(await generator.next(), { done: false, value: 3 })
+    assert.deepStrictEqual(await generator.next(), {
+      done: true,
+      value: undefined,
+    })
   })
 
-  test('should handle rejections in Readable stream (underlying generator stops)', (done) => {
+  test('should handle rejections in Readable stream (underlying generator stops)', (_, done) => {
     const generator = sequenceLazyAsync([
       () => Promise.resolve(1),
       () => Promise.reject(new Error('Rejection in lazy promise')),
@@ -121,13 +126,13 @@ describe('sequenceLazyAsync', () => {
     const result: number[] = []
     source.on('data', (chunk) => result.push(chunk))
     source.on('error', (err) => {
-      expect(result).toEqual([1])
-      expect(err.message).toEqual('Rejection in lazy promise')
+      assert.deepStrictEqual(result, [1])
+      assert.deepStrictEqual(err.message, 'Rejection in lazy promise')
       done()
     })
   })
 
-  test('should handle throws in Readable stream (underlying generator stops)', (done) => {
+  test('should handle throws in Readable stream (underlying generator stops)', (_, done) => {
     const generator = sequenceLazyAsync([
       () => Promise.resolve(1),
       () =>
@@ -140,15 +145,15 @@ describe('sequenceLazyAsync', () => {
     const result: number[] = []
     source.on('data', (chunk) => result.push(chunk))
     source.on('error', (err) => {
-      expect(result).toEqual([1])
-      expect(err.message).toEqual('Error in lazy promise')
+      assert.deepStrictEqual(result, [1])
+      assert.deepStrictEqual(err.message, 'Error in lazy promise')
       done()
     })
   })
 })
 
-describe('Flat', () => {
-  test('should convert Array<T> chunk into T chunk', (done) => {
+suite('Flat', () => {
+  test('should convert Array<T> chunk into T chunk', (_, done) => {
     const source = Readable.from([
       [1, 2, 3],
       [4, 5, 6],
@@ -161,17 +166,18 @@ describe('Flat', () => {
     pipeline(source, transform)
 
     transform.on('end', () => {
-      expect(result).toEqual([1, 2, 3, 4, 5, 6])
+      assert.deepStrictEqual(result, [1, 2, 3, 4, 5, 6])
       done()
     })
   })
 
-  test('should emit error when chunk is not array', (done) => {
+  test('should emit error when chunk is not array', (_, done) => {
     const source = Readable.from([[1, 2, 3], 'not-array'])
     const transform = new Flat()
 
     pipeline(source, transform).catch((err) => {
-      expect(err).toEqual(
+      assert.deepStrictEqual(
+        err,
         new TypeError('Flat: Expected array but recived: string'),
       )
       done()
@@ -179,8 +185,8 @@ describe('Flat', () => {
   })
 })
 
-describe('Map', () => {
-  test('should apply the transform function over the chunk', (done) => {
+suite('Map', () => {
+  test('should apply the transform function over the chunk', (_, done) => {
     const double = (x: number) => x * 2
     const source = Readable.from([1, 2, 3])
     const transform = new Map(double)
@@ -191,12 +197,12 @@ describe('Map', () => {
     pipeline(source, transform)
 
     transform.on('end', () => {
-      expect(result).toEqual([2, 4, 6])
+      assert.deepStrictEqual(result, [2, 4, 6])
       done()
     })
   })
 
-  test('should emit error from transform function', (done) => {
+  test('should emit error from transform function', (_, done) => {
     const throwingFn = () => {
       throw new Error('Error in transform function')
     }
@@ -207,14 +213,14 @@ describe('Map', () => {
     transform.on('data', (chunk) => result.push(chunk))
 
     pipeline(source, transform).catch((err) => {
-      expect(err).toEqual(new Error('Error in transform function'))
+      assert.deepStrictEqual(err, new Error('Error in transform function'))
       done()
     })
   })
 })
 
-describe('MapAsync', () => {
-  test('should apply the async transform function over the chunk', (done) => {
+suite('MapAsync', () => {
+  test('should apply the async transform function over the chunk', (_, done) => {
     const doubleAsync = async (x: number) => x * 2
     const source = Readable.from([1, 2, 3])
     const transform = new MapAsync(doubleAsync)
@@ -225,12 +231,12 @@ describe('MapAsync', () => {
     pipeline(source, transform)
 
     transform.on('end', () => {
-      expect(result).toEqual([2, 4, 6])
+      assert.deepStrictEqual(result, [2, 4, 6])
       done()
     })
   })
 
-  test('should emit errors from throw in transform function', (done) => {
+  test('should emit errors from throw in transform function', (_, done) => {
     const throwingFn = async () => {
       throw new Error('Error in async transform function')
     }
@@ -241,12 +247,15 @@ describe('MapAsync', () => {
     transform.on('data', (chunk) => result.push(chunk))
 
     pipeline(source, transform).catch((err) => {
-      expect(err).toEqual(new Error('Error in async transform function'))
+      assert.deepStrictEqual(
+        err,
+        new Error('Error in async transform function'),
+      )
       done()
     })
   })
 
-  test('should emit errors from rejection in transform function', (done) => {
+  test('should emit errors from rejection in transform function', (_, done) => {
     const throwingFn = () => {
       return new Promise((_, rej) =>
         rej(new Error('Rejection in async transform function')),
@@ -259,73 +268,76 @@ describe('MapAsync', () => {
     transform.on('data', (chunk) => result.push(chunk))
 
     pipeline(source, transform).catch((err) => {
-      expect(err).toEqual(new Error('Rejection in async transform function'))
+      assert.deepStrictEqual(
+        err,
+        new Error('Rejection in async transform function'),
+      )
       done()
     })
   })
 })
 
-describe('Queue', () => {
+suite('Queue', () => {
   test('should hold chunks in the queue and release when max queue length is reached', () => {
     const queue = new Queue(3)
     queue.write('1')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('2')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('3')
-    expect(queue.read(1).toString()).toEqual('1')
-    expect(queue.read(1).toString()).toEqual('2')
-    expect(queue.read(1).toString()).toEqual('3')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1).toString(), '1')
+    assert.deepStrictEqual(queue.read(1).toString(), '2')
+    assert.deepStrictEqual(queue.read(1).toString(), '3')
+    assert.deepStrictEqual(queue.read(1), null)
   })
 
   test('should release orphan chunks when stream ends', () => {
     const queue = new Queue(3)
     queue.write('1')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('2')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.end()
-    expect(queue.read(1).toString()).toEqual('1')
-    expect(queue.read(1).toString()).toEqual('2')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1).toString(), '1')
+    assert.deepStrictEqual(queue.read(1).toString(), '2')
+    assert.deepStrictEqual(queue.read(1), null)
   })
 })
 
-describe.only('QueueMap', () => {
+suite('QueueMap', () => {
   test('should hold chunks in the queue and apply transform function and release when max queue length is reached', () => {
     const incStrNum = (x: string) => String(Number(x) + 1)
     const queue = new QueueMap(incStrNum, 3)
     queue.write('1')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('2')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('3')
-    expect(queue.read(1).toString()).toEqual('2')
-    expect(queue.read(1).toString()).toEqual('3')
-    expect(queue.read(1).toString()).toEqual('4')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1).toString(), '2')
+    assert.deepStrictEqual(queue.read(1).toString(), '3')
+    assert.deepStrictEqual(queue.read(1).toString(), '4')
+    assert.deepStrictEqual(queue.read(1), null)
   })
 
   test('should apply transform function and release orphan chunks when stream ends', () => {
     const incStrNum = (x: string) => String(Number(x) + 1)
     const queue = new QueueMap(incStrNum, 3)
     queue.write('1')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('2')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.end()
-    expect(queue.read(1).toString()).toEqual('2')
-    expect(queue.read(1).toString()).toEqual('3')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1).toString(), '2')
+    assert.deepStrictEqual(queue.read(1).toString(), '3')
+    assert.deepStrictEqual(queue.read(1), null)
   })
 
   test('should emit ettor when transform function throws', () => {
@@ -335,22 +347,21 @@ describe.only('QueueMap', () => {
     }
     const queue = new QueueMap(throws, 3)
     queue.write('1')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.write('2')
-    expect(queue.read(1)).toEqual(null)
+    assert.deepStrictEqual(queue.read(1), null)
 
     queue.on('error', (err) => {
-      expect(err.message).toEqual(error.message)
-      expect(queue.destroyed).toEqual(true)
+      assert.deepStrictEqual(err.message, error.message)
+      assert.deepStrictEqual(queue.destroyed, true)
     })
 
     queue.end('3')
-
   })
 })
 
-describe('WritablePromise', () => {
+suite('WritablePromise', () => {
   test('should give the recived chunks to the promise', async () => {
     const mockConnectorFn = async (readable: Readable) => {
       let data = ''
@@ -366,20 +377,20 @@ describe('WritablePromise', () => {
     writablePromise.write('hello')
     writablePromise.write('world')
     writablePromise.end()
-    await expect(writablePromise.promise).resolves.toEqual('helloworld')
+    assert.deepStrictEqual(await writablePromise.promise, 'helloworld')
   })
 
-  test('should handle error inside the promise', async () => {
+  test('should handle error inside the promise', (_, done) => {
     const mockThrowingConnectorFnError = new Error('TEST_ERROR_MSG')
     const passthrough = new PassThrough()
     const writablePromise = new WritablePromise(async () => {
       throw mockThrowingConnectorFnError
     }, passthrough)
 
-    const passthroughCloseHandler = jest.fn()
-    const passthroughErrorHandler = jest.fn()
-    const writablePromiseCloseHandler = jest.fn()
-    const writablePromiseErrorHandler = jest.fn()
+    const passthroughCloseHandler = mock.fn()
+    const passthroughErrorHandler = mock.fn()
+    const writablePromiseCloseHandler = mock.fn()
+    const writablePromiseErrorHandler = mock.fn()
 
     passthrough.on('close', passthroughCloseHandler)
     passthrough.on('error', passthroughErrorHandler)
@@ -390,27 +401,31 @@ describe('WritablePromise', () => {
     writablePromise.write('world')
 
     // Set immidiate to ensure we assert in the "process nextTick"
-    setImmediate(() => {
-      expect(passthrough.destroyed).toEqual(true)
-      expect(passthroughCloseHandler).toHaveBeenCalledTimes(1)
-      expect(passthroughErrorHandler).toHaveBeenCalledTimes(1)
-      expect(passthroughErrorHandler).toHaveBeenCalledWith(
-        mockThrowingConnectorFnError,
+    setImmediate(async () => {
+      assert.deepStrictEqual(passthrough.destroyed, true)
+      assert.deepStrictEqual(passthroughCloseHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(passthroughErrorHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(
+        passthroughErrorHandler.mock.calls[0]?.arguments[0].message,
+        mockThrowingConnectorFnError.message,
       )
-      expect(writablePromise.destroyed).toEqual(true)
-      expect(writablePromiseCloseHandler).toHaveBeenCalledTimes(1)
-      expect(writablePromiseErrorHandler).toHaveBeenCalledTimes(1)
-      expect(writablePromiseErrorHandler).toHaveBeenCalledWith(
-        mockThrowingConnectorFnError,
-      )
-    })
 
-    await expect(writablePromise.promise).rejects.toThrow(
-      mockThrowingConnectorFnError.message,
-    )
+      assert.deepStrictEqual(writablePromise.destroyed, true)
+      assert.deepStrictEqual(writablePromiseCloseHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(writablePromiseErrorHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(
+        writablePromiseErrorHandler.mock.calls[0]?.arguments[0],
+        mockThrowingConnectorFnError,
+      )
+      await assert.rejects(
+        writablePromise.promise,
+        mockThrowingConnectorFnError,
+      )
+      done()
+    })
   })
 
-  test('should handle rejection inside the promise', async () => {
+  test('should handle rejection inside the promise', (_, done) => {
     const rejectionValue = 'TEST_REJECTION'
     const passthrough = new PassThrough()
     const writablePromise = new WritablePromise(
@@ -418,10 +433,10 @@ describe('WritablePromise', () => {
       passthrough,
     )
 
-    const passthroughCloseHandler = jest.fn()
-    const passthroughErrorHandler = jest.fn()
-    const writablePromiseCloseHandler = jest.fn()
-    const writablePromiseErrorHandler = jest.fn()
+    const passthroughCloseHandler = mock.fn()
+    const passthroughErrorHandler = mock.fn()
+    const writablePromiseCloseHandler = mock.fn()
+    const writablePromiseErrorHandler = mock.fn()
 
     passthrough.on('close', passthroughCloseHandler)
     passthrough.on('error', passthroughErrorHandler)
@@ -432,17 +447,24 @@ describe('WritablePromise', () => {
     writablePromise.write('world')
 
     // Set immidiate to ensure we assert in the "process nextTick"
-    setImmediate(() => {
-      expect(passthrough.destroyed).toEqual(true)
-      expect(passthroughCloseHandler).toHaveBeenCalledTimes(1)
-      expect(passthroughErrorHandler).toHaveBeenCalledTimes(1)
-      expect(passthroughErrorHandler).toHaveBeenCalledWith(rejectionValue)
-      expect(writablePromise.destroyed).toEqual(true)
-      expect(writablePromiseCloseHandler).toHaveBeenCalledTimes(1)
-      expect(writablePromiseErrorHandler).toHaveBeenCalledTimes(1)
-      expect(writablePromiseErrorHandler).toHaveBeenCalledWith(rejectionValue)
-    })
+    setImmediate(async () => {
+      assert.deepStrictEqual(passthrough.destroyed, true)
+      assert.deepStrictEqual(passthroughCloseHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(passthroughErrorHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(
+        passthroughErrorHandler.mock.calls[0]?.arguments[0],
+        rejectionValue,
+      )
 
-    await expect(writablePromise.promise).rejects.toEqual(rejectionValue)
+      assert.deepStrictEqual(writablePromise.destroyed, true)
+      assert.deepStrictEqual(writablePromiseCloseHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(writablePromiseErrorHandler.mock.callCount(), 1)
+      assert.deepStrictEqual(
+        writablePromiseErrorHandler.mock.calls[0]?.arguments[0],
+        rejectionValue,
+      )
+      await assert.rejects(writablePromise.promise, (x) => x === rejectionValue)
+      done()
+    })
   })
 })

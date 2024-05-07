@@ -1,7 +1,9 @@
+import assert from 'node:assert/strict'
+import { suite, test } from 'node:test'
 import { pipe } from './function'
 import * as E from './either'
 
-describe('Laws', () => {
+suite('Laws', () => {
   test('left identity', () => {
     const f = (x: number) => E.pure(x * 2)
     const leftside = E.bind(f)(E.pure(10))
@@ -9,7 +11,7 @@ describe('Laws', () => {
     const found = E.show(leftside) === E.show(rightside)
     const wanted = true
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('right identity', () => {
@@ -18,7 +20,7 @@ describe('Laws', () => {
     const found = E.show(leftside) === E.show(rightside)
     const wanted = true
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('associativity', () => {
@@ -29,39 +31,39 @@ describe('Laws', () => {
     const found = E.show(leftside) === E.show(rightside)
     const wanted = true
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 })
 
-describe('Predicates', () => {
+suite('Predicates', () => {
   test('isRight', () => {
     const found = [E.isRight(E.right('')), E.isRight(E.left(''))]
     const wanted = [true, false]
 
-    expect(found).toStrictEqual(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('isLeft', () => {
     const found = [E.isLeft(E.right('')), E.isLeft(E.left(''))]
     const wanted = [false, true]
 
-    expect(found).toStrictEqual(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 })
 
-describe('Constructors', () => {
+suite('Constructors', () => {
   test('left', () => {
     const found = pipe(E.left('reason'), E.show)
     const wanted = 'Left("reason")'
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('right', () => {
     const found = pipe(E.right('success'), E.show)
     const wanted = 'Right("success")'
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('fromNullable: Left when value is null', () => {
@@ -71,7 +73,7 @@ describe('Constructors', () => {
     )
     const wanted = E.left(null)
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fromNullable: Left when value is undefined', () => {
@@ -81,7 +83,7 @@ describe('Constructors', () => {
     )
     const wanted = E.left(undefined)
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fromNullable: Right when value is not null or undefined', () => {
@@ -91,7 +93,7 @@ describe('Constructors', () => {
     )
     const wanted = E.right('hello world')
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fromPredicate: Right when predicate is true', () => {
@@ -101,7 +103,7 @@ describe('Constructors', () => {
     )
     const wanted = E.right(['hello', 'world'])
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fromPredicate: Left when predicate is false', () => {
@@ -111,7 +113,7 @@ describe('Constructors', () => {
     )
     const wanted = E.left('hello world')
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('tryCatch: Right when function does not throw', () => {
@@ -123,7 +125,7 @@ describe('Constructors', () => {
     )
     const wanted = E.left(new Error('failure'))
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('tryCatch: Left when function does throw', () => {
@@ -135,18 +137,18 @@ describe('Constructors', () => {
     )
     const wanted = E.right('success')
 
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 })
 
-describe('Destructors', () => {
+suite('Destructors', () => {
   test('fold: calls onLeft on left value', () => {
     const found = E.fold(
       () => 'failure',
       () => 'success',
     )(E.left(''))
     const wanted = 'failure'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('fold: calls onRight on right value', () => {
@@ -155,33 +157,33 @@ describe('Destructors', () => {
       () => 'success',
     )(E.right(''))
     const wanted = 'success'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 })
 
-describe('Functor', () => {
+suite('Functor', () => {
   test('fmap: maps the function over a right value', () => {
     const double = (x: number) => x * 2
     const found = E.fmap(double)(E.right(2))
     const wanted = E.right(4)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fmap: dont do anything on a left value', () => {
     const double = (x: number) => x * 2
     const found = E.fmap(double)(E.left(2))
     const wanted = E.left(2)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 })
 
-describe('Bifunctor', () => {
+suite('Bifunctor', () => {
   test('bimap: apply a Left value to the first given function', () => {
     const inc = (x: number) => x + 1
     const double = (x: number) => x * 2
     const found = E.bimap(inc, double)(E.left(2))
     const wanted = E.left(3)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('bimap: apply a Right value to the second given function', () => {
@@ -189,58 +191,58 @@ describe('Bifunctor', () => {
     const double = (x: number) => x * 2
     const found = E.bimap(inc, double)(E.right(2))
     const wanted = E.right(4)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fmapLeft: apply a Left value to a function', () => {
     const double = (x: number) => x * 2
     const found = E.fmapLeft(double)(E.left(2))
     const wanted = E.left(4)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('fmapLeft: leave a Right value untouched', () => {
     const double = (x: number) => x * 2
     const found = E.fmapLeft(double)(E.right(2))
     const wanted = E.right(2)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 })
 
-describe('Applicative', () => {
+suite('Applicative', () => {
   test('pure: wrapps a value in the context', () => {
     const found = E.pure(2)
     const wanted = E.right(2)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('apply: apply the right value to the function', () => {
     const double = (x: number) => x * 2
     const found = E.apply(E.right(2))(E.right(double))
     const wanted = E.right(4)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('apply: dont do anything on a left function', () => {
     const double = (x: number) => x * 2
     const found = E.apply(E.right(2))(E.left(double))
     const wanted = E.left(double)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 })
 
-describe('Monad', () => {
+suite('Monad', () => {
   test('bind: apply the right value to a function returning an either, then flatten the result', () => {
     const mDouble = (x: number) => E.pure(x * 2)
     const found = E.bind(mDouble)(E.pure(2))
     const wanted = E.right(4)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 
   test('bind: dont do anything to a left value', () => {
     const mDouble = (x: number) => E.pure(x * 2)
     const found = E.bind(mDouble)(E.left(2))
     const wanted = E.left(2)
-    expect(E.show(found)).toBe(E.show(wanted))
+    assert.deepStrictEqual(E.show(found), E.show(wanted))
   })
 })
