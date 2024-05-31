@@ -1,6 +1,8 @@
+import assert from 'node:assert/strict'
+import { suite, test } from 'node:test'
 import * as IO from './io'
 
-describe('Laws', () => {
+suite('Laws', () => {
   test('left identity', () => {
     const f = (x: number) => IO.pure(() => x * 2)
     const leftside = IO.bind(f)(IO.pure(10))
@@ -8,7 +10,7 @@ describe('Laws', () => {
     const found = IO.show(leftside) === IO.show(rightside)
     const wanted = true
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found,wanted)
   })
 
   test('right identity', () => {
@@ -17,7 +19,7 @@ describe('Laws', () => {
     const found = IO.show(leftside) === IO.show(rightside)
     const wanted = true
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found,wanted)
   })
 
   test('associativity', () => {
@@ -28,39 +30,39 @@ describe('Laws', () => {
     const found = IO.show(leftside) === IO.show(rightside)
     const wanted = true
 
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found,wanted)
   })
 })
 
-describe('Functor', () => {
+suite('Functor', () => {
   test('fmap: maps the function over a io value', () => {
     const double = (x: number) => x * 2
     const found = IO.fmap(double)(IO.pure(2))
     const wanted = IO.pure(4)
-    expect(IO.show(found)).toBe(IO.show(wanted))
+    assert.deepStrictEqual(IO.show(found),IO.show(wanted))
   })
 })
 
-describe('Applicative', () => {
+suite('Applicative', () => {
   test('pure: wrapps a value in the context', () => {
     const found = IO.pure(2)()
     const wanted = 2
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found,wanted)
   })
 
   test('apply: apply the io value to the function', () => {
     const double = (x: number) => x * 2
     const found = IO.apply(IO.pure(2))(IO.pure(double))
     const wanted = IO.pure(4)
-    expect(IO.show(found)).toBe(IO.show(wanted))
+    assert.deepStrictEqual(IO.show(found),IO.show(wanted))
   })
 })
 
-describe('Monad', () => {
+suite('Monad', () => {
   test('bind: apply the io value to a function returning an io, then flatten the result', () => {
     const mDouble = (x: number) => IO.pure(x * 2)
     const found = IO.bind(mDouble)(IO.pure(2))
     const wanted = IO.pure(4)
-    expect(IO.show(found)).toBe(IO.show(wanted))
+    assert.deepStrictEqual(IO.show(found),IO.show(wanted))
   })
 })
