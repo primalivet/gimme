@@ -1,42 +1,44 @@
+import assert from 'node:assert/strict'
+import { suite, test } from 'node:test'
 import { I, K, A, T, W, C, B, S, S2, P, Y } from './combinators'
 
-describe('Combinators', () => {
+suite('Combinators', () => {
   test('I', () => {
     const found = I('hello world')
     const wanted = 'hello world'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('K', () => {
     const found = K(true)(false)
     const wanted = true
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('A', () => {
     const found = A(String)(true)
     const wanted = 'true'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('T', () => {
     const found = T(true)(String)
     const wanted = 'true'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('W', () => {
     const add = (x: number) => (y: number) => x + y
     const found = W(add)(2)
     const wanted = 4
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('C', () => {
     const fullname = (fst: string) => (snd: string) => fst + snd
     const found = C(fullname)('John')('Doe')
     const wanted = 'DoeJohn'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('B', () => {
@@ -45,7 +47,7 @@ describe('Combinators', () => {
     // HINT: TS inference can't infer the generics for B so have to explicit define generics
     const found = B<string, string, string>(upper)(dashed)('hello world')
     const wanted = 'HELLO-WORLD'
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('S', () => {
@@ -56,7 +58,7 @@ describe('Combinators', () => {
         x * y
     const found = S(mult)(double)(10)
     const wanted = 200
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('S_', () => {
@@ -67,7 +69,7 @@ describe('Combinators', () => {
         x * y
     const found = S(mult)(double)(10)
     const wanted = 200
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('S2', () => {
@@ -79,7 +81,7 @@ describe('Combinators', () => {
         x + y
     const found = S2<number, number, number, number>(add)(double)(inc)(2)
     const wanted = 7
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
   test('P', () => {
@@ -90,28 +92,28 @@ describe('Combinators', () => {
         x + y
     const found = P<number, number, number>(add)(double)(2)(4)
     const wanted = 12
-    expect(found).toBe(wanted)
+    assert.deepStrictEqual(found, wanted)
   })
 
-  describe('Y Combinator', () => {
+  suite('Y Combinator', () => {
     test('Factorial function', () => {
       const factorial = Y<number>(
         (recur) => (n) => n <= 1 ? 1 : n * recur(n - 1),
       )
-      expect(factorial(0)).toBe(1)
-      expect(factorial(1)).toBe(1)
-      expect(factorial(5)).toBe(120)
-      expect(factorial(7)).toBe(5040)
+      assert.deepStrictEqual(factorial(0), 1)
+      assert.deepStrictEqual(factorial(1), 1)
+      assert.deepStrictEqual(factorial(5), 120)
+      assert.deepStrictEqual(factorial(7), 5040)
     })
 
     test('Fibonacci function', () => {
       const fibonacci = Y<number>(
         (recur) => (n) => n <= 1 ? n : recur(n - 1) + recur(n - 2),
       )
-      expect(fibonacci(0)).toBe(0)
-      expect(fibonacci(1)).toBe(1)
-      expect(fibonacci(5)).toBe(5)
-      expect(fibonacci(10)).toBe(55)
+      assert.deepStrictEqual(fibonacci(0), 0)
+      assert.deepStrictEqual(fibonacci(1), 1)
+      assert.deepStrictEqual(fibonacci(5), 5)
+      assert.deepStrictEqual(fibonacci(10), 55)
     })
 
     test('Alphabet function', () => {
@@ -121,10 +123,10 @@ describe('Combinators', () => {
             ? s
             : recur(s + String.fromCharCode(s.charCodeAt(s.length - 1) + 1)),
       )
-      expect(alphabet('a')).toBe('abcdefghijklmnopqrstuvwxyz')
-      expect(alphabet('m')).toBe('mnopqrstuvwxyz')
-      expect(alphabet('w')).toBe('wxyz')
-      expect(alphabet('')).toBe('')
+      assert.deepStrictEqual(alphabet('a'), 'abcdefghijklmnopqrstuvwxyz')
+      assert.deepStrictEqual(alphabet('m'), 'mnopqrstuvwxyz')
+      assert.deepStrictEqual(alphabet('w'), 'wxyz')
+      assert.deepStrictEqual(alphabet(''), '')
     })
   })
 })

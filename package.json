@@ -7,7 +7,7 @@
   "author": "Gustaf Holm <gustafholm1@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node --import tsx --test src/node-stream.test.ts src/either.test.ts src/maybe.test.ts src/task.test.ts src/tuple.test.ts src/io.test.ts",
+    "test": "node --import tsx --test src/**/*.test.ts",
     "test:watch": "jest --watch",
     "compile": "tsc",
     "compile:watch": "tsc --watch",
