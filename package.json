@@ -10,14 +10,14 @@
     "test": "node --import tsx --test src/**/*.test.ts",
     "compile": "tsc",
     "compile:watch": "tsc --watch",
-    "prepare": "husky install",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "@types/node": "^18.7.18",
+    "@types/node": "^20.12.13",
     "husky": "^8.0.0",
-    "prettier": "^2.7.1",
+    "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "tsx": "^4.8.2",
+    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   }
 }
