@@ -1,23 +1,21 @@
 {
   "name": "data-types",
   "version": "0.0.1",
+  "type": "module",
   "description": "Practice on functional stuff like composition, functors, monads etc.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "git@github.com:primalivet/js-functional-practice",
   "author": "Gustaf Holm <gustafholm1@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node --import tsx --test src/**/*.test.ts",
+    "test": "npm run compile && node --test ./dist",
     "compile": "tsc",
-    "compile:watch": "tsc --watch",
-    "prepare": "husky install"
+    "compile:watch": "tsc --watch"
   },
   "devDependencies": {
     "@types/node": "^20.12.13",
-    "husky": "^8.0.0",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   }
 }
