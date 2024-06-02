@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import * as P from './parser'
+import * as P from './parser.js'
 
 suite('', () => {
   test('pchar success', () => {

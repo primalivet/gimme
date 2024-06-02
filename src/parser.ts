@@ -1,4 +1,4 @@
-import { flow } from './function'
+import { flow } from './function.js'
 export type Parser<A> = {
   parserFn: (input: string) => ParseResult<A>
 }

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import * as F from './function'
+import * as F from './function.js'
 
 const f = (x: number) => x + 1
 const mult = (x: number) => (y: number) => x * y

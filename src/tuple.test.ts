@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import * as T from './tuple'
+import * as T from './tuple.js'
 
 const inc = (x: number) => x + 1
 const add = (x: number) => (y: number) => x + y

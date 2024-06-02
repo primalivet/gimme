@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import * as IO from './io'
+import * as IO from './io.js'
 
 suite('Laws', () => {
   test('left identity', () => {
