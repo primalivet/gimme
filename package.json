@@ -2,10 +2,10 @@
   "name": "data-types",
   "version": "0.0.1",
   "type": "module",
-  "description": "Practice on functional stuff like composition, functors, monads etc.",
+  "description": "",
   "main": "dist/index.js",
-  "repository": "git@github.com:primalivet/js-functional-practice",
-  "author": "Gustaf Holm <gustafholm1@gmail.com>",
+  "repository": "git@github.com:primalivet/data-types",
+  "author": "Gustaf Holm <gustaf.holm@icloud.com>",
   "license": "MIT",
   "scripts": {
     "test": "npm run compile && node --test ./dist",
