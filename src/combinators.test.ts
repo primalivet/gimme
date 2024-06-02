@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import { I, K, A, T, W, C, B, S, S2, P, Y } from './combinators'
+import { I, K, A, T, W, C, B, S, S2, P, Y } from './combinators.js'
 
 suite('Combinators', () => {
   test('I', () => {

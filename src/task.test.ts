@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import * as T from './task'
-import * as F from './function'
+import * as T from './task.js'
+import * as F from './function.js'
 
 const upper = (s: string) => s.toUpperCase()
 const asyncUpper =

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { suite, test } from 'node:test'
-import { pipe } from './function'
-import * as E from './either'
+import { pipe } from './function.js'
+import * as E from './either.js'
 
 suite('Laws', () => {
   test('left identity', () => {

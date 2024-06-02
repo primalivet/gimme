@@ -13,7 +13,7 @@ import {
   range,
   Queue,
   QueueMap,
-} from './node-stream'
+} from './node-stream.js'
 
 suite('range', () => {
   test('should return a range generator with inclusive start and non inclusive end', () => {
