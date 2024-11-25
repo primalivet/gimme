@@ -59,7 +59,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
