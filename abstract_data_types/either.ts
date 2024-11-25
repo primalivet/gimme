@@ -108,8 +108,9 @@ export const apply =
  * Constuct a Either from a possible null value
  * Left on null or undefined and otherwise Right
  */
-export const fromNullable = <A, B>(onNullable: (b: B) => A) => (b: B): Either<A,B> =>
-  b === null || b === undefined ? left(onNullable(b)) : right(b);
+export const fromNullable =
+  <A, B>(onNullable: (b: B) => A) => (b: B): Either<A, B> =>
+    b === null || b === undefined ? left(onNullable(b)) : right(b);
 
 /*
  * Constuct a Either from a Predicate

@@ -82,7 +82,7 @@ export const P =
  * Combinator: Y
  * Alias: Y-Fixed point
  */
-export const Y = <A>(f: (f: (x: A) => A) => (x: A) => A): (a:A) => A => {
+export const Y = <A>(f: (f: (x: A) => A) => (x: A) => A): (a: A) => A => {
   type RecursiveFunc = (g: RecursiveFunc) => (x: A) => A;
   return ((g: RecursiveFunc) => g(g))((g) => f((x) => g(g)(x)));
 };
