@@ -4,7 +4,7 @@
     "test": "deno test --parallel --coverage --trace-leaks --clean --doc",
     "lint": "deno lint"
   },
-   "lint": {
+  "lint": {
     "rules": {
       "include": [
         "camelcase",
