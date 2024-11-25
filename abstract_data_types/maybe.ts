@@ -90,8 +90,9 @@ export const fromNullable = <A>(a: A): Maybe<A> =>
  * Constuct a Maybe from a Predicate
  * When the predicate is true, wrap the value in a Just otherwise Nothing
  */
-export const fromPredicate = <A>(predicate: (a: A) => boolean) => (a: A): Maybe<A> =>
-  predicate(a) ? just(a) : nothing();
+export const fromPredicate =
+  <A>(predicate: (a: A) => boolean) => (a: A): Maybe<A> =>
+    predicate(a) ? just(a) : nothing();
 
 /*
  * Extract the value from an Maybe by giving it two functions, one if it's a

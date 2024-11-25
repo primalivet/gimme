@@ -1,2 +1,2 @@
-export * from './function.ts'
-export * from './combinators.ts'
+export * from "./function.ts";
+export * from "./combinators.ts";

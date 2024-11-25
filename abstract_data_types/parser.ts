@@ -62,6 +62,5 @@ export const bind =
     };
   };
 
-export const fmap = <A, B>(f: (a: A) => B) => (p: Parser<A>): Parser<B> => 
-   bind((a: A) => pure(f(a)))(p);
-
+export const fmap = <A, B>(f: (a: A) => B) => (p: Parser<A>): Parser<B> =>
+  bind((a: A) => pure(f(a)))(p);
