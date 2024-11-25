@@ -8,12 +8,12 @@
   "author": "Gustaf Holm <gustaf.holm@icloud.com>",
   "license": "MIT",
   "scripts": {
-    "test": "npm run compile && node --test ./dist",
+    "test": "npm run compile && node --test ./dist/**/*.test.js",
     "compile": "tsc",
     "compile:watch": "tsc --watch"
   },
   "devDependencies": {
-    "@types/node": "^20.12.13",
+    "@types/node": "^22.8.6",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5"
   }
