@@ -1,9 +1,19 @@
 {
+  "importMap": "./import_map.json",
   "tasks": {
-    "test": "deno test --parallel --coverage --trace-leaks --clean"
+    "test": "deno test --parallel --coverage --trace-leaks --clean --doc",
+    "lint": "deno lint"
   },
-  "workspace": ["./abstract_data_types", "./combinators"],
-  "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.8"
-  }
+   "lint": {
+    "rules": {
+      "include": [
+        "camelcase",
+        "no-sync-fn-in-async-fn",
+        "single-var-declarator",
+        "verbatim-module-syntax",
+        "no-console"
+      ]
+    }
+  },
+  "workspace": ["./abstract_data_types", "./combinators"]
 }
