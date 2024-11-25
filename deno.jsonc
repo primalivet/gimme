@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "test": "deno test --parallel --coverage --trace-leaks --clean"
+  },
+  "workspace": ["./abstract_data_types", "./combinators"],
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.8"
+  }
+}
