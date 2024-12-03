@@ -1,7 +1,7 @@
 /**
- * Maybe represents a value that may or may not exist. It has two variants: 
- * `Just<A>` which contains a value, or `Nothing` which represents the absence 
- * of a value. Maybe is commonly used for handling optional values and 
+ * Maybe represents a value that may or may not exist. It has two variants:
+ * `Just<A>` which contains a value, or `Nothing` which represents the absence
+ * of a value. Maybe is commonly used for handling optional values and
  * computations that might not produce a result.
  *
  * @template A The type of the value that may be present
@@ -71,7 +71,7 @@ export const just = <A>(a: A): Just<A> => ({ _tag: "Just", value: a });
  * for the `just` constructor, representing the "pure" operation in functional
  * programming.
  *
- * Just like the Either monad, `pure` follows specific identity laws when used 
+ * Just like the Either monad, `pure` follows specific identity laws when used
  * with bind:
  *
  * @template A The type of the value to be wrapped
@@ -341,21 +341,21 @@ export const fromPredicate =
  * @example Basic successful case
  * ```ts
  * const parse = () => JSON.parse('{"valid": "json"}');
- * 
+ *
  * tryCatch(parse);  // Just({ valid: "json" })
  * ```
  *
  * @example Handling parsing errors
  * ```ts
  * const parseInvalid = () => JSON.parse('invalid json');
- * 
+ *
  * tryCatch(parseInvalid);  // Nothing
  * ```
  *
  * @example Using with further operations
  * ```ts
  * const getCount = () => JSON.parse('{"count": 42}');
- * 
+ *
  * pipe(
  *   tryCatch(getCount),
  *   map(obj => obj.count),  // Only runs if parsing succeeded

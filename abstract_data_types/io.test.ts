@@ -36,7 +36,7 @@ Deno.test("Laws", () => {
 Deno.test("Functor", () => {
   Deno.test("fmap: maps the function over a io value", () => {
     const double = (x: number) => x * 2;
-    const found = IO.fmap(double)(IO.pure(2));
+    const found = IO.map(double)(IO.pure(2));
     const wanted = IO.pure(4);
     assertEquals(IO.show(found), IO.show(wanted));
   });

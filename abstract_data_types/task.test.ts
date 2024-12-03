@@ -1,5 +1,14 @@
 import { assertEquals } from "@std/assert";
-import { apply, bind, delay, join, map, pure, show, type Task } from "./task.ts";
+import {
+  apply,
+  bind,
+  delay,
+  join,
+  map,
+  pure,
+  show,
+  type Task,
+} from "./task.ts";
 
 const upper = (s: string) => s.toUpperCase();
 const asyncUpper = (s: string): Task<string> => () =>
@@ -52,10 +61,10 @@ Deno.test("apply: apply a Task of a value to a Task of a function", async () => 
 
 Deno.test("join: unwrapps a nested task", () => {
   const nested = pure(pure(42));
-  const found = join(nested);                    
-  const wanted = pure(42)
-  assertEquals(show(found), show(wanted))
-})
+  const found = join(nested);
+  const wanted = pure(42);
+  assertEquals(show(found), show(wanted));
+});
 
 Deno.test("bind: apply a Task of a value to a function returning another Task, flatten the result", async () => {
   const found = await bind(asyncUpper)(pure("hello"))();
@@ -68,4 +77,3 @@ Deno.test("delay", async () => {
   const wanted = "hello";
   assertEquals(found, wanted);
 });
-

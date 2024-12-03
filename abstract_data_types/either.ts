@@ -282,21 +282,21 @@ export const bind =
 /**
  * Flattens a nested Either into a single Either. This function is useful when you
  * have a value of type Either<E, Either<E, A>> and want to get Either<E, A>.
- * 
+ *
  * @template E The error type
  * @template A The value type
  * @param mma The nested Either to flatten
  * @returns A flattened Either
- * 
+ *
  * @example
  * ```ts
  * const nested = right(right(42));          // Either<never, Either<never, number>>
  * join(nested);                             // Either<never, number>
- * 
- * const nestedLeft = right(left(new Error("Failed"))); 
+ *
+ * const nestedLeft = right(left(new Error("Failed")));
  * join(nestedLeft);                         // Left(Error("Failed"))
- * 
- * const outerLeft = left(new Error("Outer")); 
+ *
+ * const outerLeft = left(new Error("Outer"));
  * join(outerLeft);                          // Left(Error("Outer"))
  * ```
  */

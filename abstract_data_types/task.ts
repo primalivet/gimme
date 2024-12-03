@@ -3,7 +3,7 @@
  * when executed. Unlike Promise, Task is lazy - it only executes when explicitly
  * run by calling it as a function. Task specifically handles successful async
  * operations only.
- * 
+ *
  * For async operations that might fail, use TaskEither instead which can handle
  * both success and failure cases.
  *
@@ -13,10 +13,10 @@
  * ```ts
  * // Define a Task that will get the current timestamp
  * const getTime: Task<number> = () => Promise.resolve(Date.now());
- * 
+ *
  * // Task is lazy - nothing happens until we execute it
  * const task = getTime;
- * 
+ *
  * // Execute the Task to get the value
  * const time = await task();
  * ```
@@ -35,7 +35,7 @@ export type Task<A> = () => Promise<A>;
  * ```ts
  * const task = pure(42);
  * const value = await task(); // 42
- * 
+ *
  * // Task is lazy - creating it doesn't execute it
  * const delayedTask = pure("hello");  // No execution yet
  * const message = await delayedTask(); // Now it executes
@@ -57,7 +57,7 @@ export const pure = <A>(a: A): Task<A> => () => Promise.resolve(a);
  * const numberTask = pure(21);
  * const doubled = map((n: number) => n * 2)(numberTask);
  * const result = await doubled(); // 42
- * 
+ *
  * // Transforming timestamps
  * const getTime: Task<number> = () => Promise.resolve(Date.now());
  * const getDate = map((time: number) => new Date(time))(getTime);
@@ -81,7 +81,7 @@ export const map = <A, B>(f: (a: A) => B) => (fa: Task<A>): Task<B> => () =>
  * const getCurrentHour = pure(new Date().getHours());
  * const getGreeting = (hour: number): Task<string> =>
  *   hour < 12 ? pure("Good morning") : pure("Good afternoon");
- * 
+ *
  * // Chain the tasks together
  * const greeting = pipe(
  *   getCurrentHour,
@@ -93,11 +93,10 @@ export const bind =
   <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>): Task<B> => () =>
     ma().then((a) => f(a)());
 
-
 /**
  * Flattens a nested Task into a single Task. This function is useful when you
  * have a value of type Task<Task<A>> and want to get Task<A>. Since Task
- * represents successful async operations, both inner and outer Tasks are 
+ * represents successful async operations, both inner and outer Tasks are
  * guaranteed to complete successfully.
  *
  * @template A The value type
@@ -110,16 +109,16 @@ export const bind =
  * const outerTask: Task<Task<number>> = pure(pure(42));
  * const flattened = join(outerTask);
  * const value = await flattened(); // 42
- * 
+ *
  * // Useful when working with time-based operations
- * const getDelayedTime = (ms: number): Task<Task<number>> => 
+ * const getDelayedTime = (ms: number): Task<Task<number>> =>
  *   pure(delay(ms)(Date.now()));
- *   
+ *
  * const time = join(getDelayedTime(1000)); // Task<number>
  * ```
  */
 export const join = <A>(mma: Task<Task<A>>): Task<A> => () =>
-  mma().then(inner => inner());
+  mma().then((inner) => inner());
 
 /**
  * Creates a function that applies a wrapped function from one Task to a value in
@@ -134,10 +133,10 @@ export const join = <A>(mma: Task<Task<A>>): Task<A> => () =>
  * @example
  * ```ts
  * const add = (x: number) => (y: number) => x + y;
- * 
+ *
  * const wrappedFn = pure(add(2));  // Task<(y: number) => number>
  * const wrappedVal = pure(3);      // Task<number>
- * 
+ *
  * const result = pipe(
  *   wrappedVal,
  *   apply(wrappedFn)    // Task<number> that resolves to 5
@@ -163,7 +162,7 @@ export const apply =
  *   pure("Hello"),
  *   bind(delay(1000))  // Resolves to "Hello" after 1 second
  * );
- * 
+ *
  * // Implementing a polling mechanism
  * const poll = (interval: number): Task<number> => pipe(
  *   pure(Date.now()),

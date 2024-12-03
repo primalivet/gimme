@@ -1,5 +1,22 @@
 import { assertEquals } from "@std/assert";
-import { pure, right, map, mapLeft, bimap, apply, fold, isRight, isLeft, left, bind, join, show, tryCatch, fromPredicate, fromNullable } from "./either.ts";
+import {
+  apply,
+  bimap,
+  bind,
+  fold,
+  fromNullable,
+  fromPredicate,
+  isLeft,
+  isRight,
+  join,
+  left,
+  map,
+  mapLeft,
+  pure,
+  right,
+  show,
+  tryCatch,
+} from "./either.ts";
 
 Deno.test("left identity", () => {
   const f = (x: number) => pure(x * 2);
@@ -125,24 +142,24 @@ Deno.test("bind: dont do anything to a left value", () => {
 
 Deno.test("join: unwrapps a nested right right", () => {
   const nested = right(right(42));
-  const found = join(nested);                    
-  const wanted = right(42)
-  assertEquals(show(found), show(wanted))
-})
-  
+  const found = join(nested);
+  const wanted = right(42);
+  assertEquals(show(found), show(wanted));
+});
+
 Deno.test("join: unwrapps a nested right left", () => {
-  const nestedLeft = right(left(new Error("Failed"))); 
-  const found = join(nestedLeft);               
-  const wanted = left(new Error("Failed"))
-  assertEquals(show(found), show(wanted))
-})
+  const nestedLeft = right(left(new Error("Failed")));
+  const found = join(nestedLeft);
+  const wanted = left(new Error("Failed"));
+  assertEquals(show(found), show(wanted));
+});
 
 Deno.test("join: does not unwrap a non nested either left", () => {
-  const outerLeft = left(new Error("Outer")); 
-  const found = join(outerLeft);               
-  const wanted = left(new Error("Outer"))
-  assertEquals(show(found), show(wanted))
-})
+  const outerLeft = left(new Error("Outer"));
+  const found = join(outerLeft);
+  const wanted = left(new Error("Outer"));
+  assertEquals(show(found), show(wanted));
+});
 
 Deno.test("apply: apply the right value to the function", () => {
   const double = (x: number) => x * 2;

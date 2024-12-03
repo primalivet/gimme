@@ -4,7 +4,7 @@ export type IO<T> = Trunk<T>;
 
 export const pure = <A>(a: A): IO<A> => () => a;
 
-export const fmap = <A, B>(f: (a: A) => B) => (ma: IO<A>): IO<B> =>
+export const map = <A, B>(f: (a: A) => B) => (ma: IO<A>): IO<B> =>
   pure(f(ma()));
 
 export const bind = <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>): IO<B> => f(ma());

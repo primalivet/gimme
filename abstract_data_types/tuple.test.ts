@@ -1,5 +1,15 @@
 import { assertEquals } from "@std/assert";
-import { bimap, first, fst, pure, second, show, snd, swap, uncurry }from "./tuple.ts";
+import {
+  bimap,
+  first,
+  fst,
+  pure,
+  second,
+  show,
+  snd,
+  swap,
+  uncurry,
+} from "./tuple.ts";
 
 const inc = (x: number) => x + 1;
 const add = (x: number) => (y: number) => x + y;
