@@ -5,14 +5,14 @@ const inc = (x: number) => x + 1;
 const add = (x: number) => (y: number) => x + y;
 
 Deno.test("mapFst", () => {
-  const found = T.show(T.mapFst(inc)(T.pure(0, 0)));
+  const found = T.show(T.first(inc)(T.pure(0, 0)));
   const wanted = T.show([1, 0]);
 
   assertEquals(found, wanted);
 });
 
 Deno.test("mapSnd", () => {
-  const found = T.show(T.mapSnd(inc)(T.pure(0, 0)));
+  const found = T.show(T.second(inc)(T.pure(0, 0)));
   const wanted = T.show([0, 1]);
 
   assertEquals(found, wanted);

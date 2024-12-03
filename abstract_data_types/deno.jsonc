@@ -6,6 +6,7 @@
     ".": "./mod.ts",
     "./either.ts": "either.ts",
     "./maybe.ts": "maybe.ts",
-    "./task.ts": "task.ts"
+    "./task.ts": "task.ts",
+    "./tuple.ts": "tuple.ts"
   }
 }
