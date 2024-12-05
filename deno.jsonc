@@ -16,5 +16,5 @@
       ]
     }
   },
-  "workspace": ["./adt", "./combinators"]
+  "workspace": ["./adt", "./base"]
 }

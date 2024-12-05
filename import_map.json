@@ -2,9 +2,13 @@
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.8",
     "@gimme/adt": "./adt/mod.ts",
-    "@gimme/adt/tuple": "./adt/tuple.ts",
     "@gimme/adt/either": "./adt/either.ts",
     "@gimme/adt/maybe": "./adt/maybe.ts",
-    "@gimme/adt/task": "./adt/task.ts"
+    "@gimme/adt/task": "./adt/task.ts",
+    "@gimme/adt/tuple": "./adt/tuple.ts",
+    "@gimme/base": "./base/mod.ts",
+    "@gimme/base/compose": "./base/compose.ts",
+    "@gimme/base/flow": "./base/flow.ts",
+    "@gimme/base/pipe": "./base/pipe.ts"
   }
 }
