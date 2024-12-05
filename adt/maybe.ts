@@ -33,7 +33,7 @@ export type Maybe<A> = Just<A> | Nothing;
  * const noValue: Nothing = nothing;
  * ```
  */
-type Nothing = { _tag: "Nothing" };
+export type Nothing = { _tag: "Nothing" };
 
 /**
  * Represents the presence of a value in the Maybe type. This is used when
@@ -48,7 +48,7 @@ type Nothing = { _tag: "Nothing" };
  * const hasValue: Just<number> = just(42);
  * ```
  */
-type Just<A> = { _tag: "Just"; value: A };
+export type Just<A> = { _tag: "Just"; value: A };
 
 /**
  * A singleton value representing the absence of a value in a Maybe type.
@@ -202,14 +202,14 @@ export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
  * );
  *
  * // Fails at first step
- * const failParse = pipe(
+ * const failParseFstStep = pipe(
  *   just("not a number"),
  *   bind(parseInt),    // Nothing
  *   bind(divideBy2)    // Nothing
  * );
  *
  * // Fails at second step
- * const failParse = pipe(
+ * const failParseSndStep = pipe(
  *   just("0"),
  *   bind(parseInt),    // Just(0)
  *   bind(divideBy2)    // Nothing
