@@ -16,5 +16,5 @@
       ]
     }
   },
-  "workspace": ["./abstract_data_types", "./combinators"]
+  "workspace": ["./adt", "./combinators"]
 }
