@@ -1,10 +1,11 @@
 {
   "name": "@gimme/base",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "license": "MIT",
   "exports": {
     ".": "./mod.ts",
-    "pipe": "./pipe.ts",
-    "compose": "./compose.ts"
+    "compose": "./compose.ts",
+    "flow": "./flow.ts",
+    "pipe": "./pipe.ts"
   }
 }

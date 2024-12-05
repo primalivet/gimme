@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { A, B, C, I, K, P, S, S2, T, W, Y } from "./combinators.ts";
+import { A, B, C, I, K, P, S, S2, T, W, Y } from "./unstable_combinators.ts";
 
 Deno.test("I", () => {
   const found = I("hello world");
