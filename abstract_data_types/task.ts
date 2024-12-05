@@ -11,6 +11,8 @@
  *
  * @example
  * ```ts
+ * import { type Task } from '@gimme/adt/task'
+ *
  * // Define a Task that will get the current timestamp
  * const getTime: Task<number> = () => Promise.resolve(Date.now());
  *
@@ -33,6 +35,8 @@ export type Task<A> = () => Promise<A>;
  *
  * @example
  * ```ts
+ * import { pure } from '@gimme/adt/task'
+ *
  * const task = pure(42);
  * const value = await task(); // 42
  *
@@ -54,6 +58,8 @@ export const pure = <A>(a: A): Task<A> => () => Promise.resolve(a);
  *
  * @example
  * ```ts
+ * import { type Task, pure, map } from '@gimme/adt/task'
+ *
  * const numberTask = pure(21);
  * const doubled = map((n: number) => n * 2)(numberTask);
  * const result = await doubled(); // 42
@@ -78,6 +84,8 @@ export const map = <A, B>(f: (a: A) => B) => (fa: Task<A>): Task<B> => () =>
  *
  * @example
  * ```ts
+ * import { type Task, pure, bind } from '@gimme/adt/task'
+ *
  * const getCurrentHour = pure(new Date().getHours());
  * const getGreeting = (hour: number): Task<string> =>
  *   hour < 12 ? pure("Good morning") : pure("Good afternoon");
@@ -105,6 +113,8 @@ export const bind =
  *
  * @example
  * ```ts
+ * import { type Task, pure, join } from '@gimme/adt/task'
+ *
  * // A Task that produces another Task
  * const outerTask: Task<Task<number>> = pure(pure(42));
  * const flattened = join(outerTask);
@@ -132,6 +142,8 @@ export const join = <A>(mma: Task<Task<A>>): Task<A> => () =>
  *
  * @example
  * ```ts
+ * import { pure, apply } from '@gimme/adt/task'
+ *
  * const add = (x: number) => (y: number) => x + y;
  *
  * const wrappedFn = pure(add(2));  // Task<(y: number) => number>
@@ -158,6 +170,8 @@ export const apply =
  *
  * @example
  * ```ts
+ * import { pure, bind, delay } from '@gimme/adt/task'
+ *
  * const delayedGreeting = pipe(
  *   pure("Hello"),
  *   bind(delay(1000))  // Resolves to "Hello" after 1 second
@@ -183,6 +197,8 @@ export const delay = <A>(ms: number) => (a: A): Task<A> => () =>
  *
  * @example
  * ```ts
+ * import { pure, show } from '@gimme/adt/task'
+ *
  * const task = pure({ count: 42, valid: true });
  * show(task);
  * // Task({

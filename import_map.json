@@ -1,6 +1,10 @@
 {
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.8",
-    "@vilsam/abstract-data-types": "./abstract_data_types"
+    "@gimme/adt": "./abstract_data_types/mod.ts",
+    "@gimme/adt/tuple": "./abstract_data_types/tuple.ts",
+    "@gimme/adt/either": "./abstract_data_types/either.ts",
+    "@gimme/adt/maybe": "./abstract_data_types/maybe.ts",
+    "@gimme/adt/task": "./abstract_data_types/task.ts"
   }
 }

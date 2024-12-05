@@ -1,12 +1,12 @@
 {
-  "name": "@gimme/abstract-data-types",
+  "name": "@gimme/adt",
   "version": "0.1.0",
   "license": "MIT",
   "exports": {
     ".": "./mod.ts",
-    "./either.ts": "./either.ts",
-    "./maybe.ts": "./maybe.ts",
-    "./task.ts": "./task.ts",
-    "./tuple.ts": "./tuple.ts"
+    "./either": "./either.ts",
+    "./maybe": "./maybe.ts",
+    "./task": "./task.ts",
+    "./tuple": "./tuple.ts"
   }
 }

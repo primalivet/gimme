@@ -8,11 +8,15 @@
  *
  * @example Working with present values
  * ```ts
+ * import { type Maybe, just } from '@gimme/adt/maybe'
+ *
  * const present: Maybe<number> = just(42);
  * ```
  *
  * @example Working with absent values
  * ```ts
+ * import { type Maybe, nothing } from '@gimme/adt/maybe'
+ *
  * const absent: Maybe<number> = nothing;
  * ```
  */
@@ -24,6 +28,8 @@ export type Maybe<A> = Just<A> | Nothing;
  *
  * @example
  * ```ts
+ * import { type Nothing, nothing } from '@gimme/adt/maybe'
+ *
  * const noValue: Nothing = nothing;
  * ```
  */
@@ -37,6 +43,8 @@ type Nothing = { _tag: "Nothing" };
  *
  * @example
  * ```ts
+ * import { type Just, just } from '@gimme/adt/maybe'
+ *
  * const hasValue: Just<number> = just(42);
  * ```
  */
@@ -47,6 +55,8 @@ type Just<A> = { _tag: "Just"; value: A };
  *
  * @example
  * ```ts
+ * import { type Maybe, nothing } from '@gimme/adt/maybe'
+ *
  * const noResult: Maybe<number> = nothing;
  * ```
  */
@@ -61,7 +71,9 @@ export const nothing: Nothing = { _tag: "Nothing" };
  *
  * @example
  * ```ts
- * const value = just(42);
+ * import { type Maybe, just } from '@gimme/adt/maybe'
+ *
+ * const value: Just<number> = just(42);
  * ```
  */
 export const just = <A>(a: A): Just<A> => ({ _tag: "Just", value: a });
@@ -80,6 +92,8 @@ export const just = <A>(a: A): Just<A> => ({ _tag: "Just", value: a });
  *
  * @example
  * ```ts
+ * import { just, pure, bind } from '@gimme/adt/maybe'
+ *
  * const value = 42;
  * const f = (n: number) => just(n * 2);
  *
@@ -101,6 +115,8 @@ export const pure: typeof just = just;
  *
  * @example
  * ```ts
+ * import { type Maybe, nothing, isNothing } from '@gimme/adt/maybe'
+ *
  * const maybe: Maybe<number> = nothing;
  *
  * if (isNothing(maybe)) {
@@ -119,6 +135,8 @@ export const isNothing = <A>(ma: Maybe<A>): boolean => ma._tag === "Nothing";
  *
  * @example
  * ```ts
+ * import { type Maybe, just, isJust } from '@gimme/adt/maybe'
+ *
  * const maybe: Maybe<number> = just(42);
  *
  * if (isJust(maybe)) {
@@ -140,6 +158,8 @@ export const isJust = <A>(ma: Maybe<A>): boolean => ma._tag === "Just";
  *
  * @example
  * ```ts
+ * import { just, nothing, map } from '@gimme/adt/maybe'
+ *
  * const double = (n: number) => n * 2;
  *
  * const hasValue = just(21);
@@ -164,6 +184,8 @@ export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
  *
  * @example
  * ```ts
+ * import { just, nothing, bind } from '@gimme/adt/maybe'
+ *
  * const parseInt = (s: string): Maybe<number> => {
  *   const n = Number(s);
  *   return isNaN(n) ? nothing : just(n);
@@ -207,6 +229,8 @@ export const bind = <A, B>(f: (a: A) => Maybe<B>) => (ma: Maybe<A>): Maybe<B> =>
  *
  * @example
  * ```ts
+ * import { just, nothing, join } from '@gimme/adt/maybe'
+ *
  * const nested = just(just(42));      // Maybe<Maybe<number>>
  * join(nested);                       // Just(42)
  *
@@ -233,6 +257,8 @@ export const join = <A>(mma: Maybe<Maybe<A>>): Maybe<A> =>
  *
  * @example
  * ```ts
+ * import { just, nothing, apply } from '@gimme/adt/maybe'
+ *
  * const add = (x: number) => (y: number) => x + y;
  *
  * const wrappedFn = just(add(2));  // Just((y: number) => number)
@@ -271,6 +297,8 @@ export const apply =
  *
  * @example
  * ```ts
+ * import { just, nothing, fold } from '@gimme/adt/maybe'
+ *
  * const toString = fold(
  *   () => "No value present",
  *   (value: number) => `Value is ${value}`
@@ -297,6 +325,8 @@ export const fold =
  *
  * @example
  * ```ts
+ * import { fromNullable } from '@gimme/adt/maybe'
+ *
  * fromNullable("hello");     // Just("hello")
  * fromNullable(null);        // Nothing
  * fromNullable(undefined);   // Nothing
@@ -316,6 +346,8 @@ export const fromNullable = <A>(a: A): Maybe<A> =>
  *
  * @example
  * ```ts
+ * import { fromPredicate } from '@gimme/adt/maybe'
+ *
  * const isPositive = (n: number) => n > 0;
  * const positiveOnly = fromPredicate(isPositive);
  *
@@ -340,6 +372,8 @@ export const fromPredicate =
  *
  * @example Basic successful case
  * ```ts
+ * import { tryCatch } from '@gimme/adt/maybe'
+ *
  * const parse = () => JSON.parse('{"valid": "json"}');
  *
  * tryCatch(parse);  // Just({ valid: "json" })
@@ -347,6 +381,8 @@ export const fromPredicate =
  *
  * @example Handling parsing errors
  * ```ts
+ * import { tryCatch } from '@gimme/adt/maybe'
+ *
  * const parseInvalid = () => JSON.parse('invalid json');
  *
  * tryCatch(parseInvalid);  // Nothing
@@ -354,6 +390,8 @@ export const fromPredicate =
  *
  * @example Using with further operations
  * ```ts
+ * import { tryCatch, map, fold } from '@gimme/adt/maybe'
+ *
  * const getCount = () => JSON.parse('{"count": 42}');
  *
  * pipe(
@@ -384,6 +422,8 @@ export const tryCatch = <A, B>(f: () => B): Maybe<B> => {
  *
  * @example
  * ```ts
+ * import { just, show } from '@gimme/adt/maybe'
+ *
  * const hasValue = just({ x: 1, y: 2 });
  * show(hasValue);
  * // Just({

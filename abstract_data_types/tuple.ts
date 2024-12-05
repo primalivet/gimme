@@ -9,6 +9,8 @@
  *
  * @example Creating a tuple of different types
  * ```ts
+ * import { type Tuple } from '@gimme/adt/tuple'
+ *
  * const userStatus: Tuple<string, boolean> = pure("active", true);
  * ```
  *
@@ -17,7 +19,7 @@
  * const point: Tuple<number, number> = pure(10, 20);
  * ```
  */
-type Tuple<A, B> = Readonly<[A, B]>;
+export type Tuple<A, B> = Readonly<[A, B]>;
 
 /**
  * Creates a new Tuple containing the two provided values. This is the
@@ -31,6 +33,8 @@ type Tuple<A, B> = Readonly<[A, B]>;
  *
  * @example
  * ```ts
+ * import { pure } from '@gimme/adt/tuple'
+ *
  * const coord = pure(10, 20);
  * const user = pure("john", 42);
  * ```
@@ -49,6 +53,8 @@ export const pure = <A, B>(fst: A, snd: B): Tuple<A, B> => [fst, snd];
  *
  * @example
  * ```ts
+ * import { pure, first } from '@gimme/adt/tuple'
+ *
  * const tuple = pure("hello", 42);
  * const upper = first((s: string) => s.toUpperCase())(tuple); // Tuple("HELLO", 42)
  * ```
@@ -71,6 +77,8 @@ export const first =
  *
  * @example
  * ```ts
+ * import { pure, second } from '@gimme/adt/tuple'
+ *
  * const tuple = pure("hello", 21);
  * const doubled = second((n: number) => n * 2)(tuple); // Tuple("hello", 42)
  * ```
@@ -96,6 +104,8 @@ export const second =
  *
  * @example
  * ```ts
+ * import { pure, bimap } from '@gimme/adt/tuple'
+ *
  * const tuple = pure("hello", 21);
  * const transformed = bimap(
  *   (s: string) => s.toUpperCase(),
@@ -118,6 +128,8 @@ export const bimap =
  *
  * @example
  * ```ts
+ * import { pure, swap } from '@gimme/adt/tuple'
+ *
  * const original = pure("first", "second");
  * const swapped = swap(original); // Tuple("second", "first")
  * ```
@@ -134,6 +146,8 @@ export const swap = <A, B>([fst, snd]: Tuple<A, B>): Tuple<B, A> => [snd, fst];
  *
  * @example
  * ```ts
+ * import { pure, fst } from '@gimme/adt/tuple'
+ *
  * const tuple = pure("hello", 42);
  * const first = fst(tuple); // "hello"
  * ```
@@ -150,6 +164,8 @@ export const fst = <A, B>([fst]: Tuple<A, B>): A => fst;
  *
  * @example
  * ```ts
+ * import { pure, snd } from '@gimme/adt/tuple'
+ *
  * const tuple = pure("hello", 42);
  * const second = snd(tuple); // 42
  * ```
@@ -169,6 +185,8 @@ export const snd = <A, B>([, snd]: Tuple<A, B>): B => snd;
  *
  * @example
  * ```ts
+ * import { pure, uncurry } from '@gimme/adt/tuple'
+ *
  * const add = (a: number) => (b: number) => a + b;
  * const tuple = pure(2, 3);
  * const sum = uncurry(add)(tuple); // 5
@@ -189,6 +207,8 @@ export const uncurry =
  *
  * @example
  * ```ts
+ * import { pure, show } from '@gimme/adt/tuple'
+ *
  * const tuple = pure({ x: 1 }, [1, 2, 3]);
  * show(tuple);
  * // Tuple({"x":1}, [1,2,3])

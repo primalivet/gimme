@@ -1,7 +1,7 @@
 /**
  * @module
  */
-export * as Either from "./either.ts";
-export * as Maybe from "./maybe.ts";
-export * as Task from "./task.ts";
-export * as Tuple from "./tuple.ts";
+export * as Either from "@gimme/adt/either";
+export * as Maybe from "@gimme/adt/maybe";
+export * as Task from "@gimme/adt/task";
+export * as Tuple from "@gimme/adt/tuple";

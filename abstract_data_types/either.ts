@@ -9,11 +9,14 @@
  *
  * @example Success case with Right
  * ```ts
+ * import { type Either, right } from '@gimme/adt/either'
+ *
  * const success: Either<Error, number> = right(42);
  * ```
  *
  * @example Error case with Left
  * ```ts
+ * import { type Either, right } from '@gimme/adt/either'
  * const error: Either<Error, number> = left(new Error('Something went wrong'))
  * ```
  */
@@ -27,7 +30,9 @@ export type Either<A, B> = Left<A> | Right<B>;
  *
  * @example
  * ```ts
- * const left: Left<Error> = left(new Error("Failed"));
+ * import { type Left, left } from '@gimme/adt/either'
+ *
+ * const failure: Left<Error> = left(new Error("Failed"));
  * ```
  */
 export type Left<A> = { _tag: "Left"; value: A };
@@ -40,7 +45,8 @@ export type Left<A> = { _tag: "Left"; value: A };
  *
  * @example
  * ```ts
- * const right: Right<number> = right(42);
+ * import { type Right, right } from '@gimme/adt/either'
+ * const success: Right<number> = right(42);
  * ```
  */
 export type Right<A> = { _tag: "Right"; value: A };
@@ -54,6 +60,7 @@ export type Right<A> = { _tag: "Right"; value: A };
  *
  * @example
  * ```ts
+ * import { left } from '@gimme/adt/either'
  * const failure = left(new Error("Operation failed"));
  * ```
  */
@@ -68,6 +75,8 @@ export const left = <A>(a: A): Left<A> => ({ _tag: "Left", value: a });
  *
  * @example
  * ```ts
+ * import { right } from '@gimme/adt/either'
+ *
  * const success = right(42);
  * ```
  */
@@ -88,6 +97,8 @@ export const right = <A>(a: A): Right<A> => ({ _tag: "Right", value: a });
  *
  * @example
  * ```ts
+ * import { right, pure, bind } from '@gimme/adt/either'
+ *
  * const value = 42;
  * const f = (n: number) => right(n * 2);
  *
@@ -110,6 +121,8 @@ export const pure: typeof right = right;
  *
  * @example
  * ```ts
+ * import { type Either, left, isLeft } from '@gimme/adt/either'
+ *
  * const either: Either<Error, number> = left(new Error("Failed"));
  *
  * if (isLeft(either)) {
@@ -131,6 +144,8 @@ export const isLeft = <A, B>(ma: Either<A, B>): ma is Left<A> =>
  *
  * @example
  * ```ts
+ * import { type Either, right, isRight } from '@gimme/adt/either'
+ *
  * const either: Either<Error, number> = right(42);
  *
  * if (isRight(either)) {
@@ -155,6 +170,8 @@ export const isRight = <A, B>(ma: Either<A, B>): ma is Right<B> =>
  *
  * @example
  * ```ts
+ * import { right, left, map } from '@gimme/adt/either'
+ *
  * const double = (n: number) => n * 2;
  *
  * const rightValue = right(21);
@@ -181,6 +198,8 @@ export const map =
  *
  * @example
  * ```ts
+ * import { right, left, mapLeft } from '@gimme/adt/either'
+ *
  * const addContext = (e: Error) => new Error(`Operation failed: ${e.message}`);
  *
  * const leftValue = left(new Error("Not found"));
@@ -208,6 +227,8 @@ export const mapLeft =
  *
  * @example
  * ```ts
+ * import { right, left, bimap } from '@gimme/adt/either'
+ *
  * const addContext = (e: Error) => new Error(`Operation failed: ${e.message}`);
  * const double = (n: number) => n * 2;
  *
@@ -241,6 +262,8 @@ export const bimap =
  *
  * @example
  * ```ts
+ * import { right, left, bind } from '@gimme/adt/either'
+ *
  * const parseInt = (s: string): Either<Error, number> => {
  *   const n = Number(s);
  *   return isNaN(n)
@@ -290,6 +313,8 @@ export const bind =
  *
  * @example
  * ```ts
+ * import { right, left, join } from '@gimme/adt/either'
+ *
  * const nested = right(right(42));          // Either<never, Either<never, number>>
  * join(nested);                             // Either<never, number>
  *
@@ -318,6 +343,8 @@ export const join = <E, A>(mma: Either<E, Either<E, A>>): Either<E, A> =>
  *
  * @example
  * ```ts
+ * import { right, left, apply } from '@gimme/adt/either'
+ *
  * const add = (x: number) => (y: number) => x + y;
  *
  * const wrappedFn = right(add(2));  // Right((y: number) => number)
@@ -358,6 +385,8 @@ export const apply =
  *
  * @example
  * ```ts
+ * import { right, left, fold } from '@gimme/adt/either'
+ *
  * const toString = fold(
  *   (error: Error) => `Error: ${error.message}`,
  *   (value: number) => `Success: ${value}`
@@ -372,6 +401,8 @@ export const apply =
  *
  * @example
  * ```ts
+ * import { right, left, fold } from '@gimme/adt/either'
+ *
  * // Providing a default value
  * const getValueOrZero = fold(
  *   (_: Error) => 0,
@@ -399,6 +430,8 @@ export const fold =
  *
  * @example
  * ```ts
+ * import { fromNullable } from '@gimme/adt/either'
+ *
  * const toError = () => new Error("Value was null");
  * const parseNullable = fromNullable(toError);
  *
@@ -424,6 +457,8 @@ export const fromNullable =
  *
  * @example
  * ```ts
+ * import { fromPredicate } from '@gimme/adt/either'
+ *
  * const isPositive = (n: number) => n > 0;
  * const toError = (n: number) => new Error(`${n} is not positive`);
  *
@@ -452,6 +487,8 @@ export const fromPredicate =
  *
  * @example
  * ```ts
+ * import { tryCatch } from '@gimme/adt/either'
+ *
  * const parse = () => JSON.parse('{"valid": "json"}');
  * const parseInvalid = () => JSON.parse('invalid json');
  *
@@ -484,6 +521,8 @@ export const tryCatch = <A, B>(
  *
  * @example
  * ```ts
+ * import { right, left, show } from '@gimme/adt/either'
+ *
  * const success = right({ x: 1, y: 2 });
  * show(success);
  * // Right({
