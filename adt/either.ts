@@ -97,6 +97,7 @@ export const right = <A>(a: A): Right<A> => ({ _tag: "Right", value: a });
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { right, pure, bind } from '@gimme/adt/either'
  *
  * const value = 42;
@@ -262,6 +263,7 @@ export const bimap =
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { right, left, bind } from '@gimme/adt/either'
  *
  * const parseInt = (s: string): Either<Error, number> => {
@@ -343,6 +345,7 @@ export const join = <E, A>(mma: Either<E, Either<E, A>>): Either<E, A> =>
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { right, left, apply } from '@gimme/adt/either'
  *
  * const add = (x: number) => (y: number) => x + y;

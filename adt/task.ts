@@ -84,6 +84,7 @@ export const map = <A, B>(f: (a: A) => B) => (fa: Task<A>): Task<B> => () =>
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { type Task, pure, bind } from '@gimme/adt/task'
  *
  * const getCurrentHour = pure(new Date().getHours());
@@ -113,6 +114,7 @@ export const bind =
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { type Task, pure, join } from '@gimme/adt/task'
  *
  * // A Task that produces another Task
@@ -122,7 +124,7 @@ export const bind =
  *
  * // Useful when working with time-based operations
  * const getDelayedTime = (ms: number): Task<Task<number>> =>
- *   pure(delay(ms)(Date.now()));
+ *   pipe(Date.now(), delay(ms), pure)
  *
  * const time = join(getDelayedTime(1000)); // Task<number>
  * ```
@@ -142,6 +144,7 @@ export const join = <A>(mma: Task<Task<A>>): Task<A> => () =>
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { pure, apply } from '@gimme/adt/task'
  *
  * const add = (x: number) => (y: number) => x + y;
@@ -170,6 +173,7 @@ export const apply =
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { pure, bind, delay } from '@gimme/adt/task'
  *
  * const delayedGreeting = pipe(

@@ -92,6 +92,7 @@ export const just = <A>(a: A): Just<A> => ({ _tag: "Just", value: a });
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { just, pure, bind } from '@gimme/adt/maybe'
  *
  * const value = 42;
@@ -184,6 +185,7 @@ export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { just, nothing, bind } from '@gimme/adt/maybe'
  *
  * const parseInt = (s: string): Maybe<number> => {
@@ -257,6 +259,7 @@ export const join = <A>(mma: Maybe<Maybe<A>>): Maybe<A> =>
  *
  * @example
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { just, nothing, apply } from '@gimme/adt/maybe'
  *
  * const add = (x: number) => (y: number) => x + y;
@@ -390,6 +393,7 @@ export const fromPredicate =
  *
  * @example Using with further operations
  * ```ts
+ * import { pipe } from '@gimme/base'
  * import { tryCatch, map, fold } from '@gimme/adt/maybe'
  *
  * const getCount = () => JSON.parse('{"count": 42}');
