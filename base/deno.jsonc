@@ -4,8 +4,8 @@
   "license": "MIT",
   "exports": {
     ".": "./mod.ts",
-    "compose": "./compose.ts",
-    "flow": "./flow.ts",
-    "pipe": "./pipe.ts"
+    "./compose": "./compose.ts",
+    "./flow": "./flow.ts",
+    "./pipe": "./pipe.ts"
   }
 }
