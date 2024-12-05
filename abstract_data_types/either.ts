@@ -4,8 +4,8 @@
  * might fail, where `Left` typically represents failure and `Right` represents
  * a success.
  *
- * @template A The type contained in the `Left` variant
- * @template B The type contained in the `Right` variant
+ * @typeParam A The type contained in the `Left` variant
+ * @typeParam B The type contained in the `Right` variant
  *
  * @example Success case with Right
  * ```ts
@@ -23,7 +23,7 @@ export type Either<A, B> = Left<A> | Right<B>;
  * Represents the left variant of an Either type, typically used to hold failure
  * values. This is the counterpart to the Right type in the Either sum type.
  *
- * @template A The type of the value contained in the Left variant
+ * @typeParam A The type of the value contained in the Left variant
  *
  * @example
  * ```ts
@@ -36,7 +36,7 @@ export type Left<A> = { _tag: "Left"; value: A };
  * Represents the right variant of an Either type, typically used to hold success
  * values. This is the counterpart to the Left type in the Either sum type.
  *
- * @template A The type of the value contained in the Right variant
+ * @typeParam A The type of the value contained in the Right variant
  *
  * @example
  * ```ts
@@ -48,7 +48,7 @@ export type Right<A> = { _tag: "Right"; value: A };
 /**
  * Creates a Left variant of Either, typically used for failure cases.
  *
- * @template A The type of the value to be wrapped in Left
+ * @typeParam A The type of the value to be wrapped in Left
  * @param a The value to be wrapped in Left
  * @returns A Left instance containing the provided value
  *
@@ -62,7 +62,7 @@ export const left = <A>(a: A): Left<A> => ({ _tag: "Left", value: a });
 /**
  * Creates a Right variant of Either, typically used for success cases.
  *
- * @template A The type of the value to be wrapped in Right
+ * @typeParam A The type of the value to be wrapped in Right
  * @param a The value to be wrapped in Right
  * @returns A Right instance containing the provided value
  *
@@ -82,7 +82,7 @@ export const right = <A>(a: A): Right<A> => ({ _tag: "Right", value: a });
  * identity for multiplication (x * 1 = x), `pure` follows specific identity laws
  * when used with bind:
  *
- * @template A The type of the value to be wrapped
+ * @typeParam A The type of the value to be wrapped
  * @param a The value to be wrapped
  * @returns A Right instance containing the provided value
  *
@@ -103,8 +103,8 @@ export const pure: typeof right = right;
 /**
  * Type guard that checks if an Either value is a Left variant.
  *
- * @template A The type of the Left value
- * @template B The type of the Right value
+ * @typeParam A The type of the Left value
+ * @typeParam B The type of the Right value
  * @param ma The Either value to check
  * @returns True if the Either is a Left, with type narrowing
  *
@@ -124,8 +124,8 @@ export const isLeft = <A, B>(ma: Either<A, B>): ma is Left<A> =>
 /**
  * Type guard that checks if an Either value is a Right variant.
  *
- * @template A The type of the Left value
- * @template B The type of the Right value
+ * @typeParam A The type of the Left value
+ * @typeParam B The type of the Right value
  * @param ma The Either value to check
  * @returns True if the Either is a Right, with type narrowing
  *
@@ -147,9 +147,9 @@ export const isRight = <A, B>(ma: Either<A, B>): ma is Right<B> =>
  * while preserving Left variants unchanged. Similar to Array.map(), but operating
  * on the value in an Either context.
  *
- * @template A The type of the Left value (remains unchanged)
- * @template B The type of the input Right value
- * @template C The type of the output Right value
+ * @typeParam A The type of the Left value (remains unchanged)
+ * @typeParam B The type of the input Right value
+ * @typeParam C The type of the output Right value
  * @param f The function to apply to the Right value
  * @returns A function that takes an Either and returns a new Either with the transformed value
  *
@@ -173,9 +173,9 @@ export const map =
  * while preserving Right variants unchanged. This is the counterpart to `map`
  * which operates on Right values.
  *
- * @template E The type of the input Left value
- * @template F The type of the output Left value
- * @template A The type of the Right value (remains unchanged)
+ * @typeParam E The type of the input Left value
+ * @typeParam F The type of the output Left value
+ * @typeParam A The type of the Right value (remains unchanged)
  * @param f The function to apply to the Left value
  * @returns A function that takes an Either and returns a new Either with the transformed error value
  *
@@ -198,10 +198,10 @@ export const mapLeft =
  * Creates a function that can transform both sides of an Either value. Combines
  * the functionality of `map` and `mapLeft` into a single operation.
  *
- * @template E The type of the input Left value
- * @template F The type of the output Left value
- * @template A The type of the input Right value
- * @template B The type of the output Right value
+ * @typeParam E The type of the input Left value
+ * @typeParam F The type of the output Left value
+ * @typeParam A The type of the input Right value
+ * @typeParam B The type of the output Right value
  * @param f The function to apply to the Left value
  * @param g The function to apply to the Right value
  * @returns A function that takes an Either and returns a new Either with both sides possibly transformed
@@ -233,9 +233,9 @@ export const bimap =
  * This is the fundamental operation for sequencing Either computations, following
  * the monad laws:
  *
- * @template A The error type
- * @template B The input success type
- * @template C The output success type
+ * @typeParam A The error type
+ * @typeParam B The input success type
+ * @typeParam C The output success type
  * @param f A function that takes a success value and returns a new Either
  * @returns A function that chains the Either computation with f
  *
@@ -283,8 +283,8 @@ export const bind =
  * Flattens a nested Either into a single Either. This function is useful when you
  * have a value of type Either<E, Either<E, A>> and want to get Either<E, A>.
  *
- * @template E The error type
- * @template A The value type
+ * @typeParam E The error type
+ * @typeParam A The value type
  * @param mma The nested Either to flatten
  * @returns A flattened Either
  *
@@ -309,10 +309,10 @@ export const join = <E, A>(mma: Either<E, Either<E, A>>): Either<E, A> =>
  * useful when you have a function wrapped in an Either that you want to apply to
  * a value in another Either.
  *
- * @template E The error type of the value Either
- * @template A The type of the input value
- * @template F The error type of the function Either
- * @template B The return type of the wrapped function
+ * @typeParam E The error type of the value Either
+ * @typeParam A The type of the input value
+ * @typeParam F The error type of the function Either
+ * @typeParam B The return type of the wrapped function
  * @param fa The Either containing the value to apply the function to
  * @returns A function that takes an Either containing a function and returns a new Either
  *
@@ -349,9 +349,9 @@ export const apply =
  * it's a Left or Right. This is useful for handling both cases of an Either
  * and converting them to a common type.
  *
- * @template A The Left type
- * @template B The Right type
- * @template C The result type
+ * @typeParam A The Left type
+ * @typeParam B The Right type
+ * @typeParam C The result type
  * @param onLeft Function to handle the Left case
  * @param onRight Function to handle the Right case
  * @returns A function that takes an Either and returns the result type
@@ -392,8 +392,8 @@ export const fold =
  * value is null or undefined, it creates a Left using the provided error function;
  * otherwise, it wraps the value in a Right.
  *
- * @template A The error type
- * @template B The value type
+ * @typeParam A The error type
+ * @typeParam B The value type
  * @param onNullable Function to create an error value when the input is null/undefined
  * @returns A function that takes a potentially nullable value and returns an Either
  *
@@ -416,8 +416,8 @@ export const fromNullable =
  * If the predicate returns true, the value is wrapped in a Right; if false,
  * the error function is called and its result is wrapped in a Left.
  *
- * @template A The error type
- * @template B The value type
+ * @typeParam A The error type
+ * @typeParam B The value type
  * @param predicate Function that tests if the value is valid
  * @returns A function that takes an error function and returns another function
  * that converts a value to Either based on the predicate
@@ -444,8 +444,8 @@ export const fromPredicate =
  * the error is caught and transformed using the provided error handler into a
  * Left. If the function succeeds, its result is wrapped in a Right.
  *
- * @template A The error type
- * @template B The return type of the function
+ * @typeParam A The error type
+ * @typeParam B The return type of the function
  * @param f The function that might throw
  * @param onError Function to transform the caught error into the error type
  * @returns An Either containing either the error or the function's result
@@ -477,8 +477,8 @@ export const tryCatch = <A, B>(
  * Converts an Either value to a readable string representation, using pretty-printed
  * JSON for the contained values.
  *
- * @template A The Left type
- * @template B The Right type
+ * @typeParam A The Left type
+ * @typeParam B The Right type
  * @param ma The Either value to convert to string
  * @returns A formatted string representation of the Either
  *

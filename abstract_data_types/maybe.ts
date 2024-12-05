@@ -4,7 +4,7 @@
  * of a value. Maybe is commonly used for handling optional values and
  * computations that might not produce a result.
  *
- * @template A The type of the value that may be present
+ * @typeParam A The type of the value that may be present
  *
  * @example Working with present values
  * ```ts
@@ -33,7 +33,7 @@ type Nothing = { _tag: "Nothing" };
  * Represents the presence of a value in the Maybe type. This is used when
  * a computation successfully produces a result or when an optional value exists.
  *
- * @template A The type of the contained value
+ * @typeParam A The type of the contained value
  *
  * @example
  * ```ts
@@ -55,7 +55,7 @@ export const nothing: Nothing = { _tag: "Nothing" };
 /**
  * Creates a Just variant of Maybe, representing the presence of a value.
  *
- * @template A The type of the value to be wrapped
+ * @typeParam A The type of the value to be wrapped
  * @param a The value to be wrapped in Just
  * @returns A Just instance containing the provided value
  *
@@ -74,7 +74,7 @@ export const just = <A>(a: A): Just<A> => ({ _tag: "Just", value: a });
  * Just like the Either monad, `pure` follows specific identity laws when used
  * with bind:
  *
- * @template A The type of the value to be wrapped
+ * @typeParam A The type of the value to be wrapped
  * @param a The value to be wrapped
  * @returns A Just instance containing the provided value
  *
@@ -95,7 +95,7 @@ export const pure: typeof just = just;
 /**
  * Type guard that checks if a Maybe value is Nothing.
  *
- * @template A The type of the value that might be present
+ * @typeParam A The type of the value that might be present
  * @param ma The Maybe value to check
  * @returns True if the Maybe is Nothing
  *
@@ -113,7 +113,7 @@ export const isNothing = <A>(ma: Maybe<A>): boolean => ma._tag === "Nothing";
 /**
  * Type guard that checks if a Maybe value is Just.
  *
- * @template A The type of the value that might be present
+ * @typeParam A The type of the value that might be present
  * @param ma The Maybe value to check
  * @returns True if the Maybe is Just
  *
@@ -133,8 +133,8 @@ export const isJust = <A>(ma: Maybe<A>): boolean => ma._tag === "Just";
  * while leaving Nothing values unchanged. Similar to Array.map(), but operating
  * on the value in a Maybe context.
  *
- * @template A The type of the input value
- * @template B The type of the output value
+ * @typeParam A The type of the input value
+ * @typeParam B The type of the output value
  * @param f The function to apply to the value if present
  * @returns A function that takes a Maybe and returns a new Maybe with the transformed value
  *
@@ -157,8 +157,8 @@ export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
  * function that produces a Maybe and an existing Maybe value, it applies
  * the function only if the Maybe is a Just variant.
  *
- * @template A The input value type
- * @template B The output value type
+ * @typeParam A The input value type
+ * @typeParam B The output value type
  * @param f A function that takes a value and returns a new Maybe
  * @returns A function that chains the Maybe computation with f
  *
@@ -201,7 +201,7 @@ export const bind = <A, B>(f: (a: A) => Maybe<B>) => (ma: Maybe<A>): Maybe<B> =>
  * Flattens a nested Maybe into a single Maybe. This function is useful when you
  * have a value of type Maybe<Maybe<A>> and want to get Maybe<A>.
  *
- * @template A The value type
+ * @typeParam A The value type
  * @param mma The nested Maybe to flatten
  * @returns A flattened Maybe
  *
@@ -226,8 +226,8 @@ export const join = <A>(mma: Maybe<Maybe<A>>): Maybe<A> =>
  * useful when you have a function wrapped in a Maybe that you want to apply to
  * a value in another Maybe.
  *
- * @template A The type of the input value
- * @template B The type of the output value
+ * @typeParam A The type of the input value
+ * @typeParam B The type of the output value
  * @param mab The Maybe containing the function to apply
  * @returns A function that takes a Maybe value and returns a new Maybe
  *
@@ -263,8 +263,8 @@ export const apply =
  * it's Nothing or Just. This is useful for handling both cases of a Maybe
  * and converting them to a common type.
  *
- * @template A The value type
- * @template B The result type
+ * @typeParam A The value type
+ * @typeParam B The result type
  * @param onNothing Function to call when the Maybe is Nothing
  * @param onJust Function to call when the Maybe has a value
  * @returns A function that takes a Maybe and returns the result type
@@ -291,7 +291,7 @@ export const fold =
  * Converts a nullable value into a Maybe type. If the value is null or
  * undefined, it returns Nothing; otherwise, it wraps the value in Just.
  *
- * @template A The type of the nullable value
+ * @typeParam A The type of the nullable value
  * @param a The nullable value to convert
  * @returns A Maybe containing the value if it exists
  *
@@ -310,7 +310,7 @@ export const fromNullable = <A>(a: A): Maybe<A> =>
  * If the predicate returns true, the value is wrapped in Just; if false,
  * Nothing is returned.
  *
- * @template A The value type
+ * @typeParam A The value type
  * @param predicate Function that tests if the value should be included
  * @returns A function that converts a value to Maybe based on the predicate
  *
@@ -334,7 +334,7 @@ export const fromPredicate =
  * Unlike Either's tryCatch, this version doesn't need an error handler since
  * Maybe doesn't carry error information.
  *
- * @template A The return type of the function
+ * @typeParam A The return type of the function
  * @param f The function that might throw
  * @returns A Maybe containing either the function's result or Nothing if it threw
  *
@@ -378,7 +378,7 @@ export const tryCatch = <A, B>(f: () => B): Maybe<B> => {
  * Converts a Maybe value to a readable string representation, using pretty-printed
  * JSON for Just values.
  *
- * @template A The value type
+ * @typeParam A The value type
  * @param e The Maybe value to convert to string
  * @returns A formatted string representation of the Maybe
  *

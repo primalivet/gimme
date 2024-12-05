@@ -7,7 +7,7 @@
  * For async operations that might fail, use TaskEither instead which can handle
  * both success and failure cases.
  *
- * @template A The type of the value that will be produced by the Task
+ * @typeParam A The type of the value that will be produced by the Task
  *
  * @example
  * ```ts
@@ -27,7 +27,7 @@ export type Task<A> = () => Promise<A>;
  * Creates a Task that immediately resolves with the given value. This is the
  * "pure" operation for the Task type, lifting a plain value into the Task context.
  *
- * @template A The type of the value to wrap in a Task
+ * @typeParam A The type of the value to wrap in a Task
  * @param a The value to wrap in a Task
  * @returns A Task that resolves to the provided value
  *
@@ -47,8 +47,8 @@ export const pure = <A>(a: A): Task<A> => () => Promise.resolve(a);
  * Creates a function that transforms the value produced by a Task using the
  * provided function. The transformation is only applied when the Task is executed.
  *
- * @template A The type of the input value
- * @template B The type of the output value
+ * @typeParam A The type of the input value
+ * @typeParam B The type of the output value
  * @param f The function to apply to the Task's result
  * @returns A function that takes a Task and returns a new Task with the transformed value
  *
@@ -71,8 +71,8 @@ export const map = <A, B>(f: (a: A) => B) => (fa: Task<A>): Task<B> => () =>
  * function that produces a Task and an existing Task, it runs the first Task
  * and then uses its result to create and run the next Task.
  *
- * @template A The input value type
- * @template B The output value type
+ * @typeParam A The input value type
+ * @typeParam B The output value type
  * @param f A function that takes a value and returns a new Task
  * @returns A function that chains the Task computation with f
  *
@@ -99,7 +99,7 @@ export const bind =
  * represents successful async operations, both inner and outer Tasks are
  * guaranteed to complete successfully.
  *
- * @template A The value type
+ * @typeParam A The value type
  * @param mma The nested Task to flatten
  * @returns A flattened Task
  *
@@ -125,8 +125,8 @@ export const join = <A>(mma: Task<Task<A>>): Task<A> => () =>
  * another Task. This enables applying functions between Task contexts when you
  * have both a function and value wrapped in separate Tasks.
  *
- * @template A The type of the input value
- * @template B The type of the output value
+ * @typeParam A The type of the input value
+ * @typeParam B The type of the output value
  * @param fab The Task containing the function to apply
  * @returns A function that takes a Task value and returns a new Task
  *
@@ -152,7 +152,7 @@ export const apply =
  * This is useful for adding deliberate delays between operations or implementing
  * polling mechanisms.
  *
- * @template A The type of the value to delay
+ * @typeParam A The type of the value to delay
  * @param ms The delay duration in milliseconds
  * @returns A function that takes a value and returns a Task that resolves to that value after the delay
  *
@@ -177,7 +177,7 @@ export const delay = <A>(ms: number) => (a: A): Task<A> => () =>
  * Converts a Task to a readable string representation, using pretty-printed
  * JSON for the Task value.
  *
- * @template T The type of the value contained in the Task
+ * @typeParam T The type of the value contained in the Task
  * @param ma The Task to convert to string
  * @returns A formatted string representation of the Task
  *

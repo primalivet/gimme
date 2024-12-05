@@ -4,8 +4,8 @@
  * exactly two elements. Tuples are useful for returning multiple values from
  * functions or representing pairs of related data.
  *
- * @template A The type of the first element
- * @template B The type of the second element
+ * @typeParam A The type of the first element
+ * @typeParam B The type of the second element
  *
  * @example Creating a tuple of different types
  * ```ts
@@ -23,8 +23,8 @@ type Tuple<A, B> = Readonly<[A, B]>;
  * Creates a new Tuple containing the two provided values. This is the
  * "pure" operation for the Tuple type, lifting two values into the Tuple context.
  *
- * @template A The type of the first value
- * @template B The type of the second value
+ * @typeParam A The type of the first value
+ * @typeParam B The type of the second value
  * @param fst The first value
  * @param snd The second value
  * @returns A new Tuple containing the provided values
@@ -41,9 +41,9 @@ export const pure = <A, B>(fst: A, snd: B): Tuple<A, B> => [fst, snd];
  * Creates a function that transforms the first element of a Tuple using the
  * provided function, leaving the second element unchanged.
  *
- * @template A The type of the input first element
- * @template B The type of the second element (unchanged)
- * @template C The type of the output first element
+ * @typeParam A The type of the input first element
+ * @typeParam B The type of the second element (unchanged)
+ * @typeParam C The type of the output first element
  * @param f The function to apply to the first element
  * @returns A function that takes a Tuple and returns a new Tuple with the first element transformed
  *
@@ -63,9 +63,9 @@ export const first =
  * Creates a function that transforms the second element of a Tuple using the
  * provided function, leaving the first element unchanged.
  *
- * @template A The type of the first element (unchanged)
- * @template B The type of the input second element
- * @template C The type of the output second element
+ * @typeParam A The type of the first element (unchanged)
+ * @typeParam B The type of the input second element
+ * @typeParam C The type of the output second element
  * @param f The function to apply to the second element
  * @returns A function that takes a Tuple and returns a new Tuple with the second element transformed
  *
@@ -86,10 +86,10 @@ export const second =
  * functions. This combines the functionality of `first` and `second` into a
  * single operation.
  *
- * @template A The type of the input first element
- * @template B The type of the input second element
- * @template C The type of the output first element
- * @template D The type of the output second element
+ * @typeParam A The type of the input first element
+ * @typeParam B The type of the input second element
+ * @typeParam C The type of the output first element
+ * @typeParam D The type of the output second element
  * @param f The function to apply to the first element
  * @param g The function to apply to the second element
  * @returns A function that takes a Tuple and returns a new Tuple with both elements transformed
@@ -111,8 +111,8 @@ export const bimap =
  * Creates a new Tuple with the elements in reverse order. This is useful when
  * you need to change the order of elements without modifying their values.
  *
- * @template A The type of the first element
- * @template B The type of the second element
+ * @typeParam A The type of the first element
+ * @typeParam B The type of the second element
  * @param tuple The tuple to swap
  * @returns A new Tuple with the elements in reverse order
  *
@@ -127,8 +127,8 @@ export const swap = <A, B>([fst, snd]: Tuple<A, B>): Tuple<B, A> => [snd, fst];
 /**
  * Extracts the first element from a Tuple.
  *
- * @template A The type of the first element
- * @template B The type of the second element
+ * @typeParam A The type of the first element
+ * @typeParam B The type of the second element
  * @param tuple The tuple to extract from
  * @returns The first element
  *
@@ -143,8 +143,8 @@ export const fst = <A, B>([fst]: Tuple<A, B>): A => fst;
 /**
  * Extracts the second element from a Tuple.
  *
- * @template A The type of the first element
- * @template B The type of the second element
+ * @typeParam A The type of the first element
+ * @typeParam B The type of the second element
  * @param tuple The tuple to extract from
  * @returns The second element
  *
@@ -161,9 +161,9 @@ export const snd = <A, B>([, snd]: Tuple<A, B>): B => snd;
  * a single Tuple containing both arguments. This is useful when working with
  * functions that expect multiple arguments but you have the values in a Tuple.
  *
- * @template A The type of the first argument
- * @template B The type of the second argument
- * @template C The return type of the function
+ * @typeParam A The type of the first argument
+ * @typeParam B The type of the second argument
+ * @typeParam C The return type of the function
  * @param fn The curried function to uncurry
  * @returns A function that takes a Tuple and returns the result of applying the function
  *
@@ -182,8 +182,8 @@ export const uncurry =
  * Converts a Tuple to a readable string representation, using pretty-printed
  * JSON for the elements.
  *
- * @template A The type of the first element
- * @template B The type of the second element
+ * @typeParam A The type of the first element
+ * @typeParam B The type of the second element
  * @param tuple The Tuple to convert to string
  * @returns A formatted string representation of the Tuple
  *
