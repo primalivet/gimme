@@ -115,7 +115,7 @@ export const bind =
  * @example
  * ```ts
  * import { pipe } from '@gimme/base'
- * import { type Task, pure, join } from '@gimme/adt/task'
+ * import { type Task, pure, join, delay } from '@gimme/adt/task'
  *
  * // A Task that produces another Task
  * const outerTask: Task<Task<number>> = pure(pure(42));
@@ -174,7 +174,7 @@ export const apply =
  * @example
  * ```ts
  * import { pipe } from '@gimme/base'
- * import { pure, bind, delay } from '@gimme/adt/task'
+ * import { type Task, pure, bind, delay } from '@gimme/adt/task'
  *
  * const delayedGreeting = pipe(
  *   pure("Hello"),

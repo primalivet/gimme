@@ -9,13 +9,15 @@
  *
  * @example Creating a tuple of different types
  * ```ts
- * import { type Tuple } from '@gimme/adt/tuple'
+ * import { type Tuple, pure } from '@gimme/adt/tuple'
  *
  * const userStatus: Tuple<string, boolean> = pure("active", true);
  * ```
  *
  * @example Using tuples for coordinates
  * ```ts
+ * import { type Tuple, pure } from '@gimme/adt/tuple'
+ *
  * const point: Tuple<number, number> = pure(10, 20);
  * ```
  */

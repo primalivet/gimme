@@ -16,7 +16,8 @@
  *
  * @example Error case with Left
  * ```ts
- * import { type Either, right } from '@gimme/adt/either'
+ * import { type Either, right, left } from '@gimme/adt/either'
+ *
  * const error: Either<Error, number> = left(new Error('Something went wrong'))
  * ```
  */
@@ -264,7 +265,7 @@ export const bimap =
  * @example
  * ```ts
  * import { pipe } from '@gimme/base'
- * import { right, left, bind } from '@gimme/adt/either'
+ * import { type Either, right, left, bind } from '@gimme/adt/either'
  *
  * const parseInt = (s: string): Either<Error, number> => {
  *   const n = Number(s);

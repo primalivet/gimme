@@ -71,7 +71,7 @@ export const nothing: Nothing = { _tag: "Nothing" };
  *
  * @example
  * ```ts
- * import { type Maybe, just } from '@gimme/adt/maybe'
+ * import { type Just, just } from '@gimme/adt/maybe'
  *
  * const value: Just<number> = just(42);
  * ```
@@ -186,7 +186,7 @@ export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
  * @example
  * ```ts
  * import { pipe } from '@gimme/base'
- * import { just, nothing, bind } from '@gimme/adt/maybe'
+ * import { type Maybe, just, nothing, bind } from '@gimme/adt/maybe'
  *
  * const parseInt = (s: string): Maybe<number> => {
  *   const n = Number(s);
@@ -426,7 +426,7 @@ export const tryCatch = <A, B>(f: () => B): Maybe<B> => {
  *
  * @example
  * ```ts
- * import { just, show } from '@gimme/adt/maybe'
+ * import { just, nothing, show } from '@gimme/adt/maybe'
  *
  * const hasValue = just({ x: 1, y: 2 });
  * show(hasValue);
