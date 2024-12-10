@@ -215,37 +215,33 @@ Deno.test("fromNullable: Right when value is not null or undefined", () => {
 });
 
 Deno.test("fromPredicate: Right when predicate is true", () => {
-  const found = fromPredicate(Array.isArray)((x) => x)(["hello", "world"]);
+  const found = fromPredicate(String)(Array.isArray)(["hello", "world"]);
   const wanted = right(["hello", "world"]);
 
   assertEquals(show(found), show(wanted));
 });
 
 Deno.test("fromPredicate: Left when predicate is false", () => {
-  const found = fromPredicate(Array.isArray)((x) => x)("hello world");
+  const found = fromPredicate(String)(Array.isArray)("hello world");
   const wanted = left("hello world");
 
   assertEquals(show(found), show(wanted));
 });
 
 Deno.test("tryCatch: Right when function does not throw", () => {
-  const found = tryCatch(
-    () => {
-      throw new Error("failure");
-    },
-    (x) => x,
-  );
+  const failingFn = () => {
+    throw new Error("failure");
+  };
+  const found = tryCatch((x) => x)(failingFn);
   const wanted = left(new Error("failure"));
   assertEquals(show(found), show(wanted));
 });
 
 Deno.test("tryCatch: Left when function does throw", () => {
-  const found = tryCatch(
-    () => {
-      return "success";
-    },
-    (x) => x,
-  );
+  const succeedingFn = () => {
+    return "success";
+  };
+  const found = tryCatch((x) => x)(succeedingFn);
   const wanted = right("success");
   assertEquals(show(found), show(wanted));
 });

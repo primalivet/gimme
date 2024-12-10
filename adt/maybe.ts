@@ -351,7 +351,7 @@ export const fromNullable = <A>(a: A): Maybe<A> =>
  * ```ts
  * import { fromPredicate } from '@gimme/adt/maybe'
  *
- * const isPositive = (n: number) => n > 0;
+ * const isPositive = (n: number): n is number => n > 0;
  * const positiveOnly = fromPredicate(isPositive);
  *
  * positiveOnly(42);    // Just(42)
@@ -360,7 +360,7 @@ export const fromNullable = <A>(a: A): Maybe<A> =>
  * ```
  */
 export const fromPredicate =
-  <A>(predicate: (a: A) => boolean) => (a: A): Maybe<A> =>
+  <A, B extends A>(predicate: (a: A) => a is B) => (a: A): Maybe<B> =>
     predicate(a) ? just(a) : nothing;
 
 /**
