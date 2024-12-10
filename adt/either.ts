@@ -463,10 +463,10 @@ export const fromNullable =
  * ```ts
  * import { fromPredicate } from '@gimme/adt/either'
  *
- * const isPositive = (n: number) => n > 0;
+ * const isPositive = (n: number): n is number => n > 0;
  * const toError = (n: number) => new Error(`${n} is not positive`);
  *
- * const ensurePositive = fromPredicate(isPositive)(toError);
+ * const ensurePositive = fromPredicate(toError)(isPositive);
  *
  * ensurePositive(42);    // Right(42)
  * ensurePositive(-1);    // Left(Error("-1 is not positive"))
@@ -474,9 +474,9 @@ export const fromNullable =
  * ```
  */
 export const fromPredicate =
-  <A, B>(predicate: (b: B) => boolean) =>
-  (onUnsatisfied: (b: B) => A) =>
-  (b: B): Either<A, B> => predicate(b) ? right(b) : left(onUnsatisfied(b));
+  <A, B>(onUnsatisfied: (b: B) => A) =>
+  <C extends B>(predicate: (b: B) => b is C) =>
+  (b: B): Either<A, C> => predicate(b) ? right(b) : left(onUnsatisfied(b));
 
 /**
  * Converts a potentially throwing function into an Either. If the function throws,
@@ -499,20 +499,18 @@ export const fromPredicate =
  * const toError = (e: unknown) =>
  *   e instanceof Error ? e : new Error('Unknown error');
  *
- * tryCatch(parse, toError);      // Right({ valid: "json" })
- * tryCatch(parseInvalid, toError) // Left(SyntaxError("Unexpected token..."))
+ * tryCatch(toError)(parse);      // Right({ valid: "json" })
+ * tryCatch(toError)(parseInvalid) // Left(SyntaxError("Unexpected token..."))
  * ```
  */
-export const tryCatch = <A, B>(
-  f: () => B,
-  onError: (e: unknown) => A,
-): Either<A, B> => {
-  try {
-    return right(f());
-  } catch (e) {
-    return left(onError(e));
-  }
-};
+export const tryCatch =
+  <A, B>(onError: (e: unknown) => A) => (f: () => B): Either<A, B> => {
+    try {
+      return right(f());
+    } catch (e) {
+      return left(onError(e));
+    }
+  };
 
 /**
  * Converts an Either value to a readable string representation, using pretty-printed
