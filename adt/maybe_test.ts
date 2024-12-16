@@ -12,6 +12,7 @@ import {
   map,
   nothing,
   pure,
+  sequence,
   show,
   tryCatch,
 } from "./maybe.ts";
@@ -199,5 +200,23 @@ Deno.test("tryCatch: Nothing when function does throw", () => {
     },
   );
   const wanted = just("success");
+  assertEquals(show(found), show(wanted));
+});
+
+Deno.test("sequence: should turn a list of maybes into a Just of a list when all maybes are justs", () => {
+  const found = sequence([just(1), just(2), just(3)]);
+  const wanted = just([1, 2, 3]);
+  assertEquals(show(found), show(wanted));
+});
+
+Deno.test("sequence: should turn a list of maybes into a nothing, if the list includes a nothing", () => {
+  const found = sequence([just(1), nothing, just(3)]);
+  const wanted = nothing;
+  assertEquals(show(found), show(wanted));
+});
+
+Deno.test("sequence: of an empty list is a just of a empty list", () => {
+  const found = sequence([]);
+  const wanted = just([]);
   assertEquals(show(found), show(wanted));
 });

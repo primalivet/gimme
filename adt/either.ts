@@ -376,6 +376,72 @@ export const apply =
       : right(mab.value(ma.value));
 
 /**
+ * Converts an array of Either values into an Either containing an array of values.
+ * If all values in the input array are Right, returns a Right containing an array
+ * of all the values. If any value is Left, returns the first Left encountered.
+ *
+ * This is useful when you have multiple Either operations and want to combine
+ * them, succeeding only if all operations succeed.
+ *
+ * @typeParam E The error type
+ * @typeParam A The success value type
+ * @param mas An array of Either values
+ * @returns Either the first error encountered, or an array of all success values
+ *
+ * @example Combining successful operations
+ * ```ts
+ * import { right, sequence } from '@gimme/adt/either'
+ *
+ * const values = [
+ *   right(1),
+ *   right(2),
+ *   right(3)
+ * ];
+ *
+ * sequence(values);  // Right([1, 2, 3])
+ * ```
+ *
+ * @example Handling failures
+ * ```ts
+ * import { right, left, sequence } from '@gimme/adt/either'
+ *
+ * const values = [
+ *   right(1),
+ *   left(new Error("Failed")),
+ *   right(3)
+ * ];
+ *
+ * sequence(values);  // Left(Error("Failed"))
+ * ```
+ *
+ * @example Practical use with array operations
+ * ```ts
+ * import { right, left, sequence, Either } from '@gimme/adt/either'
+ *
+ * const parseInt = (s: string): Either<Error, number> =>
+ *   isNaN(Number(s))
+ *     ? left(new Error(`Not a number: ${s}`))
+ *     : right(Number(s));
+ *
+ * const strings = ["1", "2", "3"];
+ * const numbers = sequence(strings.map(parseInt));  // Right([1, 2, 3])
+ *
+ * const invalid = ["1", "not a number", "3"];
+ * const failed = sequence(invalid.map(parseInt));   // Left(Error("Not a number: not a number"))
+ * ```
+ */
+export const sequence = <E, A>(
+  mas: Array<Either<E, A>>,
+): Either<E, Array<A>> => {
+  const result = [];
+  for (const ma of mas) {
+    if (isLeft(ma)) return ma;
+    result.push(ma.value);
+  }
+  return right(result);
+};
+
+/**
  * Creates a function that reduces an Either to a single value based on whether
  * it's a Left or Right. This is useful for handling both cases of an Either
  * and converting them to a common type.
