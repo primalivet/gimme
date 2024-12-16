@@ -2,7 +2,8 @@
   "importMap": "./import_map.json",
   "tasks": {
     "test": "deno test --parallel --coverage --trace-leaks --clean --doc",
-    "lint": "deno lint"
+    "lint": "deno lint",
+    "fmt": "deno fmt --check"
   },
   "lint": {
     "rules": {
