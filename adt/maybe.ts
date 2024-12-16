@@ -125,7 +125,8 @@ export const pure: typeof just = just;
  * }
  * ```
  */
-export const isNothing = <A>(ma: Maybe<A>): boolean => ma._tag === "Nothing";
+export const isNothing = <A>(ma: Maybe<A>): ma is Nothing =>
+  ma._tag === "Nothing";
 
 /**
  * Type guard that checks if a Maybe value is Just.
@@ -145,7 +146,7 @@ export const isNothing = <A>(ma: Maybe<A>): boolean => ma._tag === "Nothing";
  * }
  * ```
  */
-export const isJust = <A>(ma: Maybe<A>): boolean => ma._tag === "Just";
+export const isJust = <A>(ma: Maybe<A>): ma is Just<A> => ma._tag === "Just";
 
 /**
  * Creates a function that transforms the value inside a Just variant of Maybe,
@@ -286,6 +287,69 @@ export const apply =
       : ma._tag === "Nothing"
       ? ma
       : just(mab.value(ma.value));
+
+/**
+ * Converts an array of Maybe values into a Maybe containing an array of values.
+ * If all values in the input array are Just, returns a Just containing an array
+ * of all the values. If any value is Nothing, returns Nothing.
+ *
+ * This is useful when you have multiple Maybe operations and want to combine
+ * them, succeeding only if all operations succeed.
+ *
+ * @typeParam A The value type
+ * @param mas An array of Maybe values
+ * @returns A Maybe containing an array of all values if all were Just, or Nothing if any was Nothing
+ *
+ * @example Combining successful operations
+ * ```ts
+ * import { just, sequence } from '@gimme/adt/maybe'
+ *
+ * const values = [
+ *   just(1),
+ *   just(2),
+ *   just(3)
+ * ];
+ *
+ * sequence(values);  // Just([1, 2, 3])
+ * ```
+ *
+ * @example Handling absent values
+ * ```ts
+ * import { just, nothing, sequence } from '@gimme/adt/maybe'
+ *
+ * const values = [
+ *   just(1),
+ *   nothing,
+ *   just(3)
+ * ];
+ *
+ * sequence(values);  // Nothing
+ * ```
+ *
+ * @example Practical use with array operations
+ * ```ts
+ * import { just, nothing, sequence, Maybe } from '@gimme/adt/maybe'
+ *
+ * const parseInt = (s: string): Maybe<number> => {
+ *   const n = Number(s);
+ *   return isNaN(n) ? nothing : just(n);
+ * };
+ *
+ * const strings = ["1", "2", "3"];
+ * const numbers = sequence(strings.map(parseInt));  // Just([1, 2, 3])
+ *
+ * const invalid = ["1", "not a number", "3"];
+ * const failed = sequence(invalid.map(parseInt));   // Nothing
+ * ```
+ */
+export const sequence = <A>(mas: Array<Maybe<A>>): Maybe<Array<A>> => {
+  const result = [];
+  for (const ma of mas) {
+    if (isNothing(ma)) return ma;
+    result.push(ma.value);
+  }
+  return just(result);
+};
 
 /**
  * Creates a function that reduces a Maybe to a single value based on whether

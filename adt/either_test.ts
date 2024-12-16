@@ -14,6 +14,7 @@ import {
   mapLeft,
   pure,
   right,
+  sequence,
   show,
   tryCatch,
 } from "./either.ts";
@@ -243,5 +244,23 @@ Deno.test("tryCatch: Left when function does throw", () => {
   };
   const found = tryCatch((x) => x)(succeedingFn);
   const wanted = right("success");
+  assertEquals(show(found), show(wanted));
+});
+
+Deno.test("sequence: should turn a list of eithers into a Right of a list when all eithers are rights", () => {
+  const found = sequence([right(1), right(2), right(3)]);
+  const wanted = right([1, 2, 3]);
+  assertEquals(show(found), show(wanted));
+});
+
+Deno.test("sequence: should turn a list of eithers into a Left of the first left it encounters", () => {
+  const found = sequence([right(1), left("error message"), right(3)]);
+  const wanted = left("error message");
+  assertEquals(show(found), show(wanted));
+});
+
+Deno.test("sequence: of an empty list is a right of a empty list", () => {
+  const found = sequence([]);
+  const wanted = right([]);
   assertEquals(show(found), show(wanted));
 });
