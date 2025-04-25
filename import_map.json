@@ -6,6 +6,7 @@
     "@gimme/adt/maybe": "./adt/maybe.ts",
     "@gimme/adt/task": "./adt/task.ts",
     "@gimme/adt/tuple": "./adt/tuple.ts",
+    "@gimme/adt/task-either": "./adt/task_either.ts",
     "@gimme/base": "./base/mod.ts",
     "@gimme/base/compose": "./base/compose.ts",
     "@gimme/base/flow": "./base/flow.ts",
