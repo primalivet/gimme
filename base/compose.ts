@@ -117,6 +117,5 @@ export function compose<A, B, C, D, E, F, G, H, I, J, K, L>(
   ]
 ): (a: A) => L;
 export function compose(...fns: Array<(x: unknown) => unknown>) {
-  if (fns.length === 0) return <A>(x: A) => x;
   return fns.reduce((f, g) => (x) => f(g(x)));
 }
