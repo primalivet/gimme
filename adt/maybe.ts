@@ -171,8 +171,9 @@ export const isJust = <A>(ma: Maybe<A>): ma is Just<A> => ma._tag === "Just";
  * const stillNothing = map(double)(noValue); // Nothing
  * ```
  */
-export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
-  ma._tag === "Just" ? just(f(ma.value)) : nothing;
+export const map =
+  <A, B>(f: (a: A) => B): (ma: Maybe<A>) => Maybe<B> =>
+  (ma: Maybe<A>): Maybe<B> => ma._tag === "Just" ? just(f(ma.value)) : nothing;
 
 /**
  * Creates a function that chains Maybe computations together. When given a
@@ -219,8 +220,9 @@ export const map = <A, B>(f: (a: A) => B) => (ma: Maybe<A>): Maybe<B> =>
  * );
  * ```
  */
-export const bind = <A, B>(f: (a: A) => Maybe<B>) => (ma: Maybe<A>): Maybe<B> =>
-  ma._tag === "Just" ? f(ma.value) : nothing;
+export const bind =
+  <A, B>(f: (a: A) => Maybe<B>): (ma: Maybe<A>) => Maybe<B> =>
+  (ma: Maybe<A>): Maybe<B> => ma._tag === "Just" ? f(ma.value) : nothing;
 
 /**
  * Flattens a nested Maybe into a single Maybe. This function is useful when you
@@ -281,7 +283,8 @@ export const join = <A>(mma: Maybe<Maybe<A>>): Maybe<A> =>
  * ```
  */
 export const apply =
-  <A, B>(mab: Maybe<(a: A) => B>) => (ma: Maybe<A>): Maybe<B> =>
+  <A, B>(mab: Maybe<(a: A) => B>): (ma: Maybe<A>) => Maybe<B> =>
+  (ma: Maybe<A>): Maybe<B> =>
     mab._tag === "Nothing"
       ? mab
       : ma._tag === "Nothing"
@@ -379,8 +382,8 @@ export const sequence = <A>(mas: Array<Maybe<A>>): Maybe<Array<A>> => {
  * ```
  */
 export const fold =
-  <A, B>(onNothing: () => B, onJust: (a: A) => B) => (ma: Maybe<A>): B =>
-    ma._tag === "Just" ? onJust(ma.value) : onNothing();
+  <A, B>(onNothing: () => B, onJust: (a: A) => B): (ma: Maybe<A>) => B =>
+  (ma: Maybe<A>): B => ma._tag === "Just" ? onJust(ma.value) : onNothing();
 
 /**
  * Converts a nullable value into a Maybe type. If the value is null or
@@ -424,8 +427,8 @@ export const fromNullable = <A>(a: A): Maybe<A> =>
  * ```
  */
 export const fromPredicate =
-  <A, B extends A>(predicate: (a: A) => a is B) => (a: A): Maybe<B> =>
-    predicate(a) ? just(a) : nothing;
+  <A, B extends A>(predicate: (a: A) => a is B): (a: A) => Maybe<B> =>
+  (a: A): Maybe<B> => predicate(a) ? just(a) : nothing;
 
 /**
  * Converts a potentially throwing function into a Maybe. If the function throws,

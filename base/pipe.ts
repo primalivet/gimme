@@ -38,13 +38,16 @@
  * ```
  */
 export function pipe<A, B>(a: A, ab: (a: A) => B): B;
+/** Pipes a value through 2 functions. */
 export function pipe<A, B, C>(a: A, ab: (a: A) => B, bc: (b: B) => C): C;
+/** Pipes a value through 3 functions. */
 export function pipe<A, B, C, D>(
   a: A,
   ab: (a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
 ): D;
+/** Pipes a value through 4 functions. */
 export function pipe<A, B, C, D, E>(
   a: A,
   ab: (a: A) => B,
@@ -52,6 +55,7 @@ export function pipe<A, B, C, D, E>(
   cd: (c: C) => D,
   de: (d: D) => E,
 ): E;
+/** Pipes a value through 5 functions. */
 export function pipe<A, B, C, D, E, F>(
   a: A,
   ab: (a: A) => B,
@@ -60,6 +64,7 @@ export function pipe<A, B, C, D, E, F>(
   de: (d: D) => E,
   ef: (e: E) => F,
 ): F;
+/** Pipes a value through 6 functions. */
 export function pipe<A, B, C, D, E, F, G>(
   a: A,
   ab: (a: A) => B,
@@ -69,6 +74,7 @@ export function pipe<A, B, C, D, E, F, G>(
   ef: (e: E) => F,
   fg: (f: F) => G,
 ): G;
+/** Pipes a value through 7 functions. */
 export function pipe<A, B, C, D, E, F, G, H>(
   a: A,
   ab: (a: A) => B,
@@ -79,6 +85,7 @@ export function pipe<A, B, C, D, E, F, G, H>(
   fg: (f: F) => G,
   gh: (g: G) => H,
 ): H;
+/** Pipes a value through 8 functions. */
 export function pipe<A, B, C, D, E, F, G, H, I>(
   a: A,
   ab: (a: A) => B,
@@ -90,6 +97,7 @@ export function pipe<A, B, C, D, E, F, G, H, I>(
   gh: (g: G) => H,
   hi: (h: H) => I,
 ): I;
+/** Pipes a value through 9 functions. */
 export function pipe<A, B, C, D, E, F, G, H, I, J>(
   a: A,
   ab: (a: A) => B,
@@ -102,6 +110,7 @@ export function pipe<A, B, C, D, E, F, G, H, I, J>(
   hi: (h: H) => I,
   ij: (i: I) => J,
 ): J;
+/** Pipes a value through 10 functions. */
 export function pipe<A, B, C, D, E, F, G, H, I, J, K>(
   a: A,
   ab: (a: A) => B,
@@ -113,8 +122,9 @@ export function pipe<A, B, C, D, E, F, G, H, I, J, K>(
   gh: (g: G) => H,
   hi: (h: H) => I,
   ij: (i: I) => J,
-  jk: (j: K) => K,
+  jk: (j: J) => K,
 ): K;
+/** Pipes a value through 11 functions. */
 export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
   a: A,
   ab: (a: A) => B,
@@ -127,8 +137,8 @@ export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
   hi: (h: H) => I,
   ij: (i: I) => J,
   jk: (j: J) => K,
-  kl: (K: K) => L,
-): K;
+  kl: (k: K) => L,
+): L;
 export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
   a: A,
   ab: (a: A) => B,
@@ -141,7 +151,7 @@ export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
   hi?: (h: H) => I,
   ij?: (i: I) => J,
   jk?: (j: J) => K,
-  kl?: (K: K) => L,
+  kl?: (k: K) => L,
 ): unknown {
   if (ab && bc && cd && de && ef && fg && gh && hi && ij && jk && kl) {
     return kl(jk(ij(hi(gh(fg(ef(de(cd(bc(ab(a)))))))))));

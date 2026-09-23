@@ -62,7 +62,8 @@ export const pure = <A, B>(fst: A, snd: B): Tuple<A, B> => [fst, snd];
  * ```
  */
 export const first =
-  <A, B, C>(f: (a: A) => C) => ([fst, snd]: Tuple<A, B>): Tuple<C, B> => [
+  <A, B, C>(f: (a: A) => C): (t: Tuple<A, B>) => Tuple<C, B> =>
+  ([fst, snd]: Tuple<A, B>): Tuple<C, B> => [
     f(fst),
     snd,
   ];
@@ -86,7 +87,8 @@ export const first =
  * ```
  */
 export const second =
-  <A, B, C>(f: (a: B) => C) => ([fst, snd]: Tuple<A, B>): Tuple<A, C> => [
+  <A, B, C>(f: (a: B) => C): (t: Tuple<A, B>) => Tuple<A, C> =>
+  ([fst, snd]: Tuple<A, B>): Tuple<A, C> => [
     fst,
     f(snd),
   ];
@@ -115,9 +117,11 @@ export const second =
  * )(tuple); // Tuple("HELLO", 42)
  * ```
  */
-export const bimap =
-  <A, B, C, D>(f: (a: A) => C, g: (b: B) => D) =>
-  ([fst, snd]: Tuple<A, B>): Tuple<C, D> => [f(fst), g(snd)];
+export const bimap = <A, B, C, D>(
+  f: (a: A) => C,
+  g: (b: B) => D,
+): (t: Tuple<A, B>) => Tuple<C, D> =>
+([fst, snd]: Tuple<A, B>): Tuple<C, D> => [f(fst), g(snd)];
 
 /**
  * Creates a new Tuple with the elements in reverse order. This is useful when
@@ -195,8 +199,8 @@ export const snd = <A, B>([, snd]: Tuple<A, B>): B => snd;
  * ```
  */
 export const uncurry =
-  <A, B, C>(fn: (a: A) => (b: B) => C) => ([fst, snd]: Tuple<A, B>): C =>
-    fn(fst)(snd);
+  <A, B, C>(fn: (a: A) => (b: B) => C): (t: Tuple<A, B>) => C =>
+  ([fst, snd]: Tuple<A, B>): C => fn(fst)(snd);
 
 /**
  * Converts a Tuple to a readable string representation, using pretty-printed

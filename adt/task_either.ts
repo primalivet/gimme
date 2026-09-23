@@ -254,8 +254,9 @@ export const pure: typeof right = right;
  * ```
  */
 export const map =
-  <E, A, B>(f: (a: A) => B) => (ma: TaskEither<E, A>): TaskEither<E, B> => () =>
-    ma().then(_map(f));
+  <E, A, B>(f: (a: A) => B): (ma: TaskEither<E, A>) => TaskEither<E, B> =>
+  (ma: TaskEither<E, A>): TaskEither<E, B> =>
+  () => ma().then(_map(f));
 
 /**
  * Creates a function that transforms the error value inside a TaskEither using
@@ -317,8 +318,9 @@ export const map =
  * ```
  */
 export const mapLeft =
-  <E, U, A>(f: (e: E) => U) => (ma: TaskEither<E, A>): TaskEither<U, A> => () =>
-    ma().then(_mapLeft(f));
+  <E, U, A>(f: (e: E) => U): (ma: TaskEither<E, A>) => TaskEither<U, A> =>
+  (ma: TaskEither<E, A>): TaskEither<U, A> =>
+  () => ma().then(_mapLeft(f));
 
 /**
  * Creates a function that chains TaskEither computations together. When given a
@@ -425,13 +427,14 @@ export const mapLeft =
  * await run(pipe(fetchUser(-1), bind(saveUser))); // Left({ type: "not_found", id: -1 })
  * ```
  */
-export const bind =
-  <E1, A, B>(f: (a: A) => TaskEither<E1, B>) =>
-  <E2>(ma: TaskEither<E2, A>): TaskEither<E1 | E2, B> =>
-  () =>
-    ma().then((e): Promise<Either<E1 | E2, B>> =>
-      e._tag === "Right" ? f(e.value)() : Promise.resolve(e)
-    );
+export const bind = <E1, A, B>(
+  f: (a: A) => TaskEither<E1, B>,
+): <E2>(ma: TaskEither<E2, A>) => TaskEither<E1 | E2, B> =>
+<E2>(ma: TaskEither<E2, A>): TaskEither<E1 | E2, B> =>
+() =>
+  ma().then((e): Promise<Either<E1 | E2, B>> =>
+    e._tag === "Right" ? f(e.value)() : Promise.resolve(e)
+  );
 
 /**
  * Executes a TaskEither computation, converting it from a lazy computation into
@@ -552,16 +555,18 @@ export const run = <E, A>(ma: TaskEither<E, A>): Promise<Either<E, A>> => ma();
  * await errorTask(); // { data: "default", timestamp: 0 }
  * ```
  */
-export const fold =
-  <E, A, B>(onLeft: (e: E) => Task<B>, onRight: (a: A) => Task<B>) =>
-  (ma: TaskEither<E, A>): Task<B> =>
-  () =>
-    ma().then((either) => {
-      const task = either._tag === "Left"
-        ? onLeft(either.value)
-        : onRight(either.value);
-      return task();
-    });
+export const fold = <E, A, B>(
+  onLeft: (e: E) => Task<B>,
+  onRight: (a: A) => Task<B>,
+): (ma: TaskEither<E, A>) => Task<B> =>
+(ma: TaskEither<E, A>): Task<B> =>
+() =>
+  ma().then((either) => {
+    const task = either._tag === "Left"
+      ? onLeft(either.value)
+      : onRight(either.value);
+    return task();
+  });
 
 /**
  * Creates a function that safely converts a possibly throwing function into a
@@ -624,17 +629,18 @@ export const fold =
  * // Left({ type: "parse_error", input: "invalid json" })
  * ```
  */
-export const tryCatch =
-  <E>(onError: (e: unknown) => E) =>
-  <A>(f: () => A | Promise<A>): TaskEither<E, A> =>
-  async () => {
-    try {
-      const result = await f();
-      return _right(result);
-    } catch (err) {
-      return _left(onError(err));
-    }
-  };
+export const tryCatch = <E>(
+  onError: (e: unknown) => E,
+): <A>(f: () => A | Promise<A>) => TaskEither<E, A> =>
+<A>(f: () => A | Promise<A>): TaskEither<E, A> =>
+async () => {
+  try {
+    const result = await f();
+    return _right(result);
+  } catch (err) {
+    return _left(onError(err));
+  }
+};
 
 /**
  * Lifts a function that may throw or reject into one that returns a TaskEither.
@@ -686,7 +692,9 @@ export const tryCatch =
  */
 export const tryCatchK = <E>(
   onError: (e: unknown) => E,
-) =>
+): <A extends readonly unknown[], B>(
+  f: (...a: A) => B | Promise<B>,
+) => (...a: A) => TaskEither<E, B> =>
 <A extends readonly unknown[], B>(
   f: (...a: A) => B | Promise<B>,
 ) =>

@@ -47,18 +47,22 @@
  * ```
  */
 export function flow<A, B>(ab: (a: A) => B): (a: A) => B;
+/** Composes 2 functions left to right. */
 export function flow<A, B, C>(ab: (a: A) => B, bc: (b: B) => C): (a: A) => C;
+/** Composes 3 functions left to right. */
 export function flow<A, B, C, D>(
   ab: (a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
 ): (a: A) => D;
+/** Composes 4 functions left to right. */
 export function flow<A, B, C, D, E>(
   ab: (a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
   de: (d: D) => E,
 ): (a: A) => E;
+/** Composes 5 functions left to right. */
 export function flow<A, B, C, D, E, F>(
   ab: (a: A) => B,
   bc: (b: B) => C,
@@ -66,6 +70,7 @@ export function flow<A, B, C, D, E, F>(
   de: (d: D) => E,
   ef: (e: E) => F,
 ): (a: A) => F;
+/** Composes 6 functions left to right. */
 export function flow<A, B, C, D, E, F, G>(
   ab: (a: A) => B,
   bc: (b: B) => C,
@@ -74,6 +79,7 @@ export function flow<A, B, C, D, E, F, G>(
   ef: (e: E) => F,
   fg: (f: F) => G,
 ): (a: A) => G;
+/** Composes 7 functions left to right. */
 export function flow<A, B, C, D, E, F, G, H>(
   ab: (a: A) => B,
   bc: (b: B) => C,
@@ -83,6 +89,7 @@ export function flow<A, B, C, D, E, F, G, H>(
   fg: (f: F) => G,
   gh: (g: G) => H,
 ): (a: A) => H;
+/** Composes 8 functions left to right. */
 export function flow<A, B, C, D, E, F, G, H, I>(
   ab: (a: A) => B,
   bc: (b: B) => C,
@@ -93,6 +100,7 @@ export function flow<A, B, C, D, E, F, G, H, I>(
   gh: (g: G) => H,
   hi: (h: H) => I,
 ): (a: A) => I;
+/** Composes 9 functions left to right. */
 export function flow<A, B, C, D, E, F, G, H, I, J>(
   ab: (a: A) => B,
   bc: (b: B) => C,
@@ -104,6 +112,7 @@ export function flow<A, B, C, D, E, F, G, H, I, J>(
   hi: (h: H) => I,
   ij: (i: I) => J,
 ): (a: A) => J;
+/** Composes 10 functions left to right. */
 export function flow<A, B, C, D, E, F, G, H, I, J, K>(
   ab: (a: A) => B,
   bc: (b: B) => C,
@@ -116,6 +125,7 @@ export function flow<A, B, C, D, E, F, G, H, I, J, K>(
   ij: (i: I) => J,
   jk: (j: K) => K,
 ): (a: A) => K;
+/** Composes 11 functions left to right. */
 export function flow<A, B, C, D, E, F, G, H, I, J, K, L>(
   ab: (a: A) => B,
   bc: (b: B) => C,
