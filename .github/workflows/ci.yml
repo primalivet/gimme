@@ -1,13 +1,17 @@
 name: ci
 
 permissions:
-  contents: write
+  contents: read
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -17,17 +21,15 @@ jobs:
       fail-fast: false
       matrix:
         deno:
-          - v1.x
           - v2.x
+          - lts
           - canary
         os:
           - ubuntu-latest
-          - windows-latest
-          - macOS-latest
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Deno
         uses: denoland/setup-deno@v2
@@ -61,7 +63,7 @@ jobs:
           - ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
 
