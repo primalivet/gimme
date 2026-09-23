@@ -39,6 +39,9 @@ jobs:
       - name: Run tests
         run: deno task test
 
+      - name: Doc lint
+        run: deno doc --lint adt/mod.ts base/mod.ts
+
       # - name: Generate lcov
       #   run: deno task cov:gen
 
