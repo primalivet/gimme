@@ -184,7 +184,8 @@ export const isRight = <A, B>(ma: Either<A, B>): ma is Right<B> =>
  * ```
  */
 export const map =
-  <A, B, C>(f: (b: B) => C) => (ma: Either<A, B>): Either<A, C> =>
+  <A, B, C>(f: (b: B) => C): (ma: Either<A, B>) => Either<A, C> =>
+  (ma: Either<A, B>): Either<A, C> =>
     ma._tag === "Right" ? right(f(ma.value)) : ma;
 
 /**
@@ -212,7 +213,8 @@ export const map =
  * ```
  */
 export const mapLeft =
-  <E, F, A>(f: (b: E) => F) => (ma: Either<E, A>): Either<F, A> =>
+  <E, F, A>(f: (b: E) => F): (ma: Either<E, A>) => Either<F, A> =>
+  (ma: Either<E, A>): Either<F, A> =>
     ma._tag === "Left" ? left(f(ma.value)) : ma;
 
 /**
@@ -243,10 +245,12 @@ export const mapLeft =
  * transform(rightValue); // Right(42)
  * ```
  */
-export const bimap =
-  <E, F, A, B>(f: (e: E) => F, g: (a: A) => B) =>
-  (ma: Either<E, A>): Either<F, A> | Either<E, B> =>
-    ma._tag === "Left" ? left(f(ma.value)) : right(g(ma.value));
+export const bimap = <E, F, A, B>(
+  f: (e: E) => F,
+  g: (a: A) => B,
+): (ma: Either<E, A>) => Either<F, A> | Either<E, B> =>
+(ma: Either<E, A>): Either<F, A> | Either<E, B> =>
+  ma._tag === "Left" ? left(f(ma.value)) : right(g(ma.value));
 
 /**
  * Creates a function that chains Either computations together. When given a
@@ -302,8 +306,8 @@ export const bimap =
  * ```
  */
 export const bind =
-  <A, B, C>(f: (b: B) => Either<A, C>) => (ma: Either<A, B>): Either<A, C> =>
-    ma._tag === "Right" ? f(ma.value) : ma;
+  <A, B, C>(f: (b: B) => Either<A, C>): (ma: Either<A, B>) => Either<A, C> =>
+  (ma: Either<A, B>): Either<A, C> => ma._tag === "Right" ? f(ma.value) : ma;
 
 /**
  * Flattens a nested Either into a single Either. This function is useful when you
@@ -366,14 +370,15 @@ export const join = <E, A>(mma: Either<E, Either<E, A>>): Either<E, A> =>
  * );
  * ```
  */
-export const apply =
-  <E, A, B>(mab: Either<E, (a: A) => B>) =>
-  <F>(ma: Either<E, A>): Either<E | F, B> =>
-    mab._tag === "Left"
-      ? mab
-      : ma._tag === "Left"
-      ? ma
-      : right(mab.value(ma.value));
+export const apply = <E, A, B>(
+  mab: Either<E, (a: A) => B>,
+): <F>(ma: Either<E, A>) => Either<E | F, B> =>
+<F>(ma: Either<E, A>): Either<E | F, B> =>
+  mab._tag === "Left"
+    ? mab
+    : ma._tag === "Left"
+    ? ma
+    : right(mab.value(ma.value));
 
 /**
  * Converts an array of Either values into an Either containing an array of values.
@@ -483,10 +488,12 @@ export const sequence = <E, A>(
  * getValueOrZero(left(new Error()));  // 0
  * ```
  */
-export const fold =
-  <A, B, C>(onLeft: (a: A) => C, onRight: (b: B) => C) =>
-  (ma: Either<A, B>): C =>
-    ma._tag === "Left" ? onLeft(ma.value) : onRight(ma.value);
+export const fold = <A, B, C>(
+  onLeft: (a: A) => C,
+  onRight: (b: B) => C,
+): (ma: Either<A, B>) => C =>
+(ma: Either<A, B>): C =>
+  ma._tag === "Left" ? onLeft(ma.value) : onRight(ma.value);
 
 /**
  * Creates a function that converts a nullable value into an Either type. If the
@@ -511,7 +518,8 @@ export const fold =
  * ```
  */
 export const fromNullable =
-  <A, B>(onNullable: (b: B) => A) => (b: B): Either<A, B> =>
+  <A, B>(onNullable: (b: B) => A): (b: B) => Either<A, B> =>
+  (b: B): Either<A, B> =>
     b === null || b === undefined ? left(onNullable(b)) : right(b);
 
 /**
@@ -539,10 +547,11 @@ export const fromNullable =
  * ensurePositive(0);     // Left(Error("0 is not positive"))
  * ```
  */
-export const fromPredicate =
-  <A, B>(onUnsatisfied: (b: B) => A) =>
-  <C extends B>(predicate: (b: B) => b is C) =>
-  (b: B): Either<A, C> => predicate(b) ? right(b) : left(onUnsatisfied(b));
+export const fromPredicate = <A, B>(
+  onUnsatisfied: (b: B) => A,
+): <C extends B>(predicate: (b: B) => b is C) => (b: B) => Either<A, C> =>
+<C extends B>(predicate: (b: B) => b is C) =>
+(b: B): Either<A, C> => predicate(b) ? right(b) : left(onUnsatisfied(b));
 
 /**
  * Converts a potentially throwing function into an Either. If the function throws,
@@ -570,7 +579,8 @@ export const fromPredicate =
  * ```
  */
 export const tryCatch =
-  <A, B>(onError: (e: unknown) => A) => (f: () => B): Either<A, B> => {
+  <A, B>(onError: (e: unknown) => A): (f: () => B) => Either<A, B> =>
+  (f: () => B): Either<A, B> => {
     try {
       return right(f());
     } catch (e) {

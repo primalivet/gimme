@@ -69,8 +69,10 @@ export const pure = <A>(a: A): Task<A> => () => Promise.resolve(a);
  * const getDate = map((time: number) => new Date(time))(getTime);
  * ```
  */
-export const map = <A, B>(f: (a: A) => B) => (fa: Task<A>): Task<B> => () =>
-  fa().then(f);
+export const map =
+  <A, B>(f: (a: A) => B): (fa: Task<A>) => Task<B> =>
+  (fa: Task<A>): Task<B> =>
+  () => fa().then(f);
 
 /**
  * Creates a function that chains Task computations together. When given a
@@ -99,8 +101,9 @@ export const map = <A, B>(f: (a: A) => B) => (fa: Task<A>): Task<B> => () =>
  * ```
  */
 export const bind =
-  <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>): Task<B> => () =>
-    ma().then((a) => f(a)());
+  <A, B>(f: (a: A) => Task<B>): (ma: Task<A>) => Task<B> =>
+  (ma: Task<A>): Task<B> =>
+  () => ma().then((a) => f(a)());
 
 /**
  * Flattens a nested Task into a single Task. This function is useful when you
@@ -159,8 +162,9 @@ export const join = <A>(mma: Task<Task<A>>): Task<A> => () =>
  * ```
  */
 export const apply =
-  <A, B>(mab: Task<(a: A) => B>) => (ma: Task<A>): Task<B> => () =>
-    ma().then((a) => mab().then((f) => f(a)));
+  <A, B>(mab: Task<(a: A) => B>): (ma: Task<A>) => Task<B> =>
+  (ma: Task<A>): Task<B> =>
+  () => ma().then((a) => mab().then((f) => f(a)));
 
 /**
  * Creates a Task that resolves to the provided value after the specified delay.
@@ -188,8 +192,9 @@ export const apply =
  * );
  * ```
  */
-export const delay = <A>(ms: number) => (a: A): Task<A> => () =>
-  new Promise((resolve) => setTimeout(() => resolve(a), ms));
+export const delay =
+  <A>(ms: number): (a: A) => Task<A> => (a: A): Task<A> => () =>
+    new Promise((resolve) => setTimeout(() => resolve(a), ms));
 
 /**
  * Converts a Task to a readable string representation, using pretty-printed
