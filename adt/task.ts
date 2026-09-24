@@ -1,4 +1,10 @@
 /**
+ * A lazy asynchronous computation that always succeeds. A `Task` is a thunk
+ * returning a `Promise` and runs only when called.
+ *
+ * @module
+ */
+/**
  * Task represents an asynchronous computation that will produce a value of type A
  * when executed. Unlike Promise, Task is lazy - it only executes when explicitly
  * run by calling it as a function. Task specifically handles successful async

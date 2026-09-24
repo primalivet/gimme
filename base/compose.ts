@@ -1,4 +1,10 @@
 /**
+ * Composes unary functions right to left into a single function, in the
+ * mathematical order where the last listed function runs first.
+ *
+ * @module
+ */
+/**
  * Given some value and up to 11 function pipe creates a "pipeline", from right
  * to left,  where the output of a function becomes the input to the next.
  *

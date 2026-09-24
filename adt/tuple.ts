@@ -1,4 +1,10 @@
 /**
+ * An immutable pair of two values of possibly different types, with
+ * operations to transform either side.
+ *
+ * @module
+ */
+/**
  * Tuple represents an ordered pair of two values of potentially different types.
  * Unlike JavaScript arrays, Tuples are immutable (Readonly) and always contain
  * exactly two elements. Tuples are useful for returning multiple values from

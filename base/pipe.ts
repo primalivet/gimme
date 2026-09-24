@@ -1,4 +1,10 @@
 /**
+ * Applies a value to a sequence of unary functions, left to right. Use it
+ * when you have the value at hand.
+ *
+ * @module
+ */
+/**
  * Given some value and up to 11 function pipe creates a "pipeline", from left
  * to right,  where the output of a function becomes the input to the next.
  *

@@ -1,4 +1,10 @@
 /**
+ * Composes unary functions left to right into a single function. Use it
+ * when you want to build the function first and apply it later.
+ *
+ * @module
+ */
+/**
  * Given up to 11 function flow creates a "pipeline", from left
  * to right,  where the output of a function becomes the input to the next.
  * However, in difference to `pipe`, `flow` takes it's data last. Which is

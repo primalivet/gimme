@@ -1,9 +1,11 @@
 {
   "name": "@gimme/adt",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "publish": {
-    "exclude": ["**/*_test.ts"]
+    "exclude": [
+      "**/*_test.ts"
+    ]
   },
   "exports": {
     ".": "./mod.ts",

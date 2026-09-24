@@ -1,3 +1,9 @@
+/**
+ * A lazy asynchronous computation that may fail with a typed error. Combines
+ * `Task` and `Either`; see {@linkcode TaskEither} for the full description.
+ *
+ * @module
+ */
 import type { Task } from "@gimme/adt/task";
 import {
   type Either,
