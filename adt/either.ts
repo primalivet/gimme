@@ -1,4 +1,10 @@
 /**
+ * A value that is one of two variants, `Left` or `Right`. Used to model
+ * synchronous computations that may fail, with the failure carried as a value.
+ *
+ * @module
+ */
+/**
  * Either represents a value that can be one of two types: either `Left<A>` or
  * `Right<B>`. The Either type is commonly used for handling computations that
  * might fail, where `Left` typically represents failure and `Right` represents

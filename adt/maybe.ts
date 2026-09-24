@@ -1,4 +1,10 @@
 /**
+ * A value that may be absent, `Just` or `Nothing`. Used to model optional
+ * values without `null` or `undefined`.
+ *
+ * @module
+ */
+/**
  * Maybe represents a value that may or may not exist. It has two variants:
  * `Just<A>` which contains a value, or `Nothing` which represents the absence
  * of a value. Maybe is commonly used for handling optional values and
