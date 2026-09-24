@@ -2,6 +2,9 @@
   "name": "@gimme/base",
   "version": "0.0.2",
   "license": "MIT",
+  "publish": {
+    "exclude": ["**/*_test.ts"]
+  },
   "exports": {
     ".": "./mod.ts",
     "./compose": "./compose.ts",

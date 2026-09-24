@@ -13,6 +13,7 @@
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         deno
+        nodejs_26
         vscode-langservers-extracted
       ];
     };
