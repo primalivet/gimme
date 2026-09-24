@@ -8,6 +8,10 @@
  * Given some value and up to 11 function pipe creates a "pipeline", from right
  * to left,  where the output of a function becomes the input to the next.
  *
+ * @deprecated Use {@linkcode flow} with the functions in reverse order. Right to
+ * left composition infers generic functions poorly. Will be removed in the next
+ * minor version.
+ *
  * @typeParam A The initial input value and input to the first function
  * @typeParam B The output of the first function, input to the second
  * @typeParam C The output of the second function, input to the third function if given, otherwise the return value
@@ -35,23 +39,23 @@
 export function compose<A, B>(
   ...fns: [(a: A) => B]
 ): (a: A) => B;
-/** Composes 2 functions right to left. */
+/** Composes 2 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C>(
   ...fns: [(b: B) => C, (a: A) => B]
 ): (a: A) => C;
-/** Composes 3 functions right to left. */
+/** Composes 3 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D>(
   ...fns: [(c: C) => D, (b: B) => C, (a: A) => B]
 ): (a: A) => D;
-/** Composes 4 functions right to left. */
+/** Composes 4 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E>(
   ...fns: [(d: D) => E, (c: C) => D, (b: B) => C, (a: A) => B]
 ): (a: A) => E;
-/** Composes 5 functions right to left. */
+/** Composes 5 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F>(
   ...fns: [(e: E) => F, (d: D) => E, (c: C) => D, (b: B) => C, (a: A) => B]
 ): (a: A) => F;
-/** Composes 6 functions right to left. */
+/** Composes 6 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F, G>(
   ...fns: [
     (f: F) => G,
@@ -62,7 +66,7 @@ export function compose<A, B, C, D, E, F, G>(
     (a: A) => B,
   ]
 ): (a: A) => G;
-/** Composes 7 functions right to left. */
+/** Composes 7 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F, G, H>(
   ...fns: [
     (g: G) => H,
@@ -74,7 +78,7 @@ export function compose<A, B, C, D, E, F, G, H>(
     (a: A) => B,
   ]
 ): (a: A) => H;
-/** Composes 8 functions right to left. */
+/** Composes 8 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F, G, H, I>(
   ...fns: [
     (h: H) => I,
@@ -87,7 +91,7 @@ export function compose<A, B, C, D, E, F, G, H, I>(
     (a: A) => B,
   ]
 ): (a: A) => I;
-/** Composes 9 functions right to left. */
+/** Composes 9 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F, G, H, I, J>(
   ...fns: [
     (i: I) => J,
@@ -101,7 +105,7 @@ export function compose<A, B, C, D, E, F, G, H, I, J>(
     (a: A) => B,
   ]
 ): (a: A) => J;
-/** Composes 10 functions right to left. */
+/** Composes 10 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F, G, H, I, J, K>(
   ...fns: [
     (j: J) => K,
@@ -116,7 +120,7 @@ export function compose<A, B, C, D, E, F, G, H, I, J, K>(
     (a: A) => B,
   ]
 ): (a: A) => K;
-/** Composes 11 functions right to left. */
+/** Composes 11 functions right to left. @deprecated Use {@linkcode flow}. */
 export function compose<A, B, C, D, E, F, G, H, I, J, K, L>(
   ...fns: [
     (k: K) => L,
