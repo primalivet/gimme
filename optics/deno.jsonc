@@ -1,0 +1,14 @@
+{
+  "name": "@gimme/optics",
+  "version": "0.0.1",
+  "license": "MIT",
+  "publish": {
+    "exclude": [
+      "**/*_test.ts"
+    ]
+  },
+  "exports": {
+    ".": "./mod.ts",
+    "./lens": "./lens.ts"
+  }
+}
