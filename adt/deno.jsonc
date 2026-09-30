@@ -1,6 +1,6 @@
 {
   "name": "@gimme/adt",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "publish": {
     "exclude": [
@@ -13,6 +13,7 @@
     "./maybe": "./maybe.ts",
     "./task": "./task.ts",
     "./tuple": "./tuple.ts",
-    "./task-either": "./task_either.ts"
+    "./task-either": "./task_either.ts",
+    "./array": "./array.ts"
   }
 }
