@@ -408,7 +408,7 @@ export const fold =
  * fromNullable(undefined);   // Nothing
  * ```
  */
-export const fromNullable = <A>(a: A): Maybe<A> =>
+export const fromNullable = <A>(a: A): Maybe<NonNullable<A>> =>
   a === null || a === undefined ? nothing : just(a);
 
 /**

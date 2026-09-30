@@ -525,7 +525,7 @@ export const fold = <A, B, C>(
  */
 export const fromNullable =
   <A, B>(onNullable: (b: B) => A): (b: B) => Either<A, B> =>
-  (b: B): Either<A, B> =>
+  (b: B): Either<A, NonNullable<B>> =>
     b === null || b === undefined ? left(onNullable(b)) : right(b);
 
 /**
