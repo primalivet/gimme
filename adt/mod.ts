@@ -37,3 +37,5 @@ export * as Task from "@gimme/adt/task";
 export * as Tuple from "@gimme/adt/tuple";
 /** A lazy asynchronous computation that may fail with a typed error. */
 export * as TaskEither from "@gimme/adt/task-either";
+/** Curried, data-last operations on arrays. */
+export * as A from "@gimme/adt/array";
