@@ -14,6 +14,7 @@
     "./task": "./task.ts",
     "./tuple": "./tuple.ts",
     "./task-either": "./task_either.ts",
-    "./array": "./array.ts"
+    "./array": "./array.ts",
+    "./unstable-reader-task-either": "./unstable_reader_task_either.ts"
   }
 }
